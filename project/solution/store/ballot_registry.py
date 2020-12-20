@@ -8,7 +8,8 @@ from solution.objects.ballot import Ballot, BallotNumber
 
 def issue_new_ballot(voter: ObfuscatedVoter) -> BallotNumber:
     """
-    Stores and issues a new ballot, to a specific voter. A voter can receive multiple ballotssssdalksdlakd;as;dk
+    Stores and issues a new ballot, to a specific voter. A voter can receive multiple ballots,
+    but only one will be counted.
 
     :param: voter The voter to whom this new ballot is to be issued to. Only this voter may return this ballot.
     :return: A ballot
