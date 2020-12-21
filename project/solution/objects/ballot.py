@@ -1,5 +1,5 @@
-
 from solution.objects.candidate import Candidate
+
 
 class BallotNumber:
     """
