@@ -1,9 +1,9 @@
 from solution.objects.voter import SensitiveVoter, VoterStatus, ObfuscatedVoter
 from solution.objects.candidate import Candidate
-from solution.objects.ballot import Ballot
+from solution.objects.ballot import BallotNumber, Ballot
 
 
-def issue_ballot(voter: SensitiveVoter) -> Ballot:
+def issue_ballot(voter: SensitiveVoter) -> BallotNumber:
     raise NotImplementedError()
 
 

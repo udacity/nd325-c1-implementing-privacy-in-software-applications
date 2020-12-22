@@ -7,7 +7,6 @@ class ObfuscatedVoter:
     Our representation of a voter, with all sensitive information obfuscated (but still unique).
     This is the class that we want to be using in the majority of our codebase.
     """
-
     def __init__(self, obfuscated_national_id: str):
         self.obfuscated_national_id = obfuscated_national_id
 
