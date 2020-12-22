@@ -126,20 +126,28 @@ Do note that candidate names are not considered to be sensitive, as candidates t
 
 Please implement the `redact_free_text` method in the `solution/detection/pii_detection.py` file. Feel free to add additional arguments to the method here.
 
+#### Step 6: Vote Submission API
 
-#### Step 7: Build out an API
+Now that we have a decent chunk of the privacy features ready, let's actually get to the meat of the application we're trying to build - vote counting. As you know, a system that does nothing of value can trivially be made to be privacy protective.
 
-In the code we have provided you with some starter code that defines a very basic Python API in the file <FILENAME>. In particular, we have a few methods here:
+In the `solution/api/counting_api.py` file, please implement the following APIs:
 
-issue_ballot
-count_ballot
-get_fraud_list
+1. `issue_ballot`
+2. `count_ballot`
+3. `get_fraud_list`
+
+Remember, it's important that when implementing `count_ballot`, that you only count _one_ ballot per voter. Additionally, if a voter attempts to count more than once, only their first vote should be counted, but they should be flagged as having committed fraud. Additionally, remember to include the redaction of the ballot comment that you implemented in a previous step. 
 
 
-delete_voter_history
+#### Step 7: Voter History API
 
+Now that you've gotten the voting submission API in order, it's time to handle getting the voter status. Implement the following methods in `solution/api/history_api.py`
 
-Note, it is possible that multiple ballots are issued to the same person, but only the first one that arrives should be counted.
+1. `get_voter_history`
+2. `delete_voter_history`
+
+Remember that if a voter is a fraudulent voter, their information must remain in the system, but only for 1 year. After that year, they may request their data be deleted.
+
 
 
 

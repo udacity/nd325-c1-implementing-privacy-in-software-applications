@@ -28,13 +28,3 @@ def compute_election_winner() -> Candidate:
     :return: The winning Candidate
     """
     raise NotImplementedError()
-
-
-def get_voter_status(voter: SensitiveVoter) -> VoterStatus:
-    """
-    Gets the status of the voter specified,
-
-    :returns: a VoterStatus object corresponding to the given sensitive voter
-    """
-    obfuscated_voter: ObfuscatedVoter = voter.get_obfuscated_voter()
-    raise NotImplementedError()
