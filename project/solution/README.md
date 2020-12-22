@@ -1,3 +1,146 @@
-# Purpose of this Folder
+## Privacy Engineering Project 1 - Project Instructions
 
-This folder should contain a fully working project. This will be added to the reviewer toolkit for reviewers to use.
+
+#### Introduction
+
+After many years of deep civil unrest among disputing factions of human colonists of Mars, finally, a peace deal has been struck and the Republic of Mars has been formed. When creating the republic, the colonists have agreed to hold elections to choose their leader, the Chancellor of the Republic of Mars (COTREM), every 5 years, by simple popular vote.
+
+The first set of elections is to take place soon, and while peace has been found, it might not last if the election process is disputed, or controversial. To alleviate the public concern, the founding delegation of the Republic of Mars has nominated you, an expert in privacy engineering, to build out a reliable, and privacy-protective voting system.
+
+
+#### Completion Requirements
+
+In order to successfully complete this project, you’ll have to:
+
+Pass all the series of checks provided in the project. These tests ensure that you haven’t broken anything during your implementation, and serve to verify that certain functional and privacy features have been implemented.
+Submit your implementations of certain Python files (ballot.py and voter.py). These will be reviewed by our reviewers.
+Fill out a final self-evaluation of the software you have built, and submit it to our reviewers for grading. This helps us check your understanding of some of the privacy features of the application you’ve just built.
+
+Remember that privacy and security are related concepts, and are both important. However, while security generally deals with outsider threats, and preventing them from exploiting the system for their gain, privacy has to do with minimizing compromising information that could be nefariously extracted, even by an inside actor. While security is important for this project, our main focus here is privacy engineering.
+
+
+#### Step 1: Get the Code
+
+You can access the code in <THIS GITHUB> link, or in the Udacity workspace.
+
+
+
+#### Step 2: Explore the Codebase
+
+We’ve started you off with some starter code -- have a look at what we’ve provided up to this point.
+
+Specifically, a few files to look at are:
+
+```
+solution/objects/voter.py
+solution/objects/candidate.py
+solution/objects/ballot.py
+```
+
+Should you feel the need to, you are more than welcome to make additive changes to the classes in these files. However, please do not remove classes or fields in those classes that already exist.
+
+We’d also recommend having a look at:
+
+```
+solution/api/counting_api.py
+solution/api/history_api.py
+```
+
+... as well as the files in the `solution/store/` package. We'd like to call special attention to the `solution/store/secret_registry.py` file - if you need to generate secrets, such as salts, peppers or encryption/decryption keys, please use this file to do so. Feel free to add more methods here, but we’d recommend following the general pattern that we’ve established.
+
+#### Step 3: Build out the Voter class
+
+If you open up the `solution/objects/voter.py`, you’ll see that we have pre-made a `SensitiveVoter` class, and an `ObfuscatedVoter` class. The reason we’re doing this is so that we only use the `SensitiveVoter` class when it’s necessary -- in all other places, we use the `ObfuscatedVoter` class.
+
+You’ll notice that the `SensitiveVoter` class has a national_id field. We consider this to be a sensitive field, much like Social Security Numbers (SSNs) are sensitive in the United States.
+
+Your job in this step is to determine a privacy-protecting scheme to populate the `ObfuscatedVoter` class. Do this in `SensitiveVoter.get_obfuscated_voter`. Feel free to use other parts of the starter code to bolster your implementation.
+
+
+#### Step 4: Build out our Ballot Class
+
+Our next task is to build out our conception of a ballot, specifically, the way we assign and label ballots. There are a couple important considerations when designing ballot tracking.
+
+1. Voters can be issued multiple ballots. This can be because a voter might make a mistake when filling out one ballot, and therefore might need an additional ballot. However it's important that only one ballot per voter is counted.
+2. All ballots must be secret. Voters have the right to cast secret ballots, which means that it should be technically impossible for someone holding a filled-out ballot to associate that ballot with the voter. 
+3. In order to minimize the risk of fraud, a nefarious actor should not be able to tell that different two ballots are associated with the same voter.
+
+The unique identifier for a ballot is a `BallotNumber` and is defined in `solution/objects/ballot.py`. In this section, your job is to define a scheme produce a new ballot number. In the `solution/objects/ballot.py` file, implement the `generate_ballot_number` method. Currently this method takes nothing as input, but feel free to add inputs as you feel are appropriate.
+
+#### Step 5: Sensitive Data Detection
+
+As you might have seen in the `Ballot` class in `ballot.py`, voters have the right to add a free-text comment when casting their ballot. This comment has no impact on the election, but rather serves to allow voters to voice their concerns in a more nuanced manner. However, this right of public comment could easily undermine the secret ballot.
+
+In this section, your job is to find a way to redact personally identifiable information from a specific public comment. In particular, we care about the following:
+
+1. The voter's name (first and/or last)
+2. The voter's phone number
+3. The voter's National Identifier
+4. The voter's email address
+
+Phone numbers can take various formats. Here are some examples of valid phone numbers:
+
+1. `008 (299) 483-2343`
+2. `008 299 483-2343`
+3. `+8 299 483-2343`
+3. `+8 299 483 2343`
+4. `008 299 483 2343`
+5. `0082994832343`
+6. `(299) 483-2343`
+7. `299-483-2343`
+8. `2994832343`
+
+National Identifiers only have a few formats:
+
+1. `345-23-2334`
+2. `345232334`
+3. `345 43 3452`
+
+For each type of PII, we want to redact only that specific bit of information, but provide the context as to what that information was (i.e. a national identifier, a phone number, or a name) For example, if someone were to write the comment:
+
+```
+I'm so proud to be voting for the first time ever! If there are any problems with my vote please reach out to me at (345) 553-2335.
+I'm also available over email at sjenkins@email.co.mars.
+
+Best,
+
+Sara Jenkins
+ID: 234-23-2342
+```
+
+This should be redacted to:
+
+```
+I'm so proud to be voting for the first time ever! If there are any problems with my vote please reach out to me at [REDACTED PHONE NUMBER].
+I'm also available over email at [REDACTED EMAIL].
+
+
+Best,
+
+[REDACTED NAME] [REDACTED_NAME]
+ID: [REDACTED NATIONAL ID]
+```
+
+
+Do note that candidate names are not considered to be sensitive, as candidates themselves must be public figures, and their names are on the ballot already.
+
+Please implement the `redact_free_text` method in the `solution/detection/pii_detection.py` file. Feel free to add additional arguments to the method here.
+
+
+#### Step 7: Build out an API
+
+In the code we have provided you with some starter code that defines a very basic Python API in the file <FILENAME>. In particular, we have a few methods here:
+
+issue_ballot
+count_ballot
+get_fraud_list
+
+
+delete_voter_history
+
+
+Note, it is possible that multiple ballots are issued to the same person, but only the first one that arrives should be counted.
+
+
+
+
