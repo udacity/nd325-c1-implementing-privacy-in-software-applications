@@ -126,6 +126,23 @@ Do note that candidate names are not considered to be sensitive, as candidates t
 
 Please implement the `redact_free_text` method in the `solution/detection/pii_detection.py` file. Feel free to add additional arguments to the method here.
 
+#### Step 6: Create Voter Registry
+
+If you look into `solution/api/setup_api.py`, you'll see that there are methods for registering voters and getting information about voter registration. Your next task is to finish these methods.
+
+Specifically, we're referring to:
+
+1. `register_voter`
+2. `get_voter_status`
+3. `de_register_voter`
+
+We've also completed methods for adding candidates into the database. Have a look at `register_candidate` and `is_candidate_registered`. These are completed methods that you do not have to modify (unless you really want to). These can serve as your example.
+In particular, it's worthwhile having a look into the `VotingStore` class in `solution/store/data_registry.py`, which encapsulates the database. Here, you'll find a `create_tables` method, where you should feel free to add in whatever tables you'll need to store data into.
+Feel free to pattern match against our example for the candidate registration process.
+
+Please do NOT change the inputs or outputs to any of the methods in this class - we use these methods for running our unit tests against your code.
+
+
 #### Step 6: Vote Submission API
 
 Now that we have a decent chunk of the privacy features ready, let's actually get to the meat of the application we're trying to build - vote counting. As you know, a system that does nothing of value can trivially be made to be privacy protective.
@@ -135,6 +152,8 @@ In the `solution/api/counting_api.py` file, please implement the following APIs:
 1. `issue_ballot`
 2. `count_ballot`
 3. `get_fraud_list`
+4. `invalidate_ballot`
+5. `verify_ballot`
 
 Remember, it's important that when implementing `count_ballot`, that you only count _one_ ballot per voter. Additionally, if a voter attempts to count more than once, only their first vote should be counted, but they should be flagged as having committed fraud. Additionally, remember to include the redaction of the ballot comment that you implemented in a previous step. 
 

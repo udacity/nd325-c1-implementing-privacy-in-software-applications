@@ -20,11 +20,11 @@ class SensitiveVoter:
     def __init__(self, national_id: str):
         self.national_id = national_id
 
-    # TODO: Implement this method
     def get_obfuscated_voter(self) -> ObfuscatedVoter:
         """
         Converts this object (self) into its obfuscated version
         """
+        # TODO: Implement this method
         raise NotImplementedError()
 
 
@@ -32,6 +32,7 @@ class VoterStatus:
     """
     An enum that represents the current status of a voter.
     """
+    NOT_REGISTERED = "not registered"
+    REGISTERED_NOT_VOTED = "registered, but no ballot received"
     BALLOT_COUNTED = "ballot counted"
     FRAUD_COMMITTED = "fraud committed"
-    NO_BALLOT_RECEIVED = "no ballot received"
