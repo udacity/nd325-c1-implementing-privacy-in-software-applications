@@ -157,6 +157,8 @@ In the `solution/api/counting_api.py` file, please implement the following APIs:
 
 Remember, it's important that when implementing `count_ballot`, that you only count _one_ ballot per voter. Additionally, if a voter attempts to count more than once, only their first vote should be counted, but they should be flagged as having committed fraud. Additionally, remember to include the redaction of the ballot comment that you implemented in a previous step. 
 
+Also recall that the `VotingStore` class in `solution/store/data_registry.py`, which encapsulates the database, might have to be extended, like you did in the previous step.
+
 
 #### Step 7: Voter History API
 
@@ -167,7 +169,7 @@ Now that you've gotten the voting submission API in order, it's time to handle g
 
 Remember that if a voter is a fraudulent voter, their information must remain in the system, but only for 1 year. After that year, they may request their data be deleted.
 
-
+Also recall that the `VotingStore` class in `solution/store/data_registry.py`, which encapsulates the database, might have to be extended, like you did in the previous steps.
 
 
 
