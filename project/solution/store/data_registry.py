@@ -27,14 +27,16 @@ class VotingStore:
         return VotingStore.voting_store_instance
 
     def __init__(self):
+        """
+        DO NOT call this method directly - instead use the VotingStore.get_instance method above.
+        """
         self.create_tables()
 
-    @staticmethod
-    def _get_sqlite_connection() -> Connection:
+    def _get_sqlite_connection(self) -> Connection:
         return sqlite3.connect(":memory:")
 
     def create_tables(self):
-        connection = VotingStore._get_sqlite_connection()
+        connection = self._get_sqlite_connection()
         connection.execute('''CREATE TABLE candidates (candidate_id text, name text)''')
         # TODO: Add additional tables here, as you see fit
         connection.commit()
@@ -44,7 +46,7 @@ class VotingStore:
         """
         Adds a candidate into the candidate table, overwriting an existing entry if one exists
         """
-        connection = VotingStore._get_sqlite_connection()
+        connection = self._get_sqlite_connection()
         connection.execute('''INSERT INTO candidates ({0}, {1})'''.format(
             candidate.candidate_id, candidate.name))
         connection.commit()
@@ -54,7 +56,7 @@ class VotingStore:
         """
         Returns the candidate specified, if that candidate is registered. Otherwise returns None.
         """
-        connection = VotingStore._get_sqlite_connection()
+        connection = self._get_sqlite_connection()
         cursor = connection.cursor()
         cursor.execute('''SELECT * FROM candidates WHERE candidate_id={0}'''.format(candidate_id))
         candidate_row = cursor.fetchone()
