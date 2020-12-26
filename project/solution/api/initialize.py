@@ -2,8 +2,7 @@
 # This file is the internal-only API that allows for the population of the voter registry.
 # This API should not be exposed as a REST API for election security purposes.
 #
-
-
+from typing import List
 from solution.objects.voter import SensitiveVoter, VoterStatus
 from solution.objects.candidate import Candidate
 from solution.store.data_registry import VotingStore
@@ -64,3 +63,8 @@ def candidate_is_registered(candidate: Candidate) -> bool:
     """
     store = VotingStore.get_instance()
     return store.get_candidate(candidate.candidate_id) is not None
+
+
+def get_all_candidates() -> List[Candidate]:
+    store = VotingStore.get_instance()
+    return store.get_all_candidates()

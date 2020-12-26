@@ -4,6 +4,9 @@
 
 import sqlite3
 from sqlite3 import Connection
+
+from typing import List
+
 from solution.objects.candidate import Candidate
 
 
@@ -65,3 +68,14 @@ class VotingStore:
         connection.close()
 
         return candidate
+
+    def get_all_candidates(self) -> List[Candidate]:
+        connection = self._get_sqlite_connection()
+        cursor = connection.cursor()
+        cursor.execute('''SELECT * FROM candidates''')
+        all_candidate_rows = cursor.fetchall()
+        all_candidates = [Candidate(candidate_row[0], candidate_row[1]) for candidate_row in all_candidate_rows]
+        connection.commit()
+        connection.close()
+
+        return all_candidates

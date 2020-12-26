@@ -1,5 +1,5 @@
 import './App.css';
-import { H1, H4, H5, FormGroup, InputGroup, RadioGroup, Radio, Classes } from "@blueprintjs/core"
+import { H1, H4, H5, FormGroup, InputGroup, RadioGroup, Radio, TextArea } from "@blueprintjs/core"
 import { IconNames } from "@blueprintjs/icons"
 
 function App() {
@@ -22,6 +22,9 @@ function App() {
               <Radio label="Martin Alvarez" value="Martin Alvarez" />
               <Radio label="Kimmy Ng" value="Kimmy Ng" />
             </RadioGroup>
+            <br />
+            <H5 className="white-text">Additional Voter Comments</H5>
+            <TextArea fill={true} placeholder="Comments or concerns" />
         </FormGroup>
       </div>
     </div>
