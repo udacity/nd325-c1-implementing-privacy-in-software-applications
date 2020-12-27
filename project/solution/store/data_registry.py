@@ -33,49 +33,46 @@ class VotingStore:
         """
         DO NOT call this method directly - instead use the VotingStore.get_instance method above.
         """
+        self.connection = VotingStore._get_sqlite_connection()
         self.create_tables()
 
-    def _get_sqlite_connection(self) -> Connection:
-        return sqlite3.connect(":memory:")
+    @staticmethod
+    def _get_sqlite_connection() -> Connection:
+        return sqlite3.connect(":memory:", check_same_thread=False)
 
     def create_tables(self):
-        connection = self._get_sqlite_connection()
-        connection.execute('''CREATE TABLE candidates (candidate_id text, name text)''')
+        print("Creating Tables")
+        self.connection.execute(
+            '''CREATE TABLE candidates (candidate_id integer primary key autoincrement, name text)''')
         # TODO: Add additional tables here, as you see fit
-        connection.commit()
-        connection.close()
+        self.connection.commit()
 
-    def add_candidate(self, candidate: Candidate):
+    def add_candidate(self, candidate_name: str):
         """
         Adds a candidate into the candidate table, overwriting an existing entry if one exists
         """
-        connection = self._get_sqlite_connection()
-        connection.execute('''INSERT INTO candidates ({0}, {1})'''.format(
-            candidate.candidate_id, candidate.name))
-        connection.commit()
-        connection.close()
+        self.connection.execute('''INSERT INTO candidates (name) VALUES ("{0}")'''.format(candidate_name))
+        self.connection.commit()
 
     def get_candidate(self, candidate_id: str) -> Candidate:
         """
         Returns the candidate specified, if that candidate is registered. Otherwise returns None.
         """
-        connection = self._get_sqlite_connection()
-        cursor = connection.cursor()
+        cursor = self.connection.cursor()
         cursor.execute('''SELECT * FROM candidates WHERE candidate_id={0}'''.format(candidate_id))
         candidate_row = cursor.fetchone()
         candidate = Candidate(candidate_id, candidate_row[1]) if candidate_row else None
-        connection.commit()
-        connection.close()
+        self.connection.commit()
 
         return candidate
 
     def get_all_candidates(self) -> List[Candidate]:
-        connection = self._get_sqlite_connection()
-        cursor = connection.cursor()
+        cursor = self.connection.cursor()
         cursor.execute('''SELECT * FROM candidates''')
         all_candidate_rows = cursor.fetchall()
         all_candidates = [Candidate(candidate_row[0], candidate_row[1]) for candidate_row in all_candidate_rows]
-        connection.commit()
-        connection.close()
+        self.connection.commit()
 
         return all_candidates
+
+

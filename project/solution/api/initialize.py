@@ -46,12 +46,12 @@ def de_register_voter(voter: SensitiveVoter):
 # Candidate Registration
 #
 
-def register_candidate(candidate: Candidate):
+def register_candidate(candidate_name: str):
     """
     Registers a candidate for the election, if not already registered.
     """
     store = VotingStore.get_instance()
-    store.add_candidate(candidate)
+    store.add_candidate(candidate_name)
 
 
 def candidate_is_registered(candidate: Candidate) -> bool:
