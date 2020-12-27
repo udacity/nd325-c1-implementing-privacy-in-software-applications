@@ -1,21 +1,13 @@
 from solution.objects.candidate import Candidate
 
 
-class BallotNumber:
-    """
-    A class that wraps a ballot number
-    """
-    def __init__(self, ballot_number: str):
-        self.ballot_number = ballot_number
-
-
 class Ballot:
     """
     A ballot that exists in a specific, secret manner
     """
-    def __init__(self, ballot_number: BallotNumber, candidate_chosen: Candidate, voter_comments: str):
+    def __init__(self, ballot_number: str, chosen_candidate_id: str, voter_comments: str):
         self.ballot_number = ballot_number
-        self.candidate_chosen = candidate_chosen
+        self.chosen_candidate_id = chosen_candidate_id
         self.voter_comments = voter_comments
         raise NotImplementedError()
 

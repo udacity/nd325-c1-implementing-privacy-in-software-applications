@@ -70,7 +70,7 @@ class VotingStore:
         cursor = self.connection.cursor()
         cursor.execute('''SELECT * FROM candidates''')
         all_candidate_rows = cursor.fetchall()
-        all_candidates = [Candidate(candidate_row[0], candidate_row[1]) for candidate_row in all_candidate_rows]
+        all_candidates = [Candidate(str(candidate_row[0]), candidate_row[1]) for candidate_row in all_candidate_rows]
         self.connection.commit()
 
         return all_candidates

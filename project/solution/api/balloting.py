@@ -1,9 +1,9 @@
 from solution.objects.voter import SensitiveVoter, VoterStatus, ObfuscatedVoter
 from solution.objects.candidate import Candidate
-from solution.objects.ballot import BallotNumber, Ballot
+from solution.objects.ballot import Ballot
 
 
-def issue_ballot(voter: SensitiveVoter) -> BallotNumber:
+def issue_ballot(voter: SensitiveVoter) -> str:
     raise NotImplementedError("The issue_ballot method has not been implemented")
 
 
@@ -23,7 +23,7 @@ def count_ballot(ballot: Ballot, voter: SensitiveVoter) -> bool:
     raise NotImplementedError()
 
 
-def invalidate_ballot(ballot_number: BallotNumber):
+def invalidate_ballot(ballot_number: str):
     """
     Marks a ballot as invalid so that it cannot be used again
     """
@@ -31,7 +31,7 @@ def invalidate_ballot(ballot_number: BallotNumber):
     raise NotImplementedError()
 
 
-def verify_ballot(voter: SensitiveVoter, ballot_number: BallotNumber):
+def verify_ballot(voter: SensitiveVoter, ballot_number: str):
     """
     Verifies the following:
 

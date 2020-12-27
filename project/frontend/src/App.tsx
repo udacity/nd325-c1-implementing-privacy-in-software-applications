@@ -1,6 +1,7 @@
 import './App.css';
-import { H1, H4, H5, FormGroup, InputGroup, RadioGroup, Radio, TextArea } from "@blueprintjs/core"
-import { IconNames } from "@blueprintjs/icons"
+import React from 'react';
+import { H1, H4 } from "@blueprintjs/core"
+import { IBallotForm } from "./ballotForm"
 
 
 function App() {
@@ -11,7 +12,8 @@ function App() {
           <H4 className="white-text"> DEPARTMENT OF ELECTORAL AFFAIRS </H4>
       </div>
       <div className="form">
-        <FormGroup>
+        <IBallotForm />
+        {/* <FormGroup>
             <H5 className="white-text">Enter your voter information</H5>
             <InputGroup large={true} leftIcon={IconNames.PERSON} placeholder="Your National ID" />
             <br />
@@ -26,7 +28,7 @@ function App() {
             <br />
             <H5 className="white-text">Additional Voter Comments</H5>
             <TextArea fill={true} placeholder="Comments or concerns" />
-        </FormGroup>
+        </FormGroup> */}
       </div>
     </div>
   );
