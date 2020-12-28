@@ -1,14 +1,18 @@
 #
 # DO NOT MODIFY THIS FILE
+# This file is the REST API for our frontend to get data from.
+#
+# To run the backend server locally, please run the following from the /backend directory
+#
+# $ export FLASK_APP=api/backend_rest_api.py
+# $ flask run
 #
 
-
 from flask import Flask, request
-from werkzeug.exceptions import HTTPException
-import solution.api.balloting as balloting
-import solution.api.initialize as initialization
-from solution.objects.voter import SensitiveVoter
-from solution.objects.ballot import Ballot
+import backend.api.balloting as balloting
+import backend.api.registry as initialization
+from backend.objects.voter import SensitiveVoter
+from backend.objects.ballot import Ballot
 import jsons
 from flask_cors import CORS
 

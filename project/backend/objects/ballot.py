@@ -1,4 +1,4 @@
-from solution.objects.candidate import Candidate
+from backend.objects.candidate import Candidate
 
 
 class Ballot:

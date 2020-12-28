@@ -36,3 +36,12 @@ class VoterStatus:
     REGISTERED_NOT_VOTED = "registered, but no ballot received"
     BALLOT_COUNTED = "ballot counted"
     FRAUD_COMMITTED = "fraud committed"
+
+
+class BallotStatus:
+    """
+    An enum that represents the current status of a voter.
+    """
+    VOTER_BALLOT_MISMATCH = "the ballot doesn't belong to the voter specified"
+    INVALID_BALLOT = "the ballot given is invalid"
+    FRAUD_COMMITTED = "fraud committed: the voter has already voted"

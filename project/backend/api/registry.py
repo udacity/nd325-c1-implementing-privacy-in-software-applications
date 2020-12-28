@@ -3,9 +3,9 @@
 # This API should not be exposed as a REST API for election security purposes.
 #
 from typing import List
-from solution.objects.voter import SensitiveVoter, VoterStatus
-from solution.objects.candidate import Candidate
-from solution.store.data_registry import VotingStore
+from backend.objects.voter import SensitiveVoter, VoterStatus
+from backend.objects.candidate import Candidate
+from backend.store.data_registry import VotingStore
 
 #
 # Voter Registration
@@ -37,13 +37,14 @@ def get_voter_status(voter: SensitiveVoter) -> VoterStatus:
 def de_register_voter(voter: SensitiveVoter):
     """
     De-registers a voter from voting. This is to be used when the user requests to be removed from the system.
+    If a voter is a fraudulent voter, this should still be reflected in the system.
     """
     # TODO: Implement this!
     raise NotImplementedError()
 
 
 #
-# Candidate Registration
+# Candidate Registration (Already Implemented)
 #
 
 def register_candidate(candidate_name: str):
