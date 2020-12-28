@@ -1,5 +1,4 @@
 #
-# DO NOT MODIFY THIS FILE
 # This file is the REST API for our frontend to get data from.
 #
 # To run the backend server locally, please run the following from the /backend directory
@@ -10,7 +9,7 @@
 
 from flask import Flask, request
 import backend.api.balloting as balloting
-import backend.api.registry as initialization
+import backend.api.registry as registry
 from backend.objects.voter import SensitiveVoter
 from backend.objects.ballot import Ballot
 import jsons
@@ -47,42 +46,22 @@ def verify_ballot():
 
 @app.route('/api/get_all_candidates')
 def get_all_candidates():
-    return jsons.dumps(initialization.get_all_candidates())
-
-
-# @app.errorhandler(NotImplementedError)
-# def handle_not_implemented_error(e):
-#     return jsons.dumps({
-#         "data": {
-#             "code": 500,
-#             "name": "Not Implemented",
-#             "description": "This endpoint has not yet been implemented",
-#         },
-#         "content_type": "application/json"
-#     })
-
-#
-# @app.errorhandler(HTTPException)
-# def handle_exception(e):
-#     """Return JSON instead of HTML for HTTP errors."""
-#     # start with the correct headers and status code from the error
-#     response = e.get_response()
-#     # replace the body with JSON
-#     response.data = jsons.dumps({
-#         "code": e.code,
-#         "name": e.name,
-#         "description": e.description,
-#     })
-#     response.content_type = "application/json"
-#     print(jsons.dumps(response))
-#
-#     return response
+    return jsons.dumps(registry.get_all_candidates())
 
 
 def populate_database():
-    initialization.register_candidate("Bob Jenkins")
-    initialization.register_candidate("Alice Johnson")
-    initialization.register_candidate("Jim Kirk")
+    """
+    This method is for you as a developer. This is where you can add more candidates for the election,
+    register voters for the election and issue ballots. This method is strictly for your convenience, and
+    is not part of the rubric for the final project.
+    """
+
+    # Adding Candidates for the election. These should be reflected in the frontend.
+    registry.register_candidate("Bob Jenkins")
+    registry.register_candidate("Alice Johnson")
+    registry.register_candidate("Jim Kirk")
+
+    # TODO: Feel free to add voters to the voter registry, and issue ballots
 
 
 populate_database()

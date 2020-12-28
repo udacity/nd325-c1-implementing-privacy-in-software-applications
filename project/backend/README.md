@@ -12,20 +12,24 @@ The first set of elections is to take place soon, and while peace has been found
 
 In order to successfully complete this project, you’ll have to:
 
-Pass all the series of checks provided in the project. These tests ensure that you haven’t broken anything during your implementation, and serve to verify that certain functional and privacy features have been implemented.
-Submit your implementations of certain Python files (ballot.py and voter.py). These will be reviewed by our reviewers.
-Fill out a final self-evaluation of the software you have built, and submit it to our reviewers for grading. This helps us check your understanding of some of the privacy features of the application you’ve just built.
+1. **Pass all the series of checks provided in the project.** These tests ensure that you haven’t broken anything during your implementation, and serve to verify that certain functional and privacy features have been implemented. 
+2. **Submit your implementations of certain Python files.** These will be reviewed by our reviewers.
+   a. `ballot.py`
+   b. `voter.py`.
+3. **Submit screenshots of the frontend** These will be reviewed by our reviewers.
+   a. A screenshot of the frontend before anything has been filled in.
+   b. A screenshot of the frontend after a vote has successfully been cast.
+4. Fill out a final self-evaluation of the software you have built, and submit it to our reviewers for grading. This helps us check your understanding of some of the privacy features of the application you’ve just built.
 
 Remember that privacy and security are related concepts, and are both important. However, while security generally deals with outsider threats, and preventing them from exploiting the system for their gain, privacy has to do with minimizing compromising information that could be nefariously extracted, even by an inside actor. While security is important for this project, our main focus here is privacy engineering.
 
 
 #### Step 1: Get the Code
 
-You can access the code in <THIS GITHUB> link, or in the Udacity workspace.
+You can access the code [here](https://github.com/udacity/nd325-c1-implementing-privacy-in-software-applications), or in the Udacity workspace.
 
 
-
-#### Step 2: Explore the Codebase
+#### Step 2A: Explore the Codebase
 
 We’ve started you off with some starter code -- have a look at what we’ve provided up to this point.
 
@@ -37,15 +41,27 @@ backend/objects/candidate.py
 backend/objects/ballot.py
 ```
 
-Should you feel the need to, you are more than welcome to make additive changes to the classes in these files. However, please do not remove classes or fields in those classes that already exist.
-
-We’d also recommend having a look at:
-
-```
-backend/api/registry.py
-```
-
 ... as well as the files in the `backend/store/` package. We'd like to call special attention to the `backend/store/secret_registry.py` file - if you need to generate secrets, such as salts, peppers or encryption/decryption keys, please use this file to do so. Feel free to add more methods here, but we’d recommend following the general pattern that we’ve established.
+
+
+#### Step 2B: Run the Frontend & Backend
+
+To run the frontend locally, do the following:
+
+```
+$ npm start  # This should open the frontend in your browser
+```
+
+To run the backend locally, do the following:
+
+```
+$ cd backend/
+$ export FLASK_APP=api/backend_rest_api.py  # only need to do that once
+$ flask run
+```
+
+Give the frontend a whirl - it should error when you try to submit a ballot, but that's only because you haven't built the backend yet. 
+The candidates that you see in the frontend are actually populated in from the `populate_database` method in `backend/api/backend_rest_api.py`. Feel free to modify this method as you implement more functionality in this project.
 
 #### Step 3: Build out the Voter class
 
@@ -171,3 +187,13 @@ There are some basic things we want to communicate to the user.
 1. Before the voter casts their ballot, the frontend should communicate that after verifying their identity, their vote will be counted _anonymously_.
 2. After the ballot has been cast, the voter should be informed that their ballot has been submitted that the submission was successful.
 3. After the voter has voted, the voter should be informed that they're free to de-register themselves from voting, if they contact the voter registrar.
+
+
+#### Step 9: Privacy Self-Evaluation
+
+Congratulations! You've finished the technical portion of the project. At this time, it's important for us to have a look back at what we've built from a privacy angle.
+
+For each of the seven Privacy by Design (PbD) principle, go through an answer the following two questions:
+
+1. What does this application do to address this PbD principle?
+2. How can we improve this application to better address this PbD principle?
