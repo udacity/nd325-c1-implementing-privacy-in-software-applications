@@ -160,3 +160,14 @@ In the `backend/api/balloting.py` file, please implement the following APIs:
 Remember, it's important that when implementing `count_ballot`, that you only count _one_ ballot per voter. Additionally, if a voter attempts to count more than once, only their first vote should be counted, but they should be flagged as having committed fraud. Additionally, remember to include the redaction of the ballot comment that you implemented in a previous step. 
 
 Also recall that the `VotingStore` class in `backend/store/data_registry.py`, which encapsulates the database, might have to be extended, like you did in the previous step.
+
+
+#### Step 8: Frontend Changes
+
+At this point, our backend is fully built out. Now, we need to make some changes to our frontend.
+
+There are some basic things we want to communicate to the user.
+
+1. Before the voter casts their ballot, the frontend should communicate that after verifying their identity, their vote will be counted _anonymously_.
+2. After the ballot has been cast, the voter should be informed that their ballot has been submitted that the submission was successful.
+3. After the voter has voted, the voter should be informed that they're free to de-register themselves from voting, if they contact the voter registrar.

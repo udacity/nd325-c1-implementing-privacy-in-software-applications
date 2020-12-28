@@ -45,3 +45,7 @@ class BallotStatus:
     VOTER_BALLOT_MISMATCH = "the ballot doesn't belong to the voter specified"
     INVALID_BALLOT = "the ballot given is invalid"
     FRAUD_COMMITTED = "fraud committed: the voter has already voted"
+    VOTER_NOT_REGISTERED = "voter not registered"
+    BALLOT_COUNTED = "ballot counted"
+
+

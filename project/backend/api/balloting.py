@@ -19,8 +19,8 @@ def count_ballot(ballot: Ballot, voter: SensitiveVoter) -> BallotStatus:
     1. BallotStatus.FRAUD_COMMITTED - If the voter has already voted
     2. BallotStatus.VOTER_BALLOT_MISMATCH - The ballot does not belong to this voter
     3. BallotStatus.INVALID_BALLOT - The ballot has been invalidated, or does not exist
-    2. BallotStatus.NOT_REGISTERED - If the voter cannot be found in the voter registry
-    3. BallotStatus.BALLOT_COUNTED - If the ballot submitted in this request was successfully counted
+    4. BallotStatus.VOTER_NOT_REGISTERED - If the voter cannot be found in the voter registry
+    5. BallotStatus.BALLOT_COUNTED - If the ballot submitted in this request was successfully counted
 
     :param: ballot The Ballot to count
     :returns: The Voter Status after the ballot has been processed.
