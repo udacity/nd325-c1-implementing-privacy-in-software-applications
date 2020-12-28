@@ -13,12 +13,12 @@ The first set of elections is to take place soon, and while peace has been found
 In order to successfully complete this project, you’ll have to:
 
 1. **Pass all the series of checks provided in the project.** These tests ensure that you haven’t broken anything during your implementation, and serve to verify that certain functional and privacy features have been implemented. 
-2. **Submit your implementations of certain Python files.** These will be reviewed by our reviewers.
-   a. `ballot.py`
-   b. `voter.py`.
+2. **Submit your implementations of certain Python files.** These will be reviewed by our reviewers. 
+   1. `ballot.py`
+   2. `voter.py`.
 3. **Submit screenshots of the frontend** These will be reviewed by our reviewers.
-   a. A screenshot of the frontend before anything has been filled in.
-   b. A screenshot of the frontend after a vote has successfully been cast.
+   1. A screenshot of the frontend before anything has been filled in.
+   2. A screenshot of the frontend after a vote has successfully been cast.
 4. Fill out a final self-evaluation of the software you have built, and submit it to our reviewers for grading. This helps us check your understanding of some of the privacy features of the application you’ve just built.
 
 Remember that privacy and security are related concepts, and are both important. However, while security generally deals with outsider threats, and preventing them from exploiting the system for their gain, privacy has to do with minimizing compromising information that could be nefariously extracted, even by an inside actor. While security is important for this project, our main focus here is privacy engineering.
