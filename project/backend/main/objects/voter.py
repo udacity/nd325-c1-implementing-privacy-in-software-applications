@@ -2,25 +2,29 @@
 # This file contains classes that correspond to voters
 #
 
-class ObfuscatedVoter:
+class MinimalVoter:
     """
-    Our representation of a voter, with all sensitive information obfuscated (but still unique).
+    Our representation of a voter, with the national id obfuscated (but still unique).
     This is the class that we want to be using in the majority of our codebase.
     """
-    def __init__(self, obfuscated_national_id: str):
+    def __init__(self, first_name: str, last_name: str, obfuscated_national_id: str):
         self.obfuscated_national_id = obfuscated_national_id
+        self.first_name = first_name
+        self.last_name = last_name
 
 
-class SensitiveVoter:
+class Voter:
     """
     Our representation of a voter, including certain sensitive information.=
     This class should only be used in the initial stages when requests come in; in the rest of the
     codebase, we should be using the ObfuscatedVoter class
     """
-    def __init__(self, national_id: str):
+    def __init__(self, first_name: str, last_name: str, national_id: str):
         self.national_id = national_id
+        self.first_name = first_name
+        self.last_name = last_name
 
-    def get_obfuscated_voter(self) -> ObfuscatedVoter:
+    def get_obfuscated_voter(self) -> MinimalVoter:
         """
         Converts this object (self) into its obfuscated version
         """

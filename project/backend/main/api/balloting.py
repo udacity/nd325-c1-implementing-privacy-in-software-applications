@@ -1,16 +1,24 @@
-from typing import List
+from typing import Set
 
-from backend.objects.voter import SensitiveVoter, BallotStatus
-from backend.objects.candidate import Candidate
-from backend.objects.ballot import Ballot
+from backend.main.objects.voter import Voter, BallotStatus
+from backend.main.objects.candidate import Candidate
+from backend.main.objects.ballot import Ballot
 
 
-def issue_ballot(voter: SensitiveVoter) -> str:
+def issue_ballot(voter: Voter) -> str:
+    """
+    Issues a new ballot to a given voter. The ballot number of the new ballot. This method should NOT invalidate any old
+    ballots.
+
+    :params: voter The voter to issue a new ballot to. Note that the national ID for the voter might not come in a
+             standard format. For example, "555-55-5555", "555555555" and "555 55 5555" should be treated the same.
+    :returns: The ballot number of the new ballot
+    """
     # TODO: Implement this!
     raise NotImplementedError()
 
 
-def count_ballot(ballot: Ballot, voter: SensitiveVoter) -> BallotStatus:
+def count_ballot(ballot: Ballot, voter: Voter) -> BallotStatus:
     """
     Validates and counts the ballot for the given voter. If the ballot contains a sensitive comment, this method will
     appropriately redact the sensitive comment.
@@ -23,6 +31,8 @@ def count_ballot(ballot: Ballot, voter: SensitiveVoter) -> BallotStatus:
     5. BallotStatus.BALLOT_COUNTED - If the ballot submitted in this request was successfully counted
 
     :param: ballot The Ballot to count
+    :param: voter The voter who the ballot corresponds to. Note that the national ID for the voter might not come in a
+            standard format. For example, "555-55-5555", "555555555" and "555 55 5555" should be treated the same.
     :returns: The Voter Status after the ballot has been processed.
     """
     # TODO: Implement this!
@@ -43,7 +53,7 @@ def invalidate_ballot(ballot_number: str) -> bool:
     raise NotImplementedError()
 
 
-def verify_ballot(voter: SensitiveVoter, ballot_number: str):
+def verify_ballot(voter: Voter, ballot_number: str):
     """
     Verifies the following:
 
@@ -61,7 +71,7 @@ def verify_ballot(voter: SensitiveVoter, ballot_number: str):
     raise NotImplementedError()
 
 
-def get_all_ballot_comments() -> List[str]:
+def get_all_ballot_comments() -> Set[str]:
     """
     Returns a list of all the ballot comments that are non-empty.
     :returns: A list of all the ballot comments that are non-empty
@@ -74,6 +84,19 @@ def compute_election_winner() -> Candidate:
     """
     Computes the winner of the election - the candidate that gets the most votes (even if there is not a majority).
     :return: The winning Candidate
+    """
+    # TODO: Implement this!
+    raise NotImplementedError()
+
+
+def get_all_fraudulent_voters() -> Set[str]:
+    """
+    Returns a complete list of voters who committed fraud. For example, if the following committed fraud:
+
+    1. first: "John", last: "Smith"
+    2. first: "Linda", last: "Navarro"
+
+    Then this method would return {"John Smith", "Linda Navarro"} - with a space separating the first and last names.
     """
     # TODO: Implement this!
     raise NotImplementedError()

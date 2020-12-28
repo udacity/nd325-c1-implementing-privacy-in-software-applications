@@ -36,12 +36,12 @@ We’ve started you off with some starter code -- have a look at what we’ve pr
 Specifically, a few files to look at are:
 
 ```
-backend/objects/voter.py
-backend/objects/candidate.py
-backend/objects/ballot.py
+backend/main/objects/voter.py
+backend/main/objects/candidate.py
+backend/main/objects/ballot.py
 ```
 
-... as well as the files in the `backend/store/` package. We'd like to call special attention to the `backend/store/secret_registry.py` file - if you need to generate secrets, such as salts, peppers or encryption/decryption keys, please use this file to do so. Feel free to add more methods here, but we’d recommend following the general pattern that we’ve established.
+... as well as the files in the `backend/main/store/` package. We'd like to call special attention to the `backend/main/store/secret_registry.py` file - if you need to generate secrets, such as salts, peppers or encryption/decryption keys, please use this file to do so. Feel free to add more methods here, but we’d recommend following the general pattern that we’ve established.
 
 
 #### Step 2B: Run the Frontend & Backend
@@ -56,20 +56,20 @@ To run the backend locally, do the following:
 
 ```
 $ cd backend/
-$ export FLASK_APP=api/backend_rest_api.py  # only need to do that once
+$ export FLASK_APP=main/api/backend_rest_api.py  # only need to do that once
 $ flask run
 ```
 
 Give the frontend a whirl - it should error when you try to submit a ballot, but that's only because you haven't built the backend yet. 
-The candidates that you see in the frontend are actually populated in from the `populate_database` method in `backend/api/backend_rest_api.py`. Feel free to modify this method as you implement more functionality in this project.
+The candidates that you see in the frontend are actually populated in from the `populate_database` method in `backend/main/api/backend_rest_api.py`. Feel free to modify this method as you implement more functionality in this project.
 
 #### Step 3: Build out the Voter class
 
-If you open up the `backend/objects/voter.py`, you’ll see that we have pre-made a `SensitiveVoter` class, and an `ObfuscatedVoter` class. The reason we’re doing this is so that we only use the `SensitiveVoter` class when it’s necessary -- in all other places, we use the `ObfuscatedVoter` class.
+If you open up the `backend/main/objects/voter.py`, you’ll see that we have pre-made a `Voter` class, and an `MinimalVoter` class. The reason we’re doing this is so that we only use the `Voter` class when it’s necessary -- in all other places, we use the `MinimalVoter` class.
 
-You’ll notice that the `SensitiveVoter` class has a national_id field. We consider this to be a sensitive field, much like Social Security Numbers (SSNs) are sensitive in the United States.
+You’ll notice that the `Voter` class has a national_id field. We consider this to be a sensitive field, much like Social Security Numbers (SSNs) are sensitive in the United States.
 
-Your job in this step is to determine a privacy-protecting scheme to populate the `ObfuscatedVoter` class. Do this in `SensitiveVoter.get_obfuscated_voter`. Feel free to use other parts of the starter code to bolster your implementation.
+Your job in this step is to determine a privacy-protecting scheme to populate the `MinimalVoter` class. Do this in `Voter.get_obfuscated_voter`. Feel free to use other parts of the starter code to bolster your implementation.
 
 
 #### Step 4: Build out our Ballot Class
@@ -80,7 +80,7 @@ Our next task is to build out our conception of a ballot, specifically, the way 
 2. All ballots must be secret. Voters have the right to cast secret ballots, which means that it should be technically impossible for someone holding a filled-out ballot to associate that ballot with the voter. 
 3. In order to minimize the risk of fraud, a nefarious actor should not be able to tell that different two ballots are associated with the same voter.
 
-The unique identifier for a ballot is a `BallotNumber` and is defined in `backend/objects/ballot.py`. In this section, your job is to define a scheme produce a new ballot number. In the `backend/objects/ballot.py` file, implement the `generate_ballot_number` method. Currently this method takes nothing as input, but feel free to add inputs as you feel are appropriate.
+The unique identifier for a ballot is a `BallotNumber` and is defined in `backend/main/objects/ballot.py`. In this section, your job is to define a scheme produce a new ballot number. In the `backend/main/objects/ballot.py` file, implement the `generate_ballot_number` method. Currently this method takes nothing as input, but feel free to add inputs as you feel are appropriate.
 
 #### Step 5: Sensitive Data Detection
 
@@ -139,12 +139,12 @@ ID: [REDACTED NATIONAL ID]
 
 Do note that candidate names are not considered to be sensitive, as candidates themselves must be public figures, and their names are on the ballot already.
 
-Please implement the `redact_free_text` method in the `backend/detection/pii_detection.py` file. Feel free to add additional arguments to the method here.
+Please implement the `redact_free_text` method in the `backend/main/detection/pii_detection.py` file. Feel free to add additional arguments to the method here.
 
 
 #### Step 6: Registry API
 
-If you look into `backend/api/setup_api.py`, you'll see that there are methods for registering voters and getting information about voter registration. Your next task is to finish these methods.
+If you look into `backend/main/api/setup_api.py`, you'll see that there are methods for registering voters and getting information about voter registration. Your next task is to finish these methods.
 
 Specifically, we're referring to:
 
@@ -153,7 +153,7 @@ Specifically, we're referring to:
 3. `de_register_voter` - note: fraudulent voters can be de-registered, but their fraudulent status should still be reflected
 
 We've also completed methods for adding candidates into the database. Have a look at `register_candidate` and `is_candidate_registered`. These are completed methods that you do not have to modify (unless you really want to). These can serve as your example.
-In particular, it's worthwhile having a look into the `VotingStore` class in `backend/store/data_registry.py`, which encapsulates the database. Here, you'll find a `create_tables` method, where you should feel free to add in whatever tables you'll need to store data into.
+In particular, it's worthwhile having a look into the `VotingStore` class in `backend/main/store/data_registry.py`, which encapsulates the database. Here, you'll find a `create_tables` method, where you should feel free to add in whatever tables you'll need to store data into.
 Feel free to pattern match against our example for the candidate registration process.
 
 Please do NOT change the inputs or outputs to any of the methods in this class - we use these methods for running our unit tests against your code.
@@ -163,7 +163,7 @@ Please do NOT change the inputs or outputs to any of the methods in this class -
 
 Now that we have a decent chunk of the privacy features ready, let's actually get to the meat of the application we're trying to build - vote counting. As you know, a system that does nothing of value can trivially be made to be privacy protective.
 
-In the `backend/api/balloting.py` file, please implement the following APIs:
+In the `backend/main/api/balloting.py` file, please implement the following APIs:
 
 1. `issue_ballot`
 2. `count_ballot`
@@ -172,10 +172,11 @@ In the `backend/api/balloting.py` file, please implement the following APIs:
 5. `verify_ballot`
 6. `get_all_ballot_comments`
 7. `compute_election_winner`
+8. `get_all_fraudulent_voters`
 
 Remember, it's important that when implementing `count_ballot`, that you only count _one_ ballot per voter. Additionally, if a voter attempts to count more than once, only their first vote should be counted, but they should be flagged as having committed fraud. Additionally, remember to include the redaction of the ballot comment that you implemented in a previous step. 
 
-Also recall that the `VotingStore` class in `backend/store/data_registry.py`, which encapsulates the database, might have to be extended, like you did in the previous step.
+Also recall that the `VotingStore` class in `backend/main/store/data_registry.py`, which encapsulates the database, might have to be extended, like you did in the previous step.
 
 
 #### Step 8: Frontend Changes

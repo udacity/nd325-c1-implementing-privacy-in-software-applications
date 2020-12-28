@@ -3,15 +3,15 @@
 #
 # To run the backend server locally, please run the following from the /backend directory
 #
-# $ export FLASK_APP=api/backend_rest_api.py
+# $ export FLASK_APP=main/api/backend_rest_api.py
 # $ flask run
 #
 
 from flask import Flask, request
-import backend.api.balloting as balloting
-import backend.api.registry as registry
-from backend.objects.voter import SensitiveVoter
-from backend.objects.ballot import Ballot
+import backend.main.api.balloting as balloting
+import backend.main.api.registry as registry
+from backend.main.objects.voter import Voter
+from backend.main.objects.ballot import Ballot
 import jsons
 from flask_cors import CORS
 
@@ -30,7 +30,7 @@ def count_ballot():
     ballot_number = req_data['ballot_number']
     chosen_candidate_id = req_data['chosen_candidate_id']
     voter_comments = req_data['voter_comments']
-    voter = SensitiveVoter(req_data['voter_national_id'])
+    voter = Voter(req_data['voter_national_id'])
 
     ballot = Ballot(ballot_number, chosen_candidate_id, voter_comments)
     return jsons.dumps(balloting.count_ballot(ballot, voter))
@@ -40,7 +40,7 @@ def count_ballot():
 def verify_ballot():
     req_data = request.get_json()
     ballot_number = req_data['ballot_number']
-    voter = SensitiveVoter(req_data['voter_national_id'])
+    voter = Voter(req_data['voter_national_id'])
     return jsons.dumps(balloting.verify_ballot(voter, ballot_number))
 
 

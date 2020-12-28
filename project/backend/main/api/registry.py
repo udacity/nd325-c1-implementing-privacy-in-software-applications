@@ -3,41 +3,48 @@
 # This API should not be exposed as a REST API for election security purposes.
 #
 from typing import List
-from backend.objects.voter import SensitiveVoter, VoterStatus
-from backend.objects.candidate import Candidate
-from backend.store.data_registry import VotingStore
+from backend.main.objects.voter import Voter, VoterStatus
+from backend.main.objects.candidate import Candidate
+from backend.main.store.data_registry import VotingStore
 
 #
 # Voter Registration
 #
 
 
-def register_voter(voter: SensitiveVoter):
+def register_voter(voter: Voter) -> bool:
     """
     Registers a specific voter for the election. This method doesn't verify that the voter is eligible to vote or any
     such legal logistics -- it simply registers them if they aren't currently registered.
 
-    :param: voter The voter to register
+    :param: voter The voter to register. Note that the national ID for the voter might not come in a standard format -
+            for example, "555-55-5555", "555555555" and "555 55 5555" should all be treated the same
+    :returns: Boolean TRUE if the registration was successful. Boolean FALSE if the voter was already registered
+              (based on their National ID)
     """
     # TODO: Implement this!
     raise NotImplementedError()
 
 
-def get_voter_status(voter: SensitiveVoter) -> VoterStatus:
+def get_voter_status(voter: Voter) -> VoterStatus:
     """
     Checks to see if the specified voter is registered.
 
-    :param: voter The voter to check the registration status of
+    :param: voter The voter to check the registration status of. Note that the national ID for the voter might not come
+            in a standard format - for example, "555-55-5555", "555555555" and "555 55 5555" should be treated the same
     :returns: The status of the voter that best describes their situation
     """
     # TODO: Implement this!
     raise NotImplementedError()
 
 
-def de_register_voter(voter: SensitiveVoter):
+def de_register_voter(voter: Voter):
     """
     De-registers a voter from voting. This is to be used when the user requests to be removed from the system.
     If a voter is a fraudulent voter, this should still be reflected in the system.
+
+    :param: voter The voter to de-register. Note that the national ID for the voter might not come in a standard format.
+            For example, "555-55-5555", "555555555" and "555 55 5555" should be treated the same.
     """
     # TODO: Implement this!
     raise NotImplementedError()

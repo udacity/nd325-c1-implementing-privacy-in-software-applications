@@ -7,7 +7,7 @@ from sqlite3 import Connection
 
 from typing import List
 
-from backend.objects.candidate import Candidate
+from backend.main.objects.candidate import Candidate
 
 
 class VotingStore:

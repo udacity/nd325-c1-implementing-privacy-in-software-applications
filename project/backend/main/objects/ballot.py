@@ -1,6 +1,3 @@
-from backend.objects.candidate import Candidate
-
-
 class Ballot:
     """
     A ballot that exists in a specific, secret manner
