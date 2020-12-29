@@ -1,18 +1,18 @@
-from typing import Set
+from typing import Set, Optional
 
 from backend.main.objects.voter import Voter, BallotStatus
 from backend.main.objects.candidate import Candidate
 from backend.main.objects.ballot import Ballot
 
 
-def issue_ballot(voter: Voter) -> str:
+def issue_ballot(voter: Voter) -> Optional[str]:
     """
     Issues a new ballot to a given voter. The ballot number of the new ballot. This method should NOT invalidate any old
-    ballots.
+    ballots. If the voter isn't registered, should return None.
 
     :params: voter The voter to issue a new ballot to. Note that the national ID for the voter might not come in a
              standard format. For example, "555-55-5555", "555555555" and "555 55 5555" should be treated the same.
-    :returns: The ballot number of the new ballot
+    :returns: The ballot number of the new ballot, or None if the voter isn't registered
     """
     # TODO: Implement this!
     raise NotImplementedError()
@@ -25,15 +25,14 @@ def count_ballot(ballot: Ballot, voter: Voter) -> BallotStatus:
 
     This method will return the following upon the completion:
     1. BallotStatus.FRAUD_COMMITTED - If the voter has already voted
-    2. BallotStatus.VOTER_BALLOT_MISMATCH - The ballot does not belong to this voter
+    2. BallotStatus.VOTER_BALLOT_MISMATCH - The ballot does not belong to this voter (or if the voter isn't registered)
     3. BallotStatus.INVALID_BALLOT - The ballot has been invalidated, or does not exist
-    4. BallotStatus.VOTER_NOT_REGISTERED - If the voter cannot be found in the voter registry
-    5. BallotStatus.BALLOT_COUNTED - If the ballot submitted in this request was successfully counted
+    4. BallotStatus.BALLOT_COUNTED - If the ballot submitted in this request was successfully counted
 
     :param: ballot The Ballot to count
     :param: voter The voter who the ballot corresponds to. Note that the national ID for the voter might not come in a
             standard format. For example, "555-55-5555", "555555555" and "555 55 5555" should be treated the same.
-    :returns: The Voter Status after the ballot has been processed.
+    :returns: The Ballot Status after the ballot has been processed.
     """
     # TODO: Implement this!
     raise NotImplementedError()
@@ -53,7 +52,7 @@ def invalidate_ballot(ballot_number: str) -> bool:
     raise NotImplementedError()
 
 
-def verify_ballot(voter: Voter, ballot_number: str):
+def verify_ballot(voter: Voter, ballot_number: str) -> bool:
     """
     Verifies the following:
 
