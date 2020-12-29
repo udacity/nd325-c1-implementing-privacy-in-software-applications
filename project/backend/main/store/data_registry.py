@@ -41,7 +41,9 @@ class VotingStore:
         return sqlite3.connect(":memory:", check_same_thread=False)
 
     def create_tables(self):
-        print("Creating Tables")
+        """
+        Creates Tables
+        """
         self.connection.execute(
             '''CREATE TABLE candidates (candidate_id integer primary key autoincrement, name text)''')
         # TODO: Add additional tables here, as you see fit
@@ -67,6 +69,9 @@ class VotingStore:
         return candidate
 
     def get_all_candidates(self) -> List[Candidate]:
+        """
+        Gets ALL the candidates from the database
+        """
         cursor = self.connection.cursor()
         cursor.execute('''SELECT * FROM candidates''')
         all_candidate_rows = cursor.fetchall()
@@ -75,4 +80,7 @@ class VotingStore:
 
         return all_candidates
 
+    # TODO: If you create more tables in the create_tables method, feel free to add more methods here to make accessing
+    #       data from those tables easier. See get_all_candidates, get_candidates and add_candidate for examples of how
+    #       to do this.
 
