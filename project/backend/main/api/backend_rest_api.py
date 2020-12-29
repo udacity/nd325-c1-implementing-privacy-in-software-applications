@@ -1,5 +1,6 @@
 #
-# This file is the REST API for our frontend to get data from.
+# This file is the REST API for our frontend to get data from. Please DO NOT modify anything in the file other than the
+# populate_database() method below.
 #
 # To run the backend server locally, please run the following from the /backend directory
 #
@@ -57,8 +58,8 @@ def populate_database():
     """
 
     # Adding Candidates for the election. These should be reflected in the frontend.
-    registry.register_candidate("Bob Jenkins")
-    registry.register_candidate("Alice Johnson")
+    registry.register_candidate("Monty Scott")
+    registry.register_candidate("Leo McCoy")
     registry.register_candidate("Jim Kirk")
 
     # TODO: Feel free to add voters to the voter registry, and issue ballots

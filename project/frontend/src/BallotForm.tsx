@@ -46,7 +46,10 @@ export class IBallotForm extends React.PureComponent<{}, IBallotFormState> {
 
   public render() {
     const { ballotNumber, voterNationalId, comments, selectedCandidateId } = this.state;
-    // TODO: Somewhere in the object returned below, we should be including language about voter secrecy, and a voter's right to deregister after voting to protect their data
+    /* TODO: 
+     *  1. Somewhere in the object returned below, we should be including language about voter secrecy, and a voter's right to deregister after voting to protect their data
+     *  2. Additionally, we should be informing the voter that they shouldn't include any personally identifiable information in the "comment" section, as it risks compromising their voter secrecy
+     */ 
     return (
     <>
       <FormGroup>
