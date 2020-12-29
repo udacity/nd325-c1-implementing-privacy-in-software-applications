@@ -12,7 +12,8 @@ The first set of elections is to take place soon, and while peace has been found
 
 In order to successfully complete this project, you’ll have to:
 
-1. **Pass all the series of checks provided in the project.** These tests ensure that you haven’t broken anything during your implementation, and serve to verify that certain functional and privacy features have been implemented. 
+1. **Pass all the series of checks provided in the project.** These tests ensure that you haven’t broken anything during your implementation, and serve to verify that certain functional and privacy features have been implemented.
+   1. You can run these tests from the `backend/` directory by running `$ pytest`.
 2. **Submit your implementations of certain Python files.** These will be reviewed by our reviewers. 
    1. `ballot.py`
    2. `voter.py`.
@@ -69,7 +70,7 @@ If you open up the `backend/main/objects/voter.py`, you’ll see that we have pr
 
 You’ll notice that the `Voter` class has a national_id field. We consider this to be a sensitive field, much like Social Security Numbers (SSNs) are sensitive in the United States.
 
-Your job in this step is to determine a privacy-protecting scheme to populate the `MinimalVoter` class. Do this in `Voter.get_obfuscated_voter`. Feel free to use other parts of the starter code to bolster your implementation.
+Your job in this step is to determine a privacy-protecting scheme to populate the `MinimalVoter` class. Do this in `Voter.get_minimal_voter`. Feel free to use other parts of the starter code to bolster your implementation.
 
 
 #### Step 4: Build out our Ballot Class

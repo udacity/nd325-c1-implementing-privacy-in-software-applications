@@ -304,6 +304,27 @@ class TestBalloting:
         valid_ballot = Ballot(valid_ballot_number, all_candidates[0].candidate_id, "Valid Ballot")
         assert balloting.count_ballot(valid_ballot, unregistered_voter) == BallotStatus.VOTER_BALLOT_MISMATCH
 
+    def test_count_election_winner_plurality(self):
+        """
+        If nobody gets the majority, the winner still is the one with the plurality.
+        """
+        all_candidates = registry.get_all_candidates()
+
+        voter1, voter2, voter3, voter4 = all_voters[0:3]
+        ballot_number1 = balloting.issue_ballot(voter1)
+        ballot_number2 = balloting.issue_ballot(voter2)
+        ballot_number3 = balloting.issue_ballot(voter3)
+        ballot_number4 = balloting.issue_ballot(voter4)
+
+        # No candidate has a majority, but one has a plurality.
+        ballot1 = Ballot(ballot_number1, all_candidates[0].candidate_id, "")
+        ballot2 = Ballot(ballot_number2, all_candidates[0].candidate_id, "")
+        ballot3 = Ballot(ballot_number3, all_candidates[1].candidate_id, "")
+        ballot4 = Ballot(ballot_number4, all_candidates[2].candidate_id, "")
+
+        assert balloting.compute_election_winner() == all_candidates[0]
+
+
     @pytest.fixture(autouse=True)
     def run_around_tests(self):
         """

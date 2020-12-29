@@ -24,7 +24,7 @@ class Voter:
         self.first_name = first_name
         self.last_name = last_name
 
-    def get_obfuscated_voter(self) -> MinimalVoter:
+    def get_minimal_voter(self) -> MinimalVoter:
         """
         Converts this object (self) into its obfuscated version
         """
