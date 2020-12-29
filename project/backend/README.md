@@ -184,8 +184,8 @@ Also recall that the `VotingStore` class in `backend/main/store/data_registry.py
 
 At this point, our backend is fully built out. Now, we need to make some changes to our frontend.
 
-There are some basic things we want to communicate to the user.
-
+There are some basic things we want to communicate to the user. You'll want to make these changes in `frontend/src/ballotForm.tsx`.
+   x
 1. Before the voter casts their ballot, the frontend should communicate that after verifying their identity, their vote will be counted _anonymously_.
 2. After the ballot has been cast, the voter should be informed that their ballot has been submitted that the submission was successful.
 3. After the voter has voted, the voter should be informed that they're free to de-register themselves from voting, if they contact the voter registrar.

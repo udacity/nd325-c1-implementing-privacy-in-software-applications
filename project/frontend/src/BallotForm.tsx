@@ -46,6 +46,7 @@ export class IBallotForm extends React.PureComponent<{}, IBallotFormState> {
 
   public render() {
     const { ballotNumber, voterNationalId, comments, selectedCandidateId } = this.state;
+    // TODO: Somewhere in the object returned below, we should be including language about voter secrecy, and a voter's right to deregister after voting to protect their data
     return (
     <>
       <FormGroup>
@@ -128,6 +129,9 @@ export class IBallotForm extends React.PureComponent<{}, IBallotFormState> {
       headers: {'Content-Type': 'application/json'}
     });
 
+    // TODO: If the ballot was successfully counted, inform the user, and inform the user about deleting their voter details
+
+    /* If we got a generic bad response, show a danger toast */
     if (!response.ok) {
       toaster.show({
         message: "There was a problem casting this ballot",
