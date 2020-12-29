@@ -44,6 +44,10 @@ class TestPrivacySanity:
         assert descending_ordered_obfuscated_national_ids != obfuscated_national_ids
 
     def test_ballot_number_non_inclusion(self):
+        """
+        Ensures that the ballot number doesn't include either the obfuscated national id, or the original national id
+        itself (and vice-versa).
+        """
         for _ in range(10):
             national_id = TestPrivacySanity.generate_random_national_id()
             voter = Voter("Some", "Voter", national_id)

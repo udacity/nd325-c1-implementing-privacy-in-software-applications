@@ -15,11 +15,17 @@ all_voters = [
 
 class TestBalloting:
     def test_ballot_issuing(self):
+        """
+        Ensures that ballots can be issued to multiple voters.
+        """
         for voter in all_voters:
             ballot_number = balloting.issue_ballot(voter)
             assert balloting.verify_ballot(voter, ballot_number)
 
     def test_multiple_ballot_issuing(self):
+        """
+        Ensures that multiple ballots can be issued to the same voter, and that they're all considered valid.
+        """
         voter = all_voters[0]
         ballot_number1 = balloting.issue_ballot(voter)
         ballot_number2 = balloting.issue_ballot(voter)
@@ -32,6 +38,9 @@ class TestBalloting:
         assert balloting.verify_ballot(voter, ballot_number4)
 
     def test_count_ballot(self):
+        """
+        Ensures that ballots can be counted and tallied appropriately.
+        """
         voter1, voter2, voter3 = all_voters[0:3]
         ballot_num1 = balloting.issue_ballot(voter1)
         ballot_num2 = balloting.issue_ballot(voter2)
@@ -196,7 +205,7 @@ class TestBalloting:
 
     def test_de_register_fraudster(self):
         """
-        Checks that fraudsters cannot be de-registered
+        Checks that fraudsters cannot be completely de-registered
         """
         voter = all_voters[0]
         ballot_number1 = balloting.issue_ballot(voter)
@@ -295,6 +304,9 @@ class TestBalloting:
         assert balloting.issue_ballot(unregistered_voter) is None
 
     def test_unregistered_voter_count_ballot(self):
+        """
+        Checks that an unregistered voter cannot use an existing ballot for another voter to vote.
+        """
         unregistered_voter = Voter("Daniel", "Salt", "999-99-9999")
         registered_voter = all_voters[0]
         valid_ballot_number = balloting.issue_ballot(registered_voter)
@@ -323,7 +335,6 @@ class TestBalloting:
         ballot4 = Ballot(ballot_number4, all_candidates[2].candidate_id, "")
 
         assert balloting.compute_election_winner() == all_candidates[0]
-
 
     @pytest.fixture(autouse=True)
     def run_around_tests(self):
