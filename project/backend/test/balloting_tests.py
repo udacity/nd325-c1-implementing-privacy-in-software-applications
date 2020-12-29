@@ -304,7 +304,6 @@ class TestBalloting:
         valid_ballot = Ballot(valid_ballot_number, all_candidates[0].candidate_id, "Valid Ballot")
         assert balloting.count_ballot(valid_ballot, unregistered_voter) == BallotStatus.VOTER_BALLOT_MISMATCH
 
-
     @pytest.fixture(autouse=True)
     def run_around_tests(self):
         """
