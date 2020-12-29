@@ -2,7 +2,7 @@
 
 
 #### Introduction
-
+(MIHIR: Need to put something other than Mars colony here, so it is more real-world)
 After many years of deep civil unrest among disputing factions of human colonists of Mars, finally, a peace deal has been struck and the Republic of Mars has been formed. When creating the republic, the colonists have agreed to hold elections to choose their leader, the Chancellor of the Republic of Mars (COTREM), every 5 years, by simple popular vote.
 
 The first set of elections is to take place soon, and while peace has been found, it might not last if the election process is disputed, or controversial. To alleviate the public concern, the founding delegation of the Republic of Mars has nominated you, an expert in privacy engineering, to build out a reliable, and privacy-protective voting system.
