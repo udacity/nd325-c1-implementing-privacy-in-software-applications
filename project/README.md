@@ -43,6 +43,24 @@ On your virtual machine, please install the following packages
 2. Node Package Manager (NPM) packages - `typescript`, `react`, `react-dom`, `@blueprintjs/core`, `@blueprintjs/icons`
 
 
+### Running Unit Tests
+
+We have provided unit tests for this project in the `backend/test/` directory. You can run _all_ these by running:
+
+```
+$ cd backend/
+$ pytest
+```
+
+You can also run individual test files by specifying their paths, like so:
+
+```
+$ cd backend
+$ pytest test/registry_tests.py
+```
+
+What each test checks for is outline in the method documentation for each testing method.
+
 ### Project Guide
 
 #### Step 1: Get the Code
