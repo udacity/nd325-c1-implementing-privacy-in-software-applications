@@ -9,6 +9,6 @@ class Ballot:
         raise NotImplementedError()
 
 
-def generate_ballot_number():
+def generate_ballot_number() -> str:
     # TODO: Implement this! Feel free to add parameters to this method, if necessary
     raise NotImplementedError()
