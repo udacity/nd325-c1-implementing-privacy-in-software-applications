@@ -2,6 +2,7 @@ from backend.main.store.secret_registry import get_secret, overwrite_secret
 import bcrypt
 from time import time
 
+
 class Ballot:
     """
     A ballot that exists in a specific, secret manner
