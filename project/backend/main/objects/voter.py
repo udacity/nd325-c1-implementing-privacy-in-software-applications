@@ -1,3 +1,6 @@
+from backend.main.store.secret_registry import get_secret, overwrite_secret
+import bcrypt
+
 #
 # This file contains classes that correspond to voters
 #
@@ -28,8 +31,18 @@ class Voter:
         """
         Converts this object (self) into its obfuscated version
         """
-        # TODO: Implement this method
-        raise NotImplementedError()
+        # This is a sample implementation of this method that involves hashing. Using the bcrypt library to guarantee
+        # slowness of hashing
+        secret_name = "VOTER_MINIMIZATION_PEPPER"
+        encoding_scheme = "utf-8"
+        pepper = get_secret(secret_name)
+        if not pepper:
+            pepper = str(bcrypt.gensalt(12), encoding_scheme)
+            overwrite_secret(secret_name, pepper)
+
+        obfuscated_national_id = str(
+            bcrypt.hashpw(self.national_id.encode(encoding_scheme), pepper.encode(encoding_scheme)), encoding_scheme)
+        return MinimalVoter(self.first_name, self.last_name, obfuscated_national_id)
 
 
 class VoterStatus:
