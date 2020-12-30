@@ -31,8 +31,8 @@ class Voter:
         """
         Converts this object (self) into its obfuscated version
         """
-        # This is a sample implementation of this method that involves hashing. Using the bcrypt library to guarantee
-        # slowness of hashing
+        # COMPLETED: This is a sample implementation of this method that involves hashing. Using the bcrypt library to
+        # guarantee slowness of hashing
         secret_name = "VOTER_MINIMIZATION_PEPPER"
         encoding_scheme = "utf-8"
         pepper = get_secret(secret_name)
