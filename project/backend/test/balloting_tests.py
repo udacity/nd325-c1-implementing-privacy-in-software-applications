@@ -21,7 +21,7 @@ class TestBalloting:
         """
         for voter in all_voters:
             ballot_number = balloting.issue_ballot(voter)
-            assert balloting.verify_ballot(voter, ballot_number)
+            assert balloting.verify_ballot(voter.national_id, ballot_number)
 
     def test_multiple_ballot_issuing(self):
         """
@@ -33,10 +33,10 @@ class TestBalloting:
         ballot_number3 = balloting.issue_ballot(voter)
         ballot_number4 = balloting.issue_ballot(voter)
 
-        assert balloting.verify_ballot(voter, ballot_number1)
-        assert balloting.verify_ballot(voter, ballot_number2)
-        assert balloting.verify_ballot(voter, ballot_number3)
-        assert balloting.verify_ballot(voter, ballot_number4)
+        assert balloting.verify_ballot(voter.national_id, ballot_number1)
+        assert balloting.verify_ballot(voter.national_id, ballot_number2)
+        assert balloting.verify_ballot(voter.national_id, ballot_number3)
+        assert balloting.verify_ballot(voter.national_id, ballot_number4)
 
     def test_count_ballot(self):
         """
@@ -88,7 +88,7 @@ class TestBalloting:
 
         all_candidates = registry.get_all_candidates()
         ballot = Ballot(ballot_number, all_candidates[0].candidate_id, original_comment)
-        assert balloting.count_ballot(ballot, voter) == BallotStatus.BALLOT_COUNTED
+        assert balloting.count_ballot(ballot, voter.national_id) == BallotStatus.BALLOT_COUNTED
 
         all_ballot_comments = balloting.get_all_ballot_comments()
         assert len(all_ballot_comments) == 1
@@ -120,7 +120,7 @@ class TestBalloting:
 
         all_candidates = registry.get_all_candidates()
         ballot = Ballot(ballot_number, all_candidates[0].candidate_id, original_comment)
-        assert balloting.count_ballot(ballot, voter) == BallotStatus.BALLOT_COUNTED
+        assert balloting.count_ballot(ballot, voter.national_id) == BallotStatus.BALLOT_COUNTED
 
         all_ballot_comments = balloting.get_all_ballot_comments()
         assert len(all_ballot_comments) == 1
@@ -145,7 +145,7 @@ class TestBalloting:
 
         all_candidates = registry.get_all_candidates()
         ballot = Ballot(ballot_number, all_candidates[0].candidate_id, original_comment)
-        assert balloting.count_ballot(ballot, voter) == BallotStatus.BALLOT_COUNTED
+        assert balloting.count_ballot(ballot, voter.national_id) == BallotStatus.BALLOT_COUNTED
 
         all_ballot_comments = balloting.get_all_ballot_comments()
         assert len(all_ballot_comments) == 1
@@ -175,10 +175,10 @@ class TestBalloting:
         ballot3 = Ballot(ballot_number3, all_candidates[0].candidate_id, "third ballot")
 
         # Have the voter commit fraud
-        assert balloting.count_ballot(ballot1, voter) == BallotStatus.BALLOT_COUNTED
-        assert balloting.count_ballot(ballot2, voter) == BallotStatus.FRAUD_COMMITTED
+        assert balloting.count_ballot(ballot1, voter.national_id) == BallotStatus.BALLOT_COUNTED
+        assert balloting.count_ballot(ballot2, voter.national_id) == BallotStatus.FRAUD_COMMITTED
         assert registry.get_voter_status(voter) == VoterStatus.FRAUD_COMMITTED
-        assert balloting.count_ballot(ballot3, voter) == BallotStatus.FRAUD_COMMITTED
+        assert balloting.count_ballot(ballot3, voter.national_id) == BallotStatus.FRAUD_COMMITTED
         assert registry.get_voter_status(voter) == VoterStatus.FRAUD_COMMITTED
 
         # Make sure the fraudster's name is recorded
@@ -204,8 +204,8 @@ class TestBalloting:
         ballot2 = Ballot(ballot_number2, all_candidates[0].candidate_id, "second ballot")
 
         # Commit Fraud
-        assert balloting.count_ballot(ballot1, voter) == BallotStatus.BALLOT_COUNTED
-        assert balloting.count_ballot(ballot2, voter) == BallotStatus.FRAUD_COMMITTED
+        assert balloting.count_ballot(ballot1, voter.national_id) == BallotStatus.BALLOT_COUNTED
+        assert balloting.count_ballot(ballot2, voter.national_id) == BallotStatus.FRAUD_COMMITTED
 
         # De-register the voter
         assert registry.de_register_voter(voter) is False
@@ -229,13 +229,13 @@ class TestBalloting:
         ballot1 = Ballot(ballot_number1, all_candidates[0].candidate_id, "")
 
         assert balloting.invalidate_ballot(ballot_number1)
-        assert balloting.count_ballot(ballot1, voter) == BallotStatus.INVALID_BALLOT
+        assert balloting.count_ballot(ballot1, voter.national_id) == BallotStatus.INVALID_BALLOT
 
         # However, ensure the voter can still vote with another ballot
         ballot_number2 = balloting.issue_ballot(voter)
         ballot2 = Ballot(ballot_number2, all_candidates[0].candidate_id, "")
 
-        assert balloting.count_ballot(ballot2, voter) == BallotStatus.BALLOT_COUNTED
+        assert balloting.count_ballot(ballot2, voter.national_id) == BallotStatus.BALLOT_COUNTED
 
     def test_invalidate_ballot_after_use(self):
         """
@@ -247,7 +247,7 @@ class TestBalloting:
         all_candidates = registry.get_all_candidates()
         ballot1 = Ballot(ballot_number1, all_candidates[0].candidate_id, "valid now, but invalid later")
 
-        assert balloting.count_ballot(ballot1, voter) == BallotStatus.BALLOT_COUNTED
+        assert balloting.count_ballot(ballot1, voter.national_id) == BallotStatus.BALLOT_COUNTED
         assert balloting.invalidate_ballot(ballot_number1) is False
 
         # The ballot cannot be invalidated after being cast - it should still be counted
@@ -293,7 +293,8 @@ class TestBalloting:
         all_candidates = registry.get_all_candidates()
 
         valid_ballot = Ballot(valid_ballot_number, all_candidates[0].candidate_id, "Valid Ballot")
-        assert balloting.count_ballot(valid_ballot, unregistered_voter) == BallotStatus.VOTER_BALLOT_MISMATCH
+        assert balloting.count_ballot(valid_ballot, unregistered_voter.national_id) == \
+               BallotStatus.VOTER_BALLOT_MISMATCH
 
     def test_count_election_winner_plurality(self):
         """
@@ -313,10 +314,10 @@ class TestBalloting:
         ballot3 = Ballot(ballot_number3, all_candidates[1].candidate_id, "")
         ballot4 = Ballot(ballot_number4, all_candidates[2].candidate_id, "")
 
-        balloting.count_ballot(ballot1, voter1)
-        balloting.count_ballot(ballot2, voter2)
-        balloting.count_ballot(ballot3, voter3)
-        balloting.count_ballot(ballot4, voter4)
+        balloting.count_ballot(ballot1, voter1.national_id)
+        balloting.count_ballot(ballot2, voter2.national_id)
+        balloting.count_ballot(ballot3, voter3.national_id)
+        balloting.count_ballot(ballot4, voter4.national_id)
 
         winning_candidate = balloting.compute_election_winner()
         assert winning_candidate.candidate_id == all_candidates[0].candidate_id
