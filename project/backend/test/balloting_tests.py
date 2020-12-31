@@ -112,16 +112,7 @@ class TestBalloting:
         ballot_number = balloting.issue_ballot(voter)
 
         original_comment = """
-        008 (839) 838-1627
-        008 839 838-1627
-        +8 839 838-1627
-        +8 839 838 1627
-        008 839 838 1627
-        0088398381627
-        (839) 838-1627
-        839-838-1627
-        8398381627
-        """.strip()
+        008 (839) 838-1627,008 839 838-1627,+8 839 838-1627,+8 839 838 1627,008 839 838 1627,0088398381627,(839) 838-1627,839-838-1627,8398381627""".strip()
 
         all_candidates = registry.get_all_candidates()
         ballot = Ballot(ballot_number, all_candidates[0].candidate_id, original_comment)
@@ -131,16 +122,7 @@ class TestBalloting:
         assert len(all_ballot_comments) == 1
 
         expected_redacted_comment = """
-        [REDACTED PHONE NUMBER]
-        [REDACTED PHONE NUMBER]
-        [REDACTED PHONE NUMBER]
-        [REDACTED PHONE NUMBER]
-        [REDACTED PHONE NUMBER]
-        [REDACTED PHONE NUMBER]
-        [REDACTED PHONE NUMBER]
-        [REDACTED PHONE NUMBER]
-        [REDACTED PHONE NUMBER]
-        """.strip()
+        [REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER]""".strip()
         assert list(all_ballot_comments)[0] == expected_redacted_comment
 
     def test_ballot_comment_redaction_national_id(self):
@@ -252,7 +234,7 @@ class TestBalloting:
 
     def test_invalidate_ballot_after_use(self):
         """
-        Ensures that a ballot invalidated after it is cast is not reflected in the final totals
+        Ensures that a ballot that is cast cannot be invalidated
         """
         voter = all_voters[0]
         ballot_number1 = balloting.issue_ballot(voter)
@@ -261,18 +243,9 @@ class TestBalloting:
         ballot1 = Ballot(ballot_number1, all_candidates[0].candidate_id, "valid now, but invalid later")
 
         assert balloting.count_ballot(ballot1, voter) == BallotStatus.BALLOT_COUNTED
-        assert balloting.invalidate_ballot(ballot_number1)
-        assert balloting.count_ballot(ballot1, voter) == BallotStatus.INVALID_BALLOT
+        assert balloting.invalidate_ballot(ballot_number1) is False
 
-        # Because the ballot was invalidated, it shouldn't be counted
-        assert len(balloting.get_all_ballot_comments()) == 0
-
-        # Ensure that a second ballot can be counted
-        ballot_number2 = balloting.issue_ballot(voter)
-        ballot2 = Ballot(ballot_number2, all_candidates[1].candidate_id, "latest valid ballot")
-        assert balloting.count_ballot(ballot2, voter) == BallotStatus.BALLOT_COUNTED
-
-        # There should only be one comment there
+        # The ballot cannot be invalidated after being cast - it should still be counted
         assert len(balloting.get_all_ballot_comments()) == 1
 
     def test_count_ballot_mismatch(self):
@@ -291,7 +264,7 @@ class TestBalloting:
 
         # Now, have the right voter cast the ballot
         ballot2_attempt2 = Ballot(ballot_number2, all_candidates[1].candidate_id, "Attempt 2")
-        assert balloting.count_ballot(ballot2_attempt2, voter1) == BallotStatus.BALLOT_COUNTED
+        assert balloting.count_ballot(ballot2_attempt2, voter2) == BallotStatus.BALLOT_COUNTED
 
         ballot_comments = balloting.get_all_ballot_comments()
         assert len(ballot_comments) == 1
@@ -323,7 +296,7 @@ class TestBalloting:
         """
         all_candidates = registry.get_all_candidates()
 
-        voter1, voter2, voter3, voter4 = all_voters[0:3]
+        voter1, voter2, voter3, voter4 = all_voters[0:4]
         ballot_number1 = balloting.issue_ballot(voter1)
         ballot_number2 = balloting.issue_ballot(voter2)
         ballot_number3 = balloting.issue_ballot(voter3)

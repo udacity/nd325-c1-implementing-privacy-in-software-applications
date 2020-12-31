@@ -11,7 +11,6 @@ class Ballot:
         self.ballot_number = ballot_number
         self.chosen_candidate_id = chosen_candidate_id
         self.voter_comments = voter_comments
-        raise NotImplementedError()
 
 
 def generate_ballot_number(obfuscated_voter_id: str) -> str:

@@ -23,7 +23,6 @@ In order to successfully complete this project, you’ll have to:
 2. **Submit your implementations of certain Python files.** These will be reviewed by our reviewers. 
    1. `ballot.py`
    2. `voter.py`
-   3. `secret_registry.py`
 3. **Submit screenshots of the frontend**. These will be reviewed by our reviewers.
    1. A screenshot of the frontend before anything has been filled in.
    2. A screenshot of the frontend after a vote has successfully been cast.
