@@ -2,6 +2,8 @@
 # This file contains classes that correspond to voters
 #
 
+from enum import Enum
+
 class MinimalVoter:
     """
     Our representation of a voter, with the national id obfuscated (but still unique).
@@ -32,7 +34,7 @@ class Voter:
         raise NotImplementedError()
 
 
-class VoterStatus:
+class VoterStatus(Enum):
     """
     An enum that represents the current status of a voter.
     """
@@ -42,7 +44,7 @@ class VoterStatus:
     FRAUD_COMMITTED = "fraud committed"
 
 
-class BallotStatus:
+class BallotStatus(Enum):
     """
     An enum that represents the current status of a voter.
     """
