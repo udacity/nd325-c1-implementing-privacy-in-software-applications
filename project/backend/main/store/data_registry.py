@@ -59,7 +59,7 @@ class VotingStore:
         Creates Tables
         """
         self.connection.execute(
-            '''CREATE TABLE candidates (candidate_id integer primary key autoincrement, name text)''')
+            """CREATE TABLE candidates (candidate_id integer primary key autoincrement, name text)""")
         # TODO: Add additional tables here, as you see fit
         self.connection.commit()
 
@@ -67,7 +67,7 @@ class VotingStore:
         """
         Adds a candidate into the candidate table, overwriting an existing entry if one exists
         """
-        self.connection.execute('''INSERT INTO candidates (name) VALUES ("{0}")'''.format(candidate_name))
+        self.connection.execute("""INSERT INTO candidates (name) VALUES (?)""", (candidate_name, ))
         self.connection.commit()
 
     def get_candidate(self, candidate_id: str) -> Candidate:
@@ -75,7 +75,7 @@ class VotingStore:
         Returns the candidate specified, if that candidate is registered. Otherwise returns None.
         """
         cursor = self.connection.cursor()
-        cursor.execute('''SELECT * FROM candidates WHERE candidate_id={0}'''.format(candidate_id))
+        cursor.execute("""SELECT * FROM candidates WHERE candidate_id=?""", (candidate_id,))
         candidate_row = cursor.fetchone()
         candidate = Candidate(candidate_id, candidate_row[1]) if candidate_row else None
         self.connection.commit()
@@ -87,7 +87,7 @@ class VotingStore:
         Gets ALL the candidates from the database
         """
         cursor = self.connection.cursor()
-        cursor.execute('''SELECT * FROM candidates''')
+        cursor.execute("""SELECT * FROM candidates""")
         all_candidate_rows = cursor.fetchall()
         all_candidates = [Candidate(str(candidate_row[0]), candidate_row[1]) for candidate_row in all_candidate_rows]
         self.connection.commit()
