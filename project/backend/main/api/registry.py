@@ -41,7 +41,8 @@ def get_voter_status(voter: Voter) -> VoterStatus:
 def de_register_voter(voter: Voter) -> bool:
     """
     De-registers a voter from voting. This is to be used when the user requests to be removed from the system.
-    If a voter is a fraudulent voter, this should still be reflected in the system.
+    If a voter is a fraudulent voter, this should still be reflected in the system; they should not be able to
+    de-registered.
 
     :param: voter The voter to de-register. Note that the national ID for the voter might not come in a standard format.
             For example, "555-55-5555", "555555555" and "555 55 5555" should be treated the same.
