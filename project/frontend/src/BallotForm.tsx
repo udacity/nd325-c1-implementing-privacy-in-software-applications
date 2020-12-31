@@ -1,5 +1,5 @@
 import React from 'react';
-import { H5, FormGroup, InputGroup, RadioGroup, Radio, TextArea, Button, Intent, Toaster, IToaster } from "@blueprintjs/core";
+import { H5, FormGroup, InputGroup, RadioGroup, Radio, TextArea, Button, Intent, Toaster, IToaster, Text } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 
 
@@ -54,6 +54,8 @@ export class IBallotForm extends React.PureComponent<{}, IBallotFormState> {
     <>
       <FormGroup>
         <H5 className="white-text">Enter your voter information</H5>
+        <Text className="white-text">Your ballot will remain secret. Your National ID is only used to verify your registration and validate your ballot.</Text>
+        <br />
         <InputGroup onChange={this.onNationalIdUpdate} value={voterNationalId} large={true} leftIcon={IconNames.PERSON} placeholder="Your National ID" />
         <br />
         <InputGroup onChange={this.onBallotNumberUpdate} value={ballotNumber} large={true} leftIcon={IconNames.DOCUMENT} placeholder="Your Ballot Number" />
@@ -66,6 +68,8 @@ export class IBallotForm extends React.PureComponent<{}, IBallotFormState> {
         </RadioGroup>
         <br />
         <H5 className="white-text">Additional Voter Comments</H5>
+        <Text className="white-text">Please do NOT enter any personally identifiable information in the comments section, for this will undermine the secrecy of your ballot.</Text>
+        <br />
         <TextArea onChange={this.onCommentUpdate} growVertically={true} value={comments} fill={true} placeholder="Comments or concerns" />
       </FormGroup>
       <Button onClick={this.onVoteSubmission} intent={Intent.PRIMARY}>Submit Vote</Button>

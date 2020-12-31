@@ -13,7 +13,7 @@ def get_obfuscated_national_id(national_id: str) -> str:
     encoding_scheme = "utf-8"
     pepper = get_secret(secret_name)
     if not pepper:
-        pepper = str(bcrypt.gensalt(5), encoding_scheme)
+        pepper = str(bcrypt.gensalt(), encoding_scheme)
         overwrite_secret(secret_name, pepper)
 
     sanitized_national_id = national_id.replace(" ", "").replace("-", "").strip()
