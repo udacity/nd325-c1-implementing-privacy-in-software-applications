@@ -62,7 +62,7 @@ def de_register_voter(voter: Voter) -> bool:
     if store.get_voter_from_registry(minimal_voter.obfuscated_national_id) is None:
         return False
 
-    store.remove_voter_from_registry(minimal_voter)
+    store.remove_voter_from_registry(minimal_voter.obfuscated_national_id)
     return True
 
 
