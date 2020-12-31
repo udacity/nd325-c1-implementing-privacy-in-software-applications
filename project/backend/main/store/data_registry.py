@@ -10,6 +10,7 @@ from typing import List
 from backend.main.objects.candidate import Candidate
 from backend.main.objects.voter import MinimalVoter, VoterStatus, BallotStatus
 from backend.main.objects.ballot import Ballot
+from collections import Counter
 
 
 class VotingStore:
@@ -169,6 +170,31 @@ class VotingStore:
         self.connection.execute(
             """DELETE FROM voters WHERE obfuscated_national_id=?""", (obfuscated_national_id,))
         self.connection.commit()
+
+    def get_election_winner(self) -> Candidate:
+        """
+        Gets the vote tally for each candidate
+        """
+        cursor = self.connection.cursor()
+        cursor.execute("""SELECT chosen_candidate_id FROM cast_ballots""")
+        all_votes = [row[0] for row in cursor.fetchall()]
+        highest_vote_total_id = Counter(all_votes).most_common(1)[0][0]
+        cursor.execute("""SELECT * FROM candidates WHERE candidate_id=?""", (highest_vote_total_id,))
+        candidate_row = cursor.fetchone()
+        candidate = Candidate(str(highest_vote_total_id), candidate_row[1]) if candidate_row else None
+        self.connection.commit()
+        return candidate
+
+    def get_all_fraudsters(self) -> List[MinimalVoter]:
+        cursor = self.connection.cursor()
+        cursor.execute(
+            """SELECT * FROM voters WHERE status=?""",
+            (VoterStatus.FRAUD_COMMITTED.value,))
+        fraudsters = cursor.fetchall()
+        fraudulent_voters = [MinimalVoter(fraudster[1], fraudster[2], fraudster[0]) for fraudster in fraudsters]
+        self.connection.commit()
+
+        return fraudulent_voters
 
     def add_candidate(self, candidate_name: str):
         """

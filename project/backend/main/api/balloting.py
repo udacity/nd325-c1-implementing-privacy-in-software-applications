@@ -100,8 +100,7 @@ def verify_ballot(voter: Voter, ballot_number: str) -> bool:
 
     minimal_voter = voter.get_minimal_voter()
     ballot_timestamp = get_ballot_timestamp(ballot_number)
-    result = ballot_number == generate_ballot_number_for_timestamp(minimal_voter.obfuscated_national_id, ballot_timestamp)
-    return result
+    return ballot_number == generate_ballot_number_for_timestamp(minimal_voter.obfuscated_national_id, ballot_timestamp)
 
 
 def get_all_ballot_comments() -> Set[str]:
@@ -118,8 +117,7 @@ def compute_election_winner() -> Candidate:
     Computes the winner of the election - the candidate that gets the most votes (even if there is not a majority).
     :return: The winning Candidate
     """
-    # TODO: Implement this!
-    raise NotImplementedError()
+    return VotingStore.get_instance().get_election_winner()
 
 
 def get_all_fraudulent_voters() -> Set[str]:
@@ -131,5 +129,5 @@ def get_all_fraudulent_voters() -> Set[str]:
 
     Then this method would return {"John Smith", "Linda Navarro"} - with a space separating the first and last names.
     """
-    # TODO: Implement this!
-    raise NotImplementedError()
+    return {fraudster.first_name + " " + fraudster.last_name
+            for fraudster in VotingStore.get_instance().get_all_fraudsters()}
