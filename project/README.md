@@ -159,17 +159,12 @@ In particular, we care about the following:
 
 Phone numbers can take various formats. Here are some examples of valid phone numbers:
 
-1. `008 (299) 483-2343`
-2. `008 299 483-2343`
-3. `+8 299 483-2343`
-3. `+8 299 483 2343`
-4. `008 299 483 2343`
-5. `0082994832343`
-6. `(299) 483-2343`
-7. `299-483-2343`
-8. `2994832343`
+1. `(299) 483-2343`
+2. `299 483-2343`
+3. `299-483-2343`
+4. `2994832343`
 
-National Identifiers only have a few formats:
+National Identifiers also have multiple formats:
 
 1. `345-23-2334`
 2. `345232334`
