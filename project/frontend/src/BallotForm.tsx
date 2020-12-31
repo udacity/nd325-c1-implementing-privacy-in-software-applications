@@ -139,7 +139,10 @@ export class IBallotForm extends React.PureComponent<{}, IBallotFormState> {
         intent: Intent.DANGER
       })
     } else {
-      // TODO: If the ballot was successfully counted, inform the user, and inform the user about deleting their voter details (see example immediately above)
+      toaster.show({
+        message: "Your ballot was successfully recorded. If you'd like us to remove your voter information, contact the register after the election",
+        intent: Intent.SUCCESS
+      })
       this.clearEnteredState();
     }
   }

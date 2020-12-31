@@ -62,7 +62,9 @@ def populate_database():
     registry.register_candidate("Leo McCoy")
     registry.register_candidate("Jim Kirk")
 
-    # TODO: Feel free to add voters to the voter registry, and issue ballots
+    voter1 = Voter("Buzz", "Aldrin", "111111111")
+    registry.register_voter(voter1)
+    print("Voter 1 Ballot Number: ", balloting.issue_ballot(voter1))
 
 
 populate_database()

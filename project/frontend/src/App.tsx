@@ -1,7 +1,7 @@
 import './App.css';
 import React from 'react';
-import { H1, H4 } from "@blueprintjs/core"
-import { IBallotForm } from "./BallotForm"
+import { H1, H4 } from "@blueprintjs/core";
+import { IBallotForm } from "./BallotForm";
 
 
 function App() {
