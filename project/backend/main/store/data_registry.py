@@ -72,13 +72,13 @@ class VotingStore:
         self.connection.commit()
 
     def issue_ballot(self, ballot_number: str):
-        self.connection.execute("""INSERT INTO valid_ballots (ballot_number) VALUES ("{0}")""".format(ballot_number))
+        self.connection.execute("""INSERT INTO valid_ballots (ballot_number) VALUES (?)""", (ballot_number, ))
         self.connection.commit()
 
     def invalidate_ballot(self, ballot_number: str):
         if not self.ballot_has_been_cast(ballot_number):
             self.connection.execute(
-                """DELETE FROM valid_ballots WHERE ballot_number="{0}" """.format(ballot_number))
+                """DELETE FROM valid_ballots WHERE ballot_number=?""", (ballot_number, ))
             self.connection.commit()
 
     def cast_ballot(self, obfuscated_national_id: str, ballot: Ballot) -> BallotStatus:
@@ -94,8 +94,8 @@ class VotingStore:
         else:
             self.connection.execute(
                 """
-                INSERT INTO cast_ballots (ballot_number, chosen_candidate_id, comment) VALUES ("{0}", {1}, "{2}")
-                """.format(ballot.ballot_number, ballot.chosen_candidate_id, ballot.voter_comments))
+                INSERT INTO cast_ballots (ballot_number, chosen_candidate_id, comment) VALUES (?, ?, ?)
+                """, (ballot.ballot_number, ballot.chosen_candidate_id, ballot.voter_comments))
             self._update_voter_status(obfuscated_national_id, VoterStatus.BALLOT_COUNTED)
             self.connection.commit()
             return BallotStatus.BALLOT_COUNTED
@@ -115,8 +115,8 @@ class VotingStore:
         """
         self.connection.execute(
             """
-            UPDATE voters SET status="{0}" WHERE obfuscated_national_id="{1}"
-            """.format(new_status.value, obfuscated_national_id)
+            UPDATE voters SET status=? WHERE obfuscated_national_id=?
+            """, (new_status.value, obfuscated_national_id)
         )
 
     def ballot_exists(self, ballot_number: str) -> bool:
@@ -124,7 +124,7 @@ class VotingStore:
         Verifies that a ballot exists
         """
         cursor = self.connection.cursor()
-        cursor.execute("""SELECT * FROM valid_ballots WHERE ballot_number="{0}" """.format(ballot_number))
+        cursor.execute("""SELECT * FROM valid_ballots WHERE ballot_number=?""", (ballot_number, ))
         exists = cursor.fetchone() is not None
         self.connection.commit()
         return exists
@@ -134,7 +134,7 @@ class VotingStore:
         Checks if a ballot has been cast
         """
         cursor = self.connection.cursor()
-        cursor.execute("""SELECT * FROM cast_ballots WHERE ballot_number="{0}" """.format(ballot_number))
+        cursor.execute("""SELECT * FROM cast_ballots WHERE ballot_number=?""", (ballot_number, ))
         has_been_cast = cursor.fetchone() is not None
         self.connection.commit()
         return has_been_cast
@@ -143,16 +143,13 @@ class VotingStore:
         self.connection.execute(
             """INSERT INTO voters
                 (obfuscated_national_id, first_name, last_name, status)
-                VALUES ("{0}", "{1}", "{2}", "{3}")""".format(
-                voter.obfuscated_national_id,
-                voter.first_name,
-                voter.last_name,
-                VoterStatus.REGISTERED_NOT_VOTED.value))
+                VALUES (?, ?, ?, ?)""",
+            (voter.obfuscated_national_id, voter.first_name, voter.last_name, VoterStatus.REGISTERED_NOT_VOTED.value))
         self.connection.commit()
 
     def get_voter_from_registry(self, obfuscated_national_id: str) -> MinimalVoter:
         cursor = self.connection.cursor()
-        cursor.execute("""SELECT * FROM voters WHERE obfuscated_national_id="{0}" """.format(obfuscated_national_id))
+        cursor.execute("""SELECT * FROM voters WHERE obfuscated_national_id=?""", (obfuscated_national_id,))
         voter_row = cursor.fetchone()
         voter = MinimalVoter(voter_row[1], voter_row[2], obfuscated_national_id) if voter_row else None
         self.connection.commit()
@@ -161,7 +158,7 @@ class VotingStore:
 
     def get_voter_status(self, obfuscated_national_id: str) -> VoterStatus:
         cursor = self.connection.cursor()
-        cursor.execute("""SELECT * FROM voters WHERE obfuscated_national_id="{0}" """.format(obfuscated_national_id))
+        cursor.execute("""SELECT * FROM voters WHERE obfuscated_national_id=?""", (obfuscated_national_id,))
         voter_row = cursor.fetchone()
         status = VoterStatus(voter_row[3]) if voter_row else VoterStatus.NOT_REGISTERED
         self.connection.commit()
@@ -170,14 +167,14 @@ class VotingStore:
 
     def remove_voter_from_registry(self, obfuscated_national_id: str):
         self.connection.execute(
-            """DELETE FROM voters WHERE obfuscated_national_id="{0}" """.format(obfuscated_national_id))
+            """DELETE FROM voters WHERE obfuscated_national_id=?""", (obfuscated_national_id,))
         self.connection.commit()
 
     def add_candidate(self, candidate_name: str):
         """
         Adds a candidate into the candidate table, overwriting an existing entry if one exists
         """
-        self.connection.execute("""INSERT INTO candidates (name) VALUES ("{0}")""".format(candidate_name))
+        self.connection.execute("""INSERT INTO candidates (name) VALUES (?)""", (candidate_name,))
         self.connection.commit()
 
     def get_candidate(self, candidate_id: str) -> Candidate:
@@ -185,7 +182,7 @@ class VotingStore:
         Returns the candidate specified, if that candidate is registered. Otherwise returns None.
         """
         cursor = self.connection.cursor()
-        cursor.execute("""SELECT * FROM candidates WHERE candidate_id="{0}" """.format(candidate_id))
+        cursor.execute("""SELECT * FROM candidates WHERE candidate_id=?""", (candidate_id,))
         candidate_row = cursor.fetchone()
         candidate = Candidate(candidate_id, candidate_row[1]) if candidate_row else None
         self.connection.commit()
