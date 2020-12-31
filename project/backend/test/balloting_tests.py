@@ -54,9 +54,9 @@ class TestBalloting:
         ballot2 = Ballot(ballot_num2, all_candidates[1].candidate_id, "")
         ballot3 = Ballot(ballot_num3, all_candidates[1].candidate_id, "")
 
-        assert balloting.count_ballot(ballot1, voter1) == BallotStatus.BALLOT_COUNTED
-        assert balloting.count_ballot(ballot2, voter2) == BallotStatus.BALLOT_COUNTED
-        assert balloting.count_ballot(ballot3, voter3) == BallotStatus.BALLOT_COUNTED
+        assert balloting.count_ballot(ballot1, voter1.national_id) == BallotStatus.BALLOT_COUNTED
+        assert balloting.count_ballot(ballot2, voter2.national_id) == BallotStatus.BALLOT_COUNTED
+        assert balloting.count_ballot(ballot3, voter3.national_id) == BallotStatus.BALLOT_COUNTED
 
         assert registry.get_voter_status(voter1) == VoterStatus.BALLOT_COUNTED
         assert registry.get_voter_status(voter2) == VoterStatus.BALLOT_COUNTED
@@ -265,11 +265,11 @@ class TestBalloting:
 
         # Have the wrong voter cast the ballot
         ballot2_attempt1 = Ballot(ballot_number2, all_candidates[0].candidate_id, "Attempt 1")
-        assert balloting.count_ballot(ballot2_attempt1, voter1) == BallotStatus.VOTER_BALLOT_MISMATCH
+        assert balloting.count_ballot(ballot2_attempt1, voter1.national_id) == BallotStatus.VOTER_BALLOT_MISMATCH
 
         # Now, have the right voter cast the ballot
         ballot2_attempt2 = Ballot(ballot_number2, all_candidates[1].candidate_id, "Attempt 2")
-        assert balloting.count_ballot(ballot2_attempt2, voter2) == BallotStatus.BALLOT_COUNTED
+        assert balloting.count_ballot(ballot2_attempt2, voter2.national_id) == BallotStatus.BALLOT_COUNTED
 
         ballot_comments = balloting.get_all_ballot_comments()
         assert len(ballot_comments) == 1
@@ -294,7 +294,7 @@ class TestBalloting:
 
         valid_ballot = Ballot(valid_ballot_number, all_candidates[0].candidate_id, "Valid Ballot")
         assert balloting.count_ballot(valid_ballot, unregistered_voter.national_id) == \
-               BallotStatus.VOTER_BALLOT_MISMATCH
+               BallotStatus.VOTER_NOT_REGISTERED
 
     def test_count_election_winner_plurality(self):
         """

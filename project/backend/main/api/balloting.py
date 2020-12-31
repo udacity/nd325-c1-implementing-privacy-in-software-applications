@@ -1,6 +1,6 @@
 from typing import Set, Optional
 
-from backend.main.objects.voter import Voter, BallotStatus, VoterStatus
+from backend.main.objects.voter import Voter, BallotStatus, VoterStatus, get_obfuscated_national_id
 from backend.main.objects.candidate import Candidate
 from backend.main.objects.ballot import Ballot
 from backend.main.store.data_registry import VotingStore
@@ -47,7 +47,11 @@ def count_ballot(ballot: Ballot, voter_national_id: str) -> BallotStatus:
     :returns: The Ballot Status after the ballot has been processed.
     """
     store = VotingStore.get_instance()
-    minimal_voter = voter.get_minimal_voter()
+    obfuscated_national_id = get_obfuscated_national_id(voter_national_id)
+    minimal_voter = store.get_voter_from_registry(obfuscated_national_id)
+
+    if minimal_voter is None:
+        return BallotStatus.VOTER_NOT_REGISTERED
 
     sanitized_ballot = Ballot(ballot.ballot_number, ballot.chosen_candidate_id, redact_free_text(
         ballot.voter_comments, {
@@ -57,7 +61,7 @@ def count_ballot(ballot: Ballot, voter_national_id: str) -> BallotStatus:
 
     if not store.ballot_exists(ballot.ballot_number):
         return BallotStatus.INVALID_BALLOT
-    elif not verify_ballot(voter, ballot.ballot_number):
+    elif not verify_ballot(voter_national_id, ballot.ballot_number):
         return BallotStatus.VOTER_BALLOT_MISMATCH
 
     return store.cast_ballot(minimal_voter.obfuscated_national_id, sanitized_ballot)
@@ -99,7 +103,7 @@ def verify_ballot(voter_national_id: str, ballot_number: str) -> bool:
     if not store.ballot_exists(ballot_number):
         return False
 
-    minimal_voter = voter.get_minimal_voter()
+    minimal_voter = store.get_voter_from_registry(get_obfuscated_national_id(voter_national_id))
     ballot_timestamp = get_ballot_timestamp(ballot_number)
     return ballot_number == generate_ballot_number_for_timestamp(minimal_voter.obfuscated_national_id, ballot_timestamp)
 

@@ -8,6 +8,20 @@ import bcrypt
 from enum import Enum
 
 
+def get_obfuscated_national_id(national_id: str) -> str:
+    secret_name = "VOTER_MINIMIZATION_PEPPER"
+    encoding_scheme = "utf-8"
+    pepper = get_secret(secret_name)
+    if not pepper:
+        pepper = str(bcrypt.gensalt(5), encoding_scheme)
+        overwrite_secret(secret_name, pepper)
+
+    sanitized_national_id = national_id.replace(" ", "").replace("-", "").strip()
+    return str(
+        bcrypt.hashpw(
+            sanitized_national_id.encode(encoding_scheme), pepper.encode(encoding_scheme)), encoding_scheme)
+
+
 class MinimalVoter:
     """
     Our representation of a voter, with the national id obfuscated (but still unique).
@@ -36,18 +50,7 @@ class Voter:
         """
         # COMPLETED: This is a sample implementation of this method that involves hashing. Using the bcrypt library to
         # guarantee slowness of hashing
-        secret_name = "VOTER_MINIMIZATION_PEPPER"
-        encoding_scheme = "utf-8"
-        pepper = get_secret(secret_name)
-        if not pepper:
-            pepper = str(bcrypt.gensalt(), encoding_scheme)
-            overwrite_secret(secret_name, pepper)
-
-        sanitized_national_id = self.national_id.replace(" ", "").replace("-", "").strip()
-        obfuscated_national_id = str(
-            bcrypt.hashpw(
-                sanitized_national_id.encode(encoding_scheme), pepper.encode(encoding_scheme)), encoding_scheme)
-        return MinimalVoter(self.first_name, self.last_name, obfuscated_national_id)
+        return MinimalVoter(self.first_name, self.last_name, get_obfuscated_national_id(self.national_id))
 
 
 class VoterStatus(Enum):

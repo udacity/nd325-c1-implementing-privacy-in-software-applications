@@ -33,7 +33,7 @@ def generate_ballot_number_for_timestamp(obfuscated_voter_id: str, timestamp_mil
     secret_name = "BALLOT_NUMBER_GENERATION"
     pepper = get_secret(secret_name)
     if not pepper:
-        pepper = str(bcrypt.gensalt(), ENCODING_SCHEME)
+        pepper = str(bcrypt.gensalt(5), ENCODING_SCHEME)
         overwrite_secret(secret_name, pepper)
 
     return str(
