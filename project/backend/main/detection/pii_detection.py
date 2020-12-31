@@ -3,7 +3,7 @@ import re
 
 EMAIL_REGEX = re.compile(r'\b\S+@\S+\.\S+\b')
 NATIONAL_ID_REGEX = re.compile(r'\b\d{3}(-|\s)?\d{2}(-|\s)?\d{4}\b')
-PHONE_NUMBER_REGEX = re.compile(r'((\b|\+)\d{1,3}|\d{,3})(-|\s)?\(?\d{3}\)?(-|\s)?\d{3}(-|\s)?\d{4}\b')
+PHONE_NUMBER_REGEX = re.compile(r'(\b|\()?\d{3}\)?(-|\s)?\d{3}(-|\s)?\d{4}\b')
 
 
 class RedactionValue:
