@@ -308,6 +308,11 @@ class TestBalloting:
         ballot3 = Ballot(ballot_number3, all_candidates[1].candidate_id, "")
         ballot4 = Ballot(ballot_number4, all_candidates[2].candidate_id, "")
 
+        balloting.count_ballot(ballot1, voter1)
+        balloting.count_ballot(ballot2, voter2)
+        balloting.count_ballot(ballot3, voter3)
+        balloting.count_ballot(ballot4, voter4)
+
         assert balloting.compute_election_winner() == all_candidates[0]
 
     @pytest.fixture(autouse=True)
