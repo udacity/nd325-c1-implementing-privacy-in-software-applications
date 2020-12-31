@@ -132,8 +132,6 @@ export class IBallotForm extends React.PureComponent<{}, IBallotFormState> {
       headers: {'Content-Type': 'application/json'}
     });
 
-    // TODO: If the ballot was successfully counted, inform the user, and inform the user about deleting their voter details
-
     /* If we got a generic bad response, show a danger toast */
     if (!response.ok) {
       toaster.show({
@@ -141,6 +139,7 @@ export class IBallotForm extends React.PureComponent<{}, IBallotFormState> {
         intent: Intent.DANGER
       })
     } else {
+      // TODO: If the ballot was successfully counted, inform the user, and inform the user about deleting their voter details (see example immediately above)
       this.clearEnteredState();
     }
   }
