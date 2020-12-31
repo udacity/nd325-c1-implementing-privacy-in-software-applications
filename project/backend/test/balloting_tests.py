@@ -62,7 +62,9 @@ class TestBalloting:
         assert registry.get_voter_status(voter2) == VoterStatus.BALLOT_COUNTED
         assert registry.get_voter_status(voter3) == VoterStatus.BALLOT_COUNTED
 
-        assert balloting.compute_election_winner().candidate_id == all_candidates[1].candidate_id
+        winning_candidate = balloting.compute_election_winner()
+        assert winning_candidate.candidate_id == all_candidates[1].candidate_id
+        assert winning_candidate.name == all_candidates[1].name
 
     def test_ballot_comment_redaction_composite(self):
         """
@@ -313,7 +315,9 @@ class TestBalloting:
         balloting.count_ballot(ballot3, voter3)
         balloting.count_ballot(ballot4, voter4)
 
-        assert balloting.compute_election_winner() == all_candidates[0]
+        winning_candidate = balloting.compute_election_winner()
+        assert winning_candidate.candidate_id == all_candidates[0].candidate_id
+        assert winning_candidate.name == all_candidates[0].name
 
     @pytest.fixture(autouse=True)
     def run_around_tests(self):
