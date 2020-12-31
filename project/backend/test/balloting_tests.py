@@ -114,7 +114,7 @@ class TestBalloting:
         ballot_number = balloting.issue_ballot(voter)
 
         original_comment = """
-        008 (839) 838-1627,008 839 838-1627,+8 839 838-1627,+8 839 838 1627,008 839 838 1627,0088398381627,(839) 838-1627,839-838-1627,8398381627""".strip()
+        (839) 838-1627,839 838-1627,839-838-1627,8398381627""".strip()
 
         all_candidates = registry.get_all_candidates()
         ballot = Ballot(ballot_number, all_candidates[0].candidate_id, original_comment)
