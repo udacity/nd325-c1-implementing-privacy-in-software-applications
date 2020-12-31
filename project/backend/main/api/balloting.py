@@ -40,13 +40,13 @@ def count_ballot(ballot: Ballot, voter: Voter) -> BallotStatus:
 
 def invalidate_ballot(ballot_number: str) -> bool:
     """
-    Marks a ballot as invalid so that it cannot be used. This should work on ballots that have been cast
-    and ballots that have not been cast. Note that if a voter casts a ballot, and then it's invalidated, the voter is
-    entitled to cast another ballot and have that be counted without being flagged for fraud.
+    Marks a ballot as invalid so that it cannot be used. This should only work on ballots that have NOT been cast. If a
+    ballot has already been cast, it cannot be invalidated.
 
-    If the ballot does not exist, this method will return false.
+    If the ballot does not exist or has already been cast, this method will return false.
 
-    :returns: If the ballot does not exist, will return Boolean FALSE. Otherwise will return Boolean TRUE.
+    :returns: If the ballot does not exist or has already been cast, will return Boolean FALSE.
+              Otherwise will return Boolean TRUE.
     """
     # TODO: Implement this!
     raise NotImplementedError()
