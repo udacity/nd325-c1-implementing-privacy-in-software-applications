@@ -2,6 +2,7 @@ import string
 from random import choice
 
 import backend.main.api.balloting as balloting
+import backend.main.api.registry as registry
 from backend.main.objects.voter import Voter
 
 
@@ -51,6 +52,7 @@ class TestPrivacySanity:
         for _ in range(10):
             national_id = TestPrivacySanity.generate_random_national_id()
             voter = Voter("Some", "Voter", national_id)
+            registry.register_voter(voter)
             obfuscated_national_id = voter.get_minimal_voter().obfuscated_national_id
 
             for __ in range(5):
@@ -71,6 +73,7 @@ class TestPrivacySanity:
         for _ in range(10):
             national_id = TestPrivacySanity.generate_random_national_id()
             voter = Voter("Some", "Voter", national_id)
+            registry.register_voter(voter)
 
             ballot_numbers_in_creation_order = [balloting.issue_ballot(voter) for _ in range(10)]
             ballot_numbers_in_ascending_order = sorted(ballot_numbers_in_creation_order)
@@ -82,5 +85,3 @@ class TestPrivacySanity:
     @staticmethod
     def generate_random_national_id():
         return ''.join(choice(string.digits) for _ in range(9))
-
-
