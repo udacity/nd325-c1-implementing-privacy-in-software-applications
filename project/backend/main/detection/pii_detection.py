@@ -28,7 +28,7 @@ def redact_free_text(free_text: str, overlap_keywords: Dict[str, RedactionValue]
     redacted_text = re.sub(NATIONAL_ID_REGEX, RedactionValue.REDACTED_NATIONAL_ID, redacted_text)
     redacted_text = re.sub(PHONE_NUMBER_REGEX, RedactionValue.REDACTED_PHONE_NUMBER, redacted_text)
 
-    for keyword, replacement_value in overlap_keywords:
+    for keyword, replacement_value in overlap_keywords.items():
         redacted_text = redacted_text.replace(keyword, replacement_value)
 
     return redacted_text

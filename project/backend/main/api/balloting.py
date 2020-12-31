@@ -1,8 +1,12 @@
 from typing import Set, Optional
 
-from backend.main.objects.voter import Voter, BallotStatus
+from backend.main.objects.voter import Voter, BallotStatus, VoterStatus
 from backend.main.objects.candidate import Candidate
 from backend.main.objects.ballot import Ballot
+from backend.main.store.data_registry import VotingStore
+from backend.main.objects.ballot import generate_ballot_number, get_ballot_timestamp,\
+    generate_ballot_number_for_timestamp
+from backend.main.detection.pii_detection import redact_free_text, RedactionValue
 
 
 def issue_ballot(voter: Voter) -> Optional[str]:
@@ -14,8 +18,15 @@ def issue_ballot(voter: Voter) -> Optional[str]:
              standard format. For example, "555-55-5555", "555555555" and "555 55 5555" should be treated the same.
     :returns: The ballot number of the new ballot, or None if the voter isn't registered
     """
-    # TODO: Implement this!
-    raise NotImplementedError()
+    store = VotingStore.get_instance()
+    minimal_voter = voter.get_minimal_voter()
+
+    if store.get_voter_status(minimal_voter.obfuscated_national_id) == VoterStatus.NOT_REGISTERED:
+        return None
+    else:
+        new_ballot_number = generate_ballot_number(minimal_voter.obfuscated_national_id)
+        store.issue_ballot(new_ballot_number)
+        return new_ballot_number
 
 
 def count_ballot(ballot: Ballot, voter: Voter) -> BallotStatus:
@@ -34,8 +45,21 @@ def count_ballot(ballot: Ballot, voter: Voter) -> BallotStatus:
             standard format. For example, "555-55-5555", "555555555" and "555 55 5555" should be treated the same.
     :returns: The Ballot Status after the ballot has been processed.
     """
-    # TODO: Implement this!
-    raise NotImplementedError()
+    store = VotingStore.get_instance()
+    minimal_voter = voter.get_minimal_voter()
+
+    sanitized_ballot = Ballot(ballot.ballot_number, ballot.chosen_candidate_id, redact_free_text(
+        ballot.voter_comments, {
+            minimal_voter.first_name: RedactionValue.REDACTED_NAME,
+            minimal_voter.last_name: RedactionValue.REDACTED_NAME
+        }))
+
+    if not store.ballot_exists(ballot.ballot_number):
+        return BallotStatus.INVALID_BALLOT
+    elif not verify_ballot(voter, ballot.ballot_number):
+        return BallotStatus.VOTER_BALLOT_MISMATCH
+
+    return store.cast_ballot(minimal_voter.obfuscated_national_id, sanitized_ballot)
 
 
 def invalidate_ballot(ballot_number: str) -> bool:
@@ -48,8 +72,12 @@ def invalidate_ballot(ballot_number: str) -> bool:
     :returns: If the ballot does not exist or has already been cast, will return Boolean FALSE.
               Otherwise will return Boolean TRUE.
     """
-    # TODO: Implement this!
-    raise NotImplementedError()
+    store = VotingStore.get_instance()
+    if not store.ballot_exists(ballot_number) or store.ballot_has_been_cast(ballot_number):
+        return False
+
+    store.invalidate_ballot(ballot_number)
+    return True
 
 
 def verify_ballot(voter: Voter, ballot_number: str) -> bool:
@@ -66,8 +94,14 @@ def verify_ballot(voter: Voter, ballot_number: str) -> bool:
     :returns: Boolean True if the ballot was issued to the voter specified, and if the ballot has not been marked as
               invalid. Boolean False otherwise.
     """
-    # TODO: Implement this!
-    raise NotImplementedError()
+    store = VotingStore.get_instance()
+    if not store.ballot_exists(ballot_number):
+        return False
+
+    minimal_voter = voter.get_minimal_voter()
+    ballot_timestamp = get_ballot_timestamp(ballot_number)
+    result = ballot_number == generate_ballot_number_for_timestamp(minimal_voter.obfuscated_national_id, ballot_timestamp)
+    return result
 
 
 def get_all_ballot_comments() -> Set[str]:
@@ -75,8 +109,8 @@ def get_all_ballot_comments() -> Set[str]:
     Returns a list of all the ballot comments that are non-empty.
     :returns: A list of all the ballot comments that are non-empty
     """
-    # TODO: Implement this!
-    raise NotImplementedError()
+    store = VotingStore.get_instance()
+    return store.get_all_comments()
 
 
 def compute_election_winner() -> Candidate:

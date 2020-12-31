@@ -8,7 +8,8 @@ from sqlite3 import Connection
 from typing import List
 
 from backend.main.objects.candidate import Candidate
-from backend.main.objects.voter import MinimalVoter, VoterStatus
+from backend.main.objects.voter import MinimalVoter, VoterStatus, BallotStatus
+from backend.main.objects.ballot import Ballot
 
 
 class VotingStore:
@@ -64,7 +65,79 @@ class VotingStore:
         self.connection.execute(
             """CREATE TABLE voters
                 (obfuscated_national_id text primary key, first_name text, last_name text, status text)""")
+        self.connection.execute(
+            """CREATE TABLE valid_ballots (ballot_number text primary key)""")
+        self.connection.execute(
+            """CREATE TABLE cast_ballots (ballot_number text primary key, chosen_candidate_id integer, comment text)""")
         self.connection.commit()
+
+    def issue_ballot(self, ballot_number: str):
+        self.connection.execute("""INSERT INTO valid_ballots (ballot_number) VALUES ("{0}")""".format(ballot_number))
+        self.connection.commit()
+
+    def invalidate_ballot(self, ballot_number: str):
+        if not self.ballot_has_been_cast(ballot_number):
+            self.connection.execute(
+                """DELETE FROM valid_ballots WHERE ballot_number="{0}" """.format(ballot_number))
+            self.connection.commit()
+
+    def cast_ballot(self, obfuscated_national_id: str, ballot: Ballot) -> BallotStatus:
+        voter_status = self.get_voter_status(obfuscated_national_id)
+        if voter_status == VoterStatus.NOT_REGISTERED:
+            return BallotStatus.VOTER_NOT_REGISTERED
+        elif not self.ballot_exists(ballot.ballot_number):
+            return BallotStatus.INVALID_BALLOT
+        elif self.get_voter_status(obfuscated_national_id) != VoterStatus.REGISTERED_NOT_VOTED:
+            self._update_voter_status(obfuscated_national_id, VoterStatus.FRAUD_COMMITTED)
+            self.connection.commit()
+            return BallotStatus.FRAUD_COMMITTED
+        else:
+            self.connection.execute(
+                """
+                INSERT INTO cast_ballots (ballot_number, chosen_candidate_id, comment) VALUES ("{0}", {1}, "{2}")
+                """.format(ballot.ballot_number, ballot.chosen_candidate_id, ballot.voter_comments))
+            self._update_voter_status(obfuscated_national_id, VoterStatus.BALLOT_COUNTED)
+            self.connection.commit()
+            return BallotStatus.BALLOT_COUNTED
+
+    def get_all_comments(self):
+        cursor = self.connection.cursor()
+        cursor.execute("""SELECT comment FROM cast_ballots""")
+        all_comment_rows = cursor.fetchall()
+        all_comments = [comment_row[0] for comment_row in all_comment_rows if len(comment_row) != 0]
+        self.connection.commit()
+
+        return all_comments
+
+    def _update_voter_status(self, obfuscated_national_id: str, new_status: VoterStatus):
+        """
+        DO NOT USE outside this class
+        """
+        self.connection.execute(
+            """
+            UPDATE voters SET status="{0}" WHERE obfuscated_national_id="{1}"
+            """.format(new_status.value, obfuscated_national_id)
+        )
+
+    def ballot_exists(self, ballot_number: str) -> bool:
+        """
+        Verifies that a ballot exists
+        """
+        cursor = self.connection.cursor()
+        cursor.execute("""SELECT * FROM valid_ballots WHERE ballot_number="{0}" """.format(ballot_number))
+        exists = cursor.fetchone() is not None
+        self.connection.commit()
+        return exists
+
+    def ballot_has_been_cast(self, ballot_number: str) -> bool:
+        """
+        Checks if a ballot has been cast
+        """
+        cursor = self.connection.cursor()
+        cursor.execute("""SELECT * FROM cast_ballots WHERE ballot_number="{0}" """.format(ballot_number))
+        has_been_cast = cursor.fetchone() is not None
+        self.connection.commit()
+        return has_been_cast
 
     def add_voter_to_registry(self, voter: MinimalVoter):
         self.connection.execute(
@@ -79,7 +152,7 @@ class VotingStore:
 
     def get_voter_from_registry(self, obfuscated_national_id: str) -> MinimalVoter:
         cursor = self.connection.cursor()
-        cursor.execute("""SELECT * FROM voters WHERE obfuscated_national_id='{0}'""".format(obfuscated_national_id))
+        cursor.execute("""SELECT * FROM voters WHERE obfuscated_national_id="{0}" """.format(obfuscated_national_id))
         voter_row = cursor.fetchone()
         voter = MinimalVoter(voter_row[1], voter_row[2], obfuscated_national_id) if voter_row else None
         self.connection.commit()
@@ -88,7 +161,7 @@ class VotingStore:
 
     def get_voter_status(self, obfuscated_national_id: str) -> VoterStatus:
         cursor = self.connection.cursor()
-        cursor.execute("""SELECT * FROM voters WHERE obfuscated_national_id='{0}'""".format(obfuscated_national_id))
+        cursor.execute("""SELECT * FROM voters WHERE obfuscated_national_id="{0}" """.format(obfuscated_national_id))
         voter_row = cursor.fetchone()
         status = VoterStatus(voter_row[3]) if voter_row else VoterStatus.NOT_REGISTERED
         self.connection.commit()
@@ -97,14 +170,14 @@ class VotingStore:
 
     def remove_voter_from_registry(self, obfuscated_national_id: str):
         self.connection.execute(
-            """DELETE FROM voters WHERE obfuscated_national_id='{0}'""".format(obfuscated_national_id))
+            """DELETE FROM voters WHERE obfuscated_national_id="{0}" """.format(obfuscated_national_id))
         self.connection.commit()
 
     def add_candidate(self, candidate_name: str):
         """
         Adds a candidate into the candidate table, overwriting an existing entry if one exists
         """
-        self.connection.execute("""INSERT INTO candidates (name) VALUES ('{0}')""".format(candidate_name))
+        self.connection.execute("""INSERT INTO candidates (name) VALUES ("{0}")""".format(candidate_name))
         self.connection.commit()
 
     def get_candidate(self, candidate_id: str) -> Candidate:
@@ -112,7 +185,7 @@ class VotingStore:
         Returns the candidate specified, if that candidate is registered. Otherwise returns None.
         """
         cursor = self.connection.cursor()
-        cursor.execute("""SELECT * FROM candidates WHERE candidate_id='{0}'""".format(candidate_id))
+        cursor.execute("""SELECT * FROM candidates WHERE candidate_id="{0}" """.format(candidate_id))
         candidate_row = cursor.fetchone()
         candidate = Candidate(candidate_id, candidate_row[1]) if candidate_row else None
         self.connection.commit()

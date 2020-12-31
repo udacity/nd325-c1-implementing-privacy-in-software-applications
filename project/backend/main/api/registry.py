@@ -59,7 +59,8 @@ def de_register_voter(voter: Voter) -> bool:
     # COMPLETED
     minimal_voter = voter.get_minimal_voter()
     store = VotingStore.get_instance()
-    if store.get_voter_from_registry(minimal_voter.obfuscated_national_id) is None:
+    if store.get_voter_from_registry(minimal_voter.obfuscated_national_id) is None or \
+            store.get_voter_status(minimal_voter.obfuscated_national_id) == VoterStatus.FRAUD_COMMITTED:
         return False
 
     store.remove_voter_from_registry(minimal_voter.obfuscated_national_id)
