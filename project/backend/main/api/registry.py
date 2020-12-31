@@ -22,8 +22,14 @@ def register_voter(voter: Voter) -> bool:
     :returns: Boolean TRUE if the registration was successful. Boolean FALSE if the voter was already registered
               (based on their National ID)
     """
-    # TODO: Implement this!
-    raise NotImplementedError()
+    # COMPLETED
+    minimal_voter = voter.get_minimal_voter()
+    store = VotingStore.get_instance()
+    if store.get_voter_from_registry(minimal_voter.obfuscated_national_id) is not None:
+        return False
+
+    store.add_voter_to_registry(minimal_voter)
+    return True
 
 
 def get_voter_status(voter: Voter) -> VoterStatus:
@@ -34,8 +40,10 @@ def get_voter_status(voter: Voter) -> VoterStatus:
             in a standard format - for example, "555-55-5555", "555555555" and "555 55 5555" should be treated the same
     :returns: The status of the voter that best describes their situation
     """
-    # TODO: Implement this!
-    raise NotImplementedError()
+    # COMPLETED
+    minimal_voter = voter.get_minimal_voter()
+    store = VotingStore.get_instance()
+    return store.get_voter_status(minimal_voter.obfuscated_national_id)
 
 
 def de_register_voter(voter: Voter) -> bool:
@@ -48,8 +56,14 @@ def de_register_voter(voter: Voter) -> bool:
             For example, "555-55-5555", "555555555" and "555 55 5555" should be treated the same.
     :returns: Boolean TRUE if de-registration was successful. Boolean FALSE otherwise.
     """
-    # TODO: Implement this!
-    raise NotImplementedError()
+    # COMPLETED
+    minimal_voter = voter.get_minimal_voter()
+    store = VotingStore.get_instance()
+    if store.get_voter_from_registry(minimal_voter.obfuscated_national_id) is None:
+        return False
+
+    store.remove_voter_from_registry(minimal_voter)
+    return True
 
 
 #

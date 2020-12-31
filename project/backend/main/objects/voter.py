@@ -7,6 +7,7 @@ import bcrypt
 
 from enum import Enum
 
+
 class MinimalVoter:
     """
     Our representation of a voter, with the national id obfuscated (but still unique).
@@ -42,8 +43,10 @@ class Voter:
             pepper = str(bcrypt.gensalt(12), encoding_scheme)
             overwrite_secret(secret_name, pepper)
 
+        sanitized_national_id = self.national_id.replace(" ", "").replace("-", "").strip()
         obfuscated_national_id = str(
-            bcrypt.hashpw(self.national_id.encode(encoding_scheme), pepper.encode(encoding_scheme)), encoding_scheme)
+            bcrypt.hashpw(
+                sanitized_national_id.encode(encoding_scheme), pepper.encode(encoding_scheme)), encoding_scheme)
         return MinimalVoter(self.first_name, self.last_name, obfuscated_national_id)
 
 

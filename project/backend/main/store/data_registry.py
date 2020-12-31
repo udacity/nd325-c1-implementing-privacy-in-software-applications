@@ -8,6 +8,7 @@ from sqlite3 import Connection
 from typing import List
 
 from backend.main.objects.candidate import Candidate
+from backend.main.objects.voter import MinimalVoter, VoterStatus
 
 
 class VotingStore:
@@ -45,15 +46,51 @@ class VotingStore:
         Creates Tables
         """
         self.connection.execute(
-            '''CREATE TABLE candidates (candidate_id integer primary key autoincrement, name text)''')
-        # TODO: Add additional tables here, as you see fit
+            """CREATE TABLE candidates (candidate_id integer primary key autoincrement, name text)""")
+        self.connection.execute(
+            """CREATE TABLE voters
+                (obfuscated_national_id text primary key, first_name text, last_name text, status text)""")
+        self.connection.commit()
+
+    def add_voter_to_registry(self, voter: MinimalVoter):
+        self.connection.execute(
+            """INSERT INTO voters
+                (obfuscated_national_id, first_name, last_name, status)
+                VALUES ("{0}", "{1}", "{2}", "{3}")""".format(
+                voter.obfuscated_national_id,
+                voter.first_name,
+                voter.last_name,
+                VoterStatus.REGISTERED_NOT_VOTED.value))
+        self.connection.commit()
+
+    def get_voter_from_registry(self, obfuscated_national_id: str) -> MinimalVoter:
+        cursor = self.connection.cursor()
+        cursor.execute("""SELECT * FROM voters WHERE obfuscated_national_id='{0}'""".format(obfuscated_national_id))
+        voter_row = cursor.fetchone()
+        voter = MinimalVoter(voter_row[1], voter_row[2], obfuscated_national_id) if voter_row else None
+        self.connection.commit()
+
+        return voter
+
+    def get_voter_status(self, obfuscated_national_id: str) -> VoterStatus:
+        cursor = self.connection.cursor()
+        cursor.execute("""SELECT * FROM voters WHERE obfuscated_national_id='{0}'""".format(obfuscated_national_id))
+        voter_row = cursor.fetchone()
+        status = VoterStatus(voter_row[3]) if voter_row else VoterStatus.NOT_REGISTERED
+        self.connection.commit()
+
+        return status
+
+    def remove_voter_from_registry(self, obfuscated_national_id: str):
+        self.connection.execute(
+            """DELETE FROM voters WHERE obfuscated_national_id='{0}'""".format(obfuscated_national_id))
         self.connection.commit()
 
     def add_candidate(self, candidate_name: str):
         """
         Adds a candidate into the candidate table, overwriting an existing entry if one exists
         """
-        self.connection.execute('''INSERT INTO candidates (name) VALUES ("{0}")'''.format(candidate_name))
+        self.connection.execute("""INSERT INTO candidates (name) VALUES ('{0}')""".format(candidate_name))
         self.connection.commit()
 
     def get_candidate(self, candidate_id: str) -> Candidate:
@@ -61,7 +98,7 @@ class VotingStore:
         Returns the candidate specified, if that candidate is registered. Otherwise returns None.
         """
         cursor = self.connection.cursor()
-        cursor.execute('''SELECT * FROM candidates WHERE candidate_id={0}'''.format(candidate_id))
+        cursor.execute("""SELECT * FROM candidates WHERE candidate_id='{0}'""".format(candidate_id))
         candidate_row = cursor.fetchone()
         candidate = Candidate(candidate_id, candidate_row[1]) if candidate_row else None
         self.connection.commit()
@@ -73,14 +110,9 @@ class VotingStore:
         Gets ALL the candidates from the database
         """
         cursor = self.connection.cursor()
-        cursor.execute('''SELECT * FROM candidates''')
+        cursor.execute("""SELECT * FROM candidates""")
         all_candidate_rows = cursor.fetchall()
         all_candidates = [Candidate(str(candidate_row[0]), candidate_row[1]) for candidate_row in all_candidate_rows]
         self.connection.commit()
 
         return all_candidates
-
-    # TODO: If you create more tables in the create_tables method, feel free to add more methods here to make accessing
-    #       data from those tables easier. See get_all_candidates, get_candidates and add_candidate for examples of how
-    #       to do this.
-
