@@ -29,8 +29,19 @@ class VotingStore:
 
         return VotingStore.voting_store_instance
 
+    @staticmethod
+    def refresh_instance():
+        """
+        DO NOT MODIFY THIS METHOD
+        Only to be used for testing. This will only work if the sqlite connection is :memory:
+        """
+        if VotingStore.voting_store_instance:
+            VotingStore.voting_store_instance.connection.close()
+        VotingStore.voting_store_instance = VotingStore()
+
     def __init__(self):
         """
+        DO NOT MODIFY THIS METHOD
         DO NOT call this method directly - instead use the VotingStore.get_instance method above.
         """
         self.connection = VotingStore._get_sqlite_connection()
@@ -38,6 +49,9 @@ class VotingStore:
 
     @staticmethod
     def _get_sqlite_connection() -> Connection:
+        """
+        DO NOT MODIFY THIS METHOD
+        """
         return sqlite3.connect(":memory:", check_same_thread=False)
 
     def create_tables(self):

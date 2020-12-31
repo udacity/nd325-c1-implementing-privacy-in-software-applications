@@ -4,6 +4,7 @@ import backend.main.api.balloting as balloting
 import backend.main.api.registry as registry
 from backend.main.objects.ballot import Ballot
 from backend.main.objects.voter import Voter, VoterStatus, BallotStatus
+from backend.main.store.data_registry import VotingStore
 
 all_voters = [
     Voter("Adam", "Smith", "111111111"),
@@ -341,6 +342,8 @@ class TestBalloting:
         """
         Sets up the candidates and voters
         """
+        VotingStore.refresh_instance()
+
         # Populate candidates
         expected_candidate_names = {"Kathryn Collins", "Aditya Guha", "Rina Harvey"}
         for candidate_name in expected_candidate_names:

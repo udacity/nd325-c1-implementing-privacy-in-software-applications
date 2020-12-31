@@ -1,5 +1,8 @@
+import pytest
+
 import backend.main.api.registry as registry
 from backend.main.objects.voter import Voter, VoterStatus
+from backend.main.store.data_registry import VotingStore
 
 
 class TestRegistry:
@@ -62,3 +65,6 @@ class TestRegistry:
             voter.first_name, voter.last_name)
         assert registry.get_voter_status(voter) == VoterStatus.NOT_REGISTERED
 
+    @pytest.fixture(autouse=True)
+    def clear_store_between_tests(self):
+        VotingStore.refresh_instance()
