@@ -31,18 +31,18 @@ def count_ballot():
     ballot_number = req_data['ballot_number']
     chosen_candidate_id = req_data['chosen_candidate_id']
     voter_comments = req_data['voter_comments']
-    voter = Voter(req_data['voter_national_id'])
+    voter_national_id = req_data['voter_national_id']
 
     ballot = Ballot(ballot_number, chosen_candidate_id, voter_comments)
-    return jsons.dumps(balloting.count_ballot(ballot, voter))
+    return jsons.dumps(balloting.count_ballot(ballot, voter_national_id))
 
 
 @app.route('/api/verify_ballot', methods=["POST"])
 def verify_ballot():
     req_data = request.get_json()
     ballot_number = req_data['ballot_number']
-    voter = Voter(req_data['voter_national_id'])
-    return jsons.dumps(balloting.verify_ballot(voter, ballot_number))
+    voter_national_id = req_data['voter_national_id']
+    return jsons.dumps(balloting.verify_ballot(voter_national_id, ballot_number))
 
 
 @app.route('/api/get_all_candidates')

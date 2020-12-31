@@ -18,7 +18,7 @@ def issue_ballot(voter: Voter) -> Optional[str]:
     raise NotImplementedError()
 
 
-def count_ballot(ballot: Ballot, voter: Voter) -> BallotStatus:
+def count_ballot(ballot: Ballot, voter_national_id: str) -> BallotStatus:
     """
     Validates and counts the ballot for the given voter. If the ballot contains a sensitive comment, this method will
     appropriately redact the sensitive comment.
@@ -30,8 +30,9 @@ def count_ballot(ballot: Ballot, voter: Voter) -> BallotStatus:
     4. BallotStatus.BALLOT_COUNTED - If the ballot submitted in this request was successfully counted
 
     :param: ballot The Ballot to count
-    :param: voter The voter who the ballot corresponds to. Note that the national ID for the voter might not come in a
-            standard format. For example, "555-55-5555", "555555555" and "555 55 5555" should be treated the same.
+    :param: voter The id of the voter who the ballot corresponds to. Note that the national ID for the voter might not
+            come in a standard format. For example, "555-55-5555", "555555555" and "555 55 5555" should be treated the
+            same.
     :returns: The Ballot Status after the ballot has been processed.
     """
     # TODO: Implement this!
@@ -52,7 +53,7 @@ def invalidate_ballot(ballot_number: str) -> bool:
     raise NotImplementedError()
 
 
-def verify_ballot(voter: Voter, ballot_number: str) -> bool:
+def verify_ballot(voter_national_id: str, ballot_number: str) -> bool:
     """
     Verifies the following:
 
@@ -61,7 +62,7 @@ def verify_ballot(voter: Voter, ballot_number: str) -> bool:
 
     If all of the points above are true, then returns Boolean True. Otherwise returns Boolean False.
 
-    :param: voter The voter about to cast the ballot with the given ballot number
+    :param: voter_national_id The id of the voter about to cast the ballot with the given ballot number
     :param: ballot_number The ballot number of the ballot that is about to be cast by the given voter
     :returns: Boolean True if the ballot was issued to the voter specified, and if the ballot has not been marked as
               invalid. Boolean False otherwise.
