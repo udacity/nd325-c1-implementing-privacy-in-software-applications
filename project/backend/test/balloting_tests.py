@@ -79,6 +79,7 @@ class TestBalloting:
         minutes to get to work each day, largely because the infrastructure here hasn't been built yet. It's critical
         for us to invest in this. If you'd like to contact me please reach out to me at 329 112-4535, or at
         best_citizen@marsnet.co.mars.
+
         Cheers,
 
         {0} {1}
@@ -114,7 +115,8 @@ class TestBalloting:
         ballot_number = balloting.issue_ballot(voter)
 
         original_comment = """
-        (839) 838-1627,839 838-1627,839-838-1627,8398381627""".strip()
+        (839) 838-1627,839 838-1627,839-838-1627,8398381627
+        """.strip()
 
         all_candidates = registry.get_all_candidates()
         ballot = Ballot(ballot_number, all_candidates[0].candidate_id, original_comment)
@@ -124,7 +126,8 @@ class TestBalloting:
         assert len(all_ballot_comments) == 1
 
         expected_redacted_comment = """
-        [REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER]""".strip()
+        [REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER],[REDACTED PHONE NUMBER]
+        """.strip()
         assert list(all_ballot_comments)[0] == expected_redacted_comment
 
     def test_ballot_comment_redaction_national_id(self):
