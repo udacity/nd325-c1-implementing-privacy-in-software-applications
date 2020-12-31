@@ -25,9 +25,10 @@ def count_ballot(ballot: Ballot, voter_national_id: str) -> BallotStatus:
 
     This method will return the following upon the completion:
     1. BallotStatus.FRAUD_COMMITTED - If the voter has already voted
-    2. BallotStatus.VOTER_BALLOT_MISMATCH - The ballot does not belong to this voter (or if the voter isn't registered)
+    2. BallotStatus.VOTER_BALLOT_MISMATCH - The ballot does not belong to this voter
     3. BallotStatus.INVALID_BALLOT - The ballot has been invalidated, or does not exist
     4. BallotStatus.BALLOT_COUNTED - If the ballot submitted in this request was successfully counted
+    5. BallotStatus.VOTER_NOT_REGISTERED - If the voter is not registered
 
     :param: ballot The Ballot to count
     :param: voter The id of the voter who the ballot corresponds to. Note that the national ID for the voter might not
