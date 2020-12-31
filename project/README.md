@@ -218,7 +218,7 @@ Specifically, we're referring to:
 
 1. `register_voter`
 2. `get_voter_status`
-3. `de_register_voter` - fraudulent voters can be de-registered, but their fraudulent status should still be reflected
+3. `de_register_voter` - note: fraudulent voters cannot be de-registered
 
 The method documentation on these methods in the starter code should give you a sufficient idea of how to implement
 these.
