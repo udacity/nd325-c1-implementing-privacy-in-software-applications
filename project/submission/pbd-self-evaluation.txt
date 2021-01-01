@@ -1,0 +1,21 @@
+1. Proactive not Reactive; Preventative not Remedial
+    a. How this application does it -
+    b. What we can do better -
+2. Privacy as the Default
+    a. How this application does it -
+    b. What we can do better -
+3. Privacy Embedded into Design
+    a. How this application does it -
+    b. What we can do better -
+4. Full Functionality — Postive-Sum, not Zero-Sum
+    a. How this application does it -
+    b. What we can do better -
+5. End-to-End Security — Lifecycle Protection
+    a. How this application does it -
+    b. What we can do better -
+6. Visibility and Transparency
+    a. How this application does it -
+    b. What we can do better -
+7. Respect for User Privacy
+    a. How this application does it -
+    b. What we can do better -
