@@ -1,0 +1,47 @@
+1. Proactive not Reactive; Preventative not Remedial
+    a. How this application does it
+        i. National IDs are not stored at all - they're only stored in a cryptographically hashed form
+        ii. Ballots are dissociated from the user
+    b. What we can do better
+        i. We could use non-deterministic encryption on the names
+        ii. We could non-deterministically encrypt the votes themselves
+2. Privacy as the Default
+    a. How this application does it
+        i. National IDs are not stored at all - user doesn't have to opt-in for this
+        ii. Ballots are dissociated from the user - user doesn't have to opt-in for this
+    b. What we can do better
+        i. Perhaps in the future, fraudulent voters should have their records cleared, after sufficient time has passed.
+3. Privacy Embedded into Design
+    a. How this application does it
+        i. Other than the points above for proactive privacy, this application obfuscates ballot numbers so they're
+           completely dissociated from the voter
+    b. What we can do better
+        ii. Nothing that hasn't already been mentioned in the "proactive" approach section
+4. Full Functionality — Postive-Sum, not Zero-Sum
+    a. How this application does it
+        i. Voting is possible
+        ii. Counting ballots is possible
+        iii. Deregistration is possible
+        iv. Fraud detection is possible
+    b. What we can do better
+        i. Fraud detection doesn't include the National IDs - it only includes the names of the users. While this is
+           tractable, if a law enforcement agency can use the National IDs that they have access to in their own system
+           to identify the correct voter who committed fraud, it also introduces friction. It could be done easier if
+           the National IDs were encrypted, rather than hashed.
+5. End-to-End Security — Lifecycle Protection
+    a. How this application does it
+        i. Critical data (National ID) is used only in its un-obfuscated form as the input.
+    b. What we can do better
+        ii. Encrypting names in the future might not be a bad idea.
+6. Visibility and Transparency
+    a. How this application does it
+        i. This application communicates to the user that their ballot is secret, and their National ID is only used for
+           registry verification
+        ii. The application confirms to the user when the ballot has been counted
+    b. What we can do better
+        i. Open-sourcing the code
+7. Respect for User Privacy
+    a. How this application does it
+        i. Similar to the points above - National IDs are protected, as are ballot numbers
+    b. What we can do better
+        ii. Similar to above points - encrypting the names of the users is a smart next step
