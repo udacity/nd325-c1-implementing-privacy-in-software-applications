@@ -4,15 +4,26 @@
 
 from enum import Enum
 
+
+def obfuscate_national_id(national_id: str) -> str:
+    # TODO: Implement This
+    raise NotImplementedError()
+
+
+def obfuscate_name(name: str) -> str:
+    # TODO: Implement This
+    raise NotImplementedError()
+
+
 class MinimalVoter:
     """
     Our representation of a voter, with the national id obfuscated (but still unique).
     This is the class that we want to be using in the majority of our codebase.
     """
-    def __init__(self, first_name: str, last_name: str, obfuscated_national_id: str):
+    def __init__(self, obfuscated_first_name: str, obfuscated_last_name: str, obfuscated_national_id: str):
         self.obfuscated_national_id = obfuscated_national_id
-        self.first_name = first_name
-        self.last_name = last_name
+        self.obfuscated_first_name = obfuscated_first_name
+        self.obfuscated_last_name = obfuscated_last_name
 
 
 class Voter:
@@ -30,8 +41,10 @@ class Voter:
         """
         Converts this object (self) into its obfuscated version
         """
-        # TODO: Implement this method
-        raise NotImplementedError()
+        return MinimalVoter(
+            obfuscate_name(self.first_name.strip()),
+            obfuscate_name(self.last_name.strip()),
+            obfuscate_national_id(self.national_id.replace("-", "").replace(" ", "").strip()))
 
 
 class VoterStatus(Enum):
