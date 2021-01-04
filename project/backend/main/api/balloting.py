@@ -5,7 +5,7 @@ from backend.main.objects.candidate import Candidate
 from backend.main.objects.ballot import Ballot
 
 
-def issue_ballot(voter: Voter) -> Optional[str]:
+def issue_ballot(voter_national_id: str) -> Optional[str]:
     """
     Issues a new ballot to a given voter. The ballot number of the new ballot. This method should NOT invalidate any old
     ballots. If the voter isn't registered, should return None.
@@ -71,6 +71,10 @@ def verify_ballot(voter_national_id: str, ballot_number: str) -> bool:
     # TODO: Implement this!
     raise NotImplementedError()
 
+
+#
+# Aggregate API
+#
 
 def get_all_ballot_comments() -> Set[str]:
     """
