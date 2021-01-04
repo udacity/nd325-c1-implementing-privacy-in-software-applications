@@ -53,8 +53,8 @@ def count_ballot(ballot: Ballot, voter_national_id: str) -> BallotStatus:
 
     sanitized_ballot = Ballot(ballot.ballot_number, ballot.chosen_candidate_id, redact_free_text(
         ballot.voter_comments, {
-            minimal_voter.first_name: RedactionValue.REDACTED_NAME,
-            minimal_voter.last_name: RedactionValue.REDACTED_NAME
+            minimal_voter.obfuscated_first_name: RedactionValue.REDACTED_NAME,
+            minimal_voter.obfuscated_last_name: RedactionValue.REDACTED_NAME
         }))
 
     if not store.ballot_exists(ballot.ballot_number):
@@ -136,5 +136,5 @@ def get_all_fraudulent_voters() -> Set[str]:
 
     Then this method would return {"John Smith", "Linda Navarro"} - with a space separating the first and last names.
     """
-    return {fraudster.first_name + " " + fraudster.last_name
+    return {fraudster.obfuscated_first_name + " " + fraudster.obfuscated_last_name
             for fraudster in VotingStore.get_instance().get_all_fraudsters()}

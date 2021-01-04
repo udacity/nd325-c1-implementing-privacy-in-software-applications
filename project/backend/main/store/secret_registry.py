@@ -4,6 +4,7 @@
 #
 
 import os
+import bcrypt
 
 
 def get_secret(secret_name: str) -> str:
@@ -19,3 +20,6 @@ def overwrite_secret(secret_name: str, secret_value):
     """
     os.environ[secret_name] = secret_value
 
+
+def gen_salt() -> bytes:
+    return bcrypt.gensalt(5)

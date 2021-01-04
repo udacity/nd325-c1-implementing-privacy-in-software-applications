@@ -145,7 +145,10 @@ class VotingStore:
             """INSERT INTO voters
                 (obfuscated_national_id, first_name, last_name, status)
                 VALUES (?, ?, ?, ?)""",
-            (voter.obfuscated_national_id, voter.first_name, voter.last_name, VoterStatus.REGISTERED_NOT_VOTED.value))
+            (voter.obfuscated_national_id,
+             voter.obfuscated_first_name,
+             voter.obfuscated_last_name,
+             VoterStatus.REGISTERED_NOT_VOTED.value))
         self.connection.commit()
 
     def get_voter_from_registry(self, obfuscated_national_id: str) -> MinimalVoter:

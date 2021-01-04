@@ -1,4 +1,4 @@
-from backend.main.store.secret_registry import get_secret, overwrite_secret
+from backend.main.store.secret_registry import get_secret, overwrite_secret, gen_salt
 import bcrypt
 
 #
@@ -22,13 +22,12 @@ def obfuscate_national_id(national_id: str) -> str:
     encoding_scheme = "utf-8"
     pepper = get_secret(secret_name)
     if not pepper:
-        pepper = str(bcrypt.gensalt(), encoding_scheme)
+        pepper = str(gen_salt(), encoding_scheme)
         overwrite_secret(secret_name, pepper)
 
-    sanitized_national_id = national_id.replace(" ", "").replace("-", "").strip()
     return str(
         bcrypt.hashpw(
-            sanitized_national_id.encode(encoding_scheme), pepper.encode(encoding_scheme)), encoding_scheme)
+            national_id.encode(encoding_scheme), pepper.encode(encoding_scheme)), encoding_scheme)
 
 
 def obfuscate_name(name: str) -> str:

@@ -1,4 +1,4 @@
-from backend.main.store.secret_registry import get_secret, overwrite_secret
+from backend.main.store.secret_registry import get_secret, overwrite_secret, gen_salt
 import bcrypt
 from time import time
 
@@ -53,7 +53,7 @@ def generate_ballot_number_for_timestamp(obfuscated_voter_id: str, timestamp_mil
     secret_name = "BALLOT_NUMBER_GENERATION"
     pepper = get_secret(secret_name)
     if not pepper:
-        pepper = str(bcrypt.gensalt(), ENCODING_SCHEME)
+        pepper = str(gen_salt(), ENCODING_SCHEME)
         overwrite_secret(secret_name, pepper)
 
     return str(
