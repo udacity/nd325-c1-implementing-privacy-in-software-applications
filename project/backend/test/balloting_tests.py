@@ -14,13 +14,14 @@ all_voters = [
     Voter("Shoujit", "Gande", "555555555"),
 ]
 
+
 class TestBalloting:
     def test_ballot_issuing(self):
         """
         Ensures that ballots can be issued to multiple voters.
         """
         for voter in all_voters:
-            ballot_number = balloting.issue_ballot(voter)
+            ballot_number = balloting.issue_ballot(voter.national_id)
             assert balloting.verify_ballot(voter.national_id, ballot_number)
 
     def test_multiple_ballot_issuing(self):
@@ -28,10 +29,10 @@ class TestBalloting:
         Ensures that multiple ballots can be issued to the same voter, and that they're all considered valid.
         """
         voter = all_voters[0]
-        ballot_number1 = balloting.issue_ballot(voter)
-        ballot_number2 = balloting.issue_ballot(voter)
-        ballot_number3 = balloting.issue_ballot(voter)
-        ballot_number4 = balloting.issue_ballot(voter)
+        ballot_number1 = balloting.issue_ballot(voter.national_id)
+        ballot_number2 = balloting.issue_ballot(voter.national_id)
+        ballot_number3 = balloting.issue_ballot(voter.national_id)
+        ballot_number4 = balloting.issue_ballot(voter.national_id)
 
         assert balloting.verify_ballot(voter.national_id, ballot_number1)
         assert balloting.verify_ballot(voter.national_id, ballot_number2)
@@ -43,9 +44,9 @@ class TestBalloting:
         Ensures that ballots can be counted and tallied appropriately.
         """
         voter1, voter2, voter3 = all_voters[0:3]
-        ballot_num1 = balloting.issue_ballot(voter1)
-        ballot_num2 = balloting.issue_ballot(voter2)
-        ballot_num3 = balloting.issue_ballot(voter3)
+        ballot_num1 = balloting.issue_ballot(voter1.national_id)
+        ballot_num2 = balloting.issue_ballot(voter2.national_id)
+        ballot_num3 = balloting.issue_ballot(voter3.national_id)
 
         all_candidates = registry.get_all_candidates()
         assert len(all_candidates) == 3
@@ -71,7 +72,7 @@ class TestBalloting:
         Checks that comment redaction works
         """
         voter = all_voters[0]
-        ballot_number = balloting.issue_ballot(voter)
+        ballot_number = balloting.issue_ballot(voter.national_id)
 
         original_comment = """
         Hi there,
@@ -112,7 +113,7 @@ class TestBalloting:
         Checks that comment redaction works
         """
         voter = all_voters[0]
-        ballot_number = balloting.issue_ballot(voter)
+        ballot_number = balloting.issue_ballot(voter.national_id)
 
         original_comment = """
         (839) 838-1627,839 838-1627,839-838-1627,8398381627
@@ -135,7 +136,7 @@ class TestBalloting:
         Checks that comment redaction works
         """
         voter = all_voters[0]
-        ballot_number = balloting.issue_ballot(voter)
+        ballot_number = balloting.issue_ballot(voter.national_id)
 
         original_comment = """
         345-23-2334
@@ -165,9 +166,9 @@ class TestBalloting:
         2. The fraudster's name is recorded
         """
         voter = all_voters[0]
-        ballot_number1 = balloting.issue_ballot(voter)
-        ballot_number2 = balloting.issue_ballot(voter)
-        ballot_number3 = balloting.issue_ballot(voter)
+        ballot_number1 = balloting.issue_ballot(voter.national_id)
+        ballot_number2 = balloting.issue_ballot(voter.national_id)
+        ballot_number3 = balloting.issue_ballot(voter.national_id)
 
         all_candidates = registry.get_all_candidates()
         ballot1 = Ballot(ballot_number1, all_candidates[0].candidate_id, "first ballot")
@@ -196,8 +197,8 @@ class TestBalloting:
         Checks that fraudsters cannot be completely de-registered
         """
         voter = all_voters[0]
-        ballot_number1 = balloting.issue_ballot(voter)
-        ballot_number2 = balloting.issue_ballot(voter)
+        ballot_number1 = balloting.issue_ballot(voter.national_id)
+        ballot_number2 = balloting.issue_ballot(voter.national_id)
 
         all_candidates = registry.get_all_candidates()
         ballot1 = Ballot(ballot_number1, all_candidates[0].candidate_id, "first ballot")
@@ -223,7 +224,7 @@ class TestBalloting:
         Ensures that an invalidated ballot cannot be used
         """
         voter = all_voters[0]
-        ballot_number1 = balloting.issue_ballot(voter)
+        ballot_number1 = balloting.issue_ballot(voter.national_id)
 
         all_candidates = registry.get_all_candidates()
         ballot1 = Ballot(ballot_number1, all_candidates[0].candidate_id, "")
@@ -232,7 +233,7 @@ class TestBalloting:
         assert balloting.count_ballot(ballot1, voter.national_id) == BallotStatus.INVALID_BALLOT
 
         # However, ensure the voter can still vote with another ballot
-        ballot_number2 = balloting.issue_ballot(voter)
+        ballot_number2 = balloting.issue_ballot(voter.national_id)
         ballot2 = Ballot(ballot_number2, all_candidates[0].candidate_id, "")
 
         assert balloting.count_ballot(ballot2, voter.national_id) == BallotStatus.BALLOT_COUNTED
@@ -242,7 +243,7 @@ class TestBalloting:
         Ensures that a ballot that is cast cannot be invalidated
         """
         voter = all_voters[0]
-        ballot_number1 = balloting.issue_ballot(voter)
+        ballot_number1 = balloting.issue_ballot(voter.national_id)
 
         all_candidates = registry.get_all_candidates()
         ballot1 = Ballot(ballot_number1, all_candidates[0].candidate_id, "valid now, but invalid later")
@@ -259,7 +260,7 @@ class TestBalloting:
         for the true voter to used
         """
         voter1, voter2 = all_voters[0:2]
-        ballot_number2 = balloting.issue_ballot(voter2)
+        ballot_number2 = balloting.issue_ballot(voter2.national_id)
 
         all_candidates = registry.get_all_candidates()
 
@@ -280,7 +281,7 @@ class TestBalloting:
         Checks that you cannot issue a ballot to an unregistered voter
         """
         unregistered_voter = Voter("Daniel", "Salt", "999-99-9999")
-        assert balloting.issue_ballot(unregistered_voter) is None
+        assert balloting.issue_ballot(unregistered_voter.national_id) is None
 
     def test_unregistered_voter_count_ballot(self):
         """
@@ -288,7 +289,7 @@ class TestBalloting:
         """
         unregistered_voter = Voter("Daniel", "Salt", "999-99-9999")
         registered_voter = all_voters[0]
-        valid_ballot_number = balloting.issue_ballot(registered_voter)
+        valid_ballot_number = balloting.issue_ballot(registered_voter.national_id)
 
         all_candidates = registry.get_all_candidates()
 
@@ -303,10 +304,10 @@ class TestBalloting:
         all_candidates = registry.get_all_candidates()
 
         voter1, voter2, voter3, voter4 = all_voters[0:4]
-        ballot_number1 = balloting.issue_ballot(voter1)
-        ballot_number2 = balloting.issue_ballot(voter2)
-        ballot_number3 = balloting.issue_ballot(voter3)
-        ballot_number4 = balloting.issue_ballot(voter4)
+        ballot_number1 = balloting.issue_ballot(voter1.national_id)
+        ballot_number2 = balloting.issue_ballot(voter2.national_id)
+        ballot_number3 = balloting.issue_ballot(voter3.national_id)
+        ballot_number4 = balloting.issue_ballot(voter4.national_id)
 
         # No candidate has a majority, but one has a plurality.
         ballot1 = Ballot(ballot_number1, all_candidates[0].candidate_id, "")

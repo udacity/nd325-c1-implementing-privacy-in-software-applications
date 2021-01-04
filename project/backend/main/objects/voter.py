@@ -8,7 +8,16 @@ import bcrypt
 from enum import Enum
 
 
-def get_obfuscated_national_id(national_id: str) -> str:
+def obfuscate_national_id(national_id: str) -> str:
+    """
+    Minimizes a national ID. The minimization may be either irreversible or reversible, but one might make life easier
+    that the other, depending on the use-cases.
+
+    :param: national_id A real national ID that is sensitive and needs to be obfuscated in some manner.
+    :return: An obfuscated version of the national_id.
+    """
+    # COMPLETED: This is a sample implementation of this method that involves hashing. Using the bcrypt library to
+    # guarantee slowness of hashing
     secret_name = "VOTER_MINIMIZATION_PEPPER"
     encoding_scheme = "utf-8"
     pepper = get_secret(secret_name)
@@ -22,15 +31,26 @@ def get_obfuscated_national_id(national_id: str) -> str:
             sanitized_national_id.encode(encoding_scheme), pepper.encode(encoding_scheme)), encoding_scheme)
 
 
+def obfuscate_name(name: str) -> str:
+    """
+    Minimizes a name. The minimization may be either irreversible or reversible, but one might make life easier
+    that the other, depending on the use-cases.
+
+    :param: name A plaintext name that is sensitive and needs to be obfuscated in some manner.
+    :return: An obfuscated version of the name.
+    """
+    return name
+
+
 class MinimalVoter:
     """
     Our representation of a voter, with the national id obfuscated (but still unique).
     This is the class that we want to be using in the majority of our codebase.
     """
-    def __init__(self, first_name: str, last_name: str, obfuscated_national_id: str):
+    def __init__(self, obfuscated_first_name: str, obfuscated_last_name: str, obfuscated_national_id: str):
         self.obfuscated_national_id = obfuscated_national_id
-        self.first_name = first_name
-        self.last_name = last_name
+        self.obfuscated_first_name = obfuscated_first_name
+        self.obfuscated_last_name = obfuscated_last_name
 
 
 class Voter:
@@ -48,9 +68,10 @@ class Voter:
         """
         Converts this object (self) into its obfuscated version
         """
-        # COMPLETED: This is a sample implementation of this method that involves hashing. Using the bcrypt library to
-        # guarantee slowness of hashing
-        return MinimalVoter(self.first_name, self.last_name, get_obfuscated_national_id(self.national_id))
+        return MinimalVoter(
+            obfuscate_name(self.first_name.strip()),
+            obfuscate_name(self.last_name.strip()),
+            obfuscate_national_id(self.national_id.replace("-", "").replace(" ", "").strip()))
 
 
 class VoterStatus(Enum):

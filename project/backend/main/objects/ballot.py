@@ -16,6 +16,21 @@ class Ballot:
 
 
 def generate_ballot_number(obfuscated_voter_id: str) -> str:
+    """
+    Produces a ballot number. Feel free to add parameters to this method, if you feel those are necessary.
+
+    Remember that ballot numbers must respect the following conditions:
+
+    1. Voters can be issued multiple ballots. This can be because a voter might make a mistake when filling out one
+       ballot, and therefore might need an additional ballot. However it's important that only one ballot per voter is
+       counted.
+    2. All ballots must be secret. Voters have the right to cast secret ballots, which means that it should be
+       technically impossible for someone holding a ballot to associate that ballot with the voter.
+    3. In order to minimize the risk of fraud, a nefarious actor should not be able to tell that two different ballots
+       are associated with the same voter.
+
+    :return: A string representing a ballot number that satisfies the conditions above
+    """
 
     # COMPLETED: Student should be taking a MinimalVoter, rather than a Voter, unless they have a good reason to take in
     #            a Voter. Also ok to take in the obfuscated_voter_id, as shown here. Uses the current time to achieve
@@ -29,7 +44,12 @@ def generate_ballot_number(obfuscated_voter_id: str) -> str:
 
 
 def generate_ballot_number_for_timestamp(obfuscated_voter_id: str, timestamp_millis: str) -> str:
+    """
+    Will deterministically produce a ballot number for a given obfuscated_voter_id and timestamp in milliseconds.
 
+    This method works by appending the timestamp string to the end of the ballot, so it can be extracted in
+    get_ballot_timestamp
+    """
     secret_name = "BALLOT_NUMBER_GENERATION"
     pepper = get_secret(secret_name)
     if not pepper:
@@ -44,6 +64,8 @@ def generate_ballot_number_for_timestamp(obfuscated_voter_id: str, timestamp_mil
 
 
 def get_ballot_timestamp(ballot_number: str) -> str:
+    """
+    Gets the timestamp when the ballot was created, based on the ballot_number.
+    """
     timestamp_start_index = ballot_number.index(TIMESTAMP_SEPARATOR) + len(TIMESTAMP_SEPARATOR)
     return ballot_number[timestamp_start_index:]
-
