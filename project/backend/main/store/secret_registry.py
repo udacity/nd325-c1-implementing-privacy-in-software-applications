@@ -43,4 +43,4 @@ def overwrite_secret_bytes(secret_name: str, secret_value: bytes):
 
 
 def gen_salt() -> bytes:
-    return bcrypt.gensalt(5)
+    return bcrypt.gensalt()

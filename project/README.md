@@ -38,7 +38,7 @@ important for this project, our main focus here is privacy engineering.
 
 On your virtual machine, please install the following packages
 
-1. Python3 Packages - `flask`, `jsons`, `flask-CORS`, `pytest`
+1. Python3 Packages - `flask`, `jsons`, `flask-CORS`, `pytest`. Also recommended are `bcrypt` and `pycryptodome`
 2. Node Package Manager (NPM) packages - `typescript`, `react`, `react-dom`, `@blueprintjs/core`, `@blueprintjs/icons`
 
 
@@ -309,6 +309,7 @@ This project was made using technology from the following sources:
 1. Frontend: [Blueprint](https://blueprintjs.com/docs/), [Typescript](https://www.typescriptlang.org/),
    [React](https://reactjs.org/) and [NPM](https://www.npmjs.com/)
 2. Backend: [Flask](https://flask.palletsprojects.com/en/1.1.x/), [Python 3](https://www.python.org/),
-   [Jsons](https://github.com/ramonhagenaars/jsons), [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/) and
-   [Pytest](https://docs.pytest.org/en/stable/)
+   [Jsons](https://github.com/ramonhagenaars/jsons), [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/),
+   [Pytest](https://docs.pytest.org/en/stable/), [brcrypt](https://pypi.org/project/bcrypt/) and
+   [pycryptodome](https://pycryptodome.readthedocs.io/en/latest/src/introduction.html)
    
