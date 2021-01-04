@@ -121,9 +121,12 @@ You’ll notice that the `Voter` class has a `national_id` field. We consider th
 Social Security Numbers (SSNs) are sensitive in the United States.
 
 Your job in this step is to determine a privacy-protecting scheme to populate the `MinimalVoter` class. You can see
-we've provided you the `Voter.get_minimal_voter` function, that calls `obfuscated_national_id` and `obfuscated_name`
+we've provided you the `Voter.get_minimal_voter` function, that calls `obfuscated_national_id` and `encrypt_name`
 functions. Feel free to use other parts of the starter code to bolster your implementation.
 
+When you implement `encrypt_name`, you might also want to implement `decrypt_name`, as this will be useful later when
+you have to find the names of fraudsters. Remember that because these are names, and there are some names that are
+fairly common, we want this encryption to be a non-deterministic encryption.
 
 #### Step 4: Build out our Ballot Class
 

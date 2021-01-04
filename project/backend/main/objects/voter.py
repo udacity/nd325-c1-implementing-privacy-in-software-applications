@@ -18,16 +18,27 @@ def obfuscate_national_id(national_id: str) -> str:
     raise NotImplementedError()
 
 
-def obfuscate_name(name: str) -> str:
+def encrypt_name(name: str) -> str:
     """
-    Minimizes a name. The minimization may be either irreversible or reversible, but one might make life easier
-    that the other, depending on the use-cases.
+    Encrypts a name, non-deterministically.
 
-    :param: name A plaintext name that is sensitive and needs to be obfuscated in some manner.
-    :return: An obfuscated version of the name.
+    :param: name A plaintext name that is sensitive and needs to encrypt.
+    :return: The encrypted cipher text of the name.
     """
     # TODO: Implement This
     raise NotImplementedError()
+
+
+def decrypt_name(encrypted_name: str) -> str:
+    """
+    Decrypts a name. This is the inverse of the encrypt_name method above.
+
+    :param: encrypted_name The ciphertext of a name that is sensitive
+    :return: The plaintext name
+    """
+    # TODO: Implement This
+    raise NotImplementedError()
+
 
 
 class MinimalVoter:
@@ -57,8 +68,8 @@ class Voter:
         Converts this object (self) into its obfuscated version
         """
         return MinimalVoter(
-            obfuscate_name(self.first_name.strip()),
-            obfuscate_name(self.last_name.strip()),
+            encrypt_name(self.first_name.strip()),
+            encrypt_name(self.last_name.strip()),
             obfuscate_national_id(self.national_id))
 
 
