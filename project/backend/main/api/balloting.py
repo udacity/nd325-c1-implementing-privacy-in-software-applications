@@ -5,13 +5,12 @@ from backend.main.objects.candidate import Candidate
 from backend.main.objects.ballot import Ballot
 
 
-def issue_ballot(voter: Voter) -> Optional[str]:
+def issue_ballot(voter_national_id: str) -> Optional[str]:
     """
     Issues a new ballot to a given voter. The ballot number of the new ballot. This method should NOT invalidate any old
     ballots. If the voter isn't registered, should return None.
 
-    :params: voter The voter to issue a new ballot to. Note that the national ID for the voter might not come in a
-             standard format. For example, "555-55-5555", "555555555" and "555 55 5555" should be treated the same.
+    :params: voter_national_id The sensitive ID of the voter to issue a new ballot to.
     :returns: The ballot number of the new ballot, or None if the voter isn't registered
     """
     # TODO: Implement this!
@@ -31,9 +30,7 @@ def count_ballot(ballot: Ballot, voter_national_id: str) -> BallotStatus:
     5. BallotStatus.VOTER_NOT_REGISTERED - If the voter is not registered
 
     :param: ballot The Ballot to count
-    :param: voter The id of the voter who the ballot corresponds to. Note that the national ID for the voter might not
-            come in a standard format. For example, "555-55-5555", "555555555" and "555 55 5555" should be treated the
-            same.
+    :param: voter_national_id The sensitive ID of the voter who the ballot corresponds to.
     :returns: The Ballot Status after the ballot has been processed.
     """
     # TODO: Implement this!
@@ -71,6 +68,10 @@ def verify_ballot(voter_national_id: str, ballot_number: str) -> bool:
     # TODO: Implement this!
     raise NotImplementedError()
 
+
+#
+# Aggregate API
+#
 
 def get_all_ballot_comments() -> Set[str]:
     """

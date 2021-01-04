@@ -38,7 +38,7 @@ important for this project, our main focus here is privacy engineering.
 
 On your virtual machine, please install the following packages
 
-1. Python3 Packages - `flask`, `jsons`, `flask-CORS`, `pytest`
+1. Python3 Packages - `flask`, `jsons`, `flask-CORS`, `pytest`. Also recommended are `bcrypt` and `pycryptodome`
 2. Node Package Manager (NPM) packages - `typescript`, `react`, `react-dom`, `@blueprintjs/core`, `@blueprintjs/icons`
 
 
@@ -120,9 +120,13 @@ other places, we use the `MinimalVoter` class.
 You’ll notice that the `Voter` class has a `national_id` field. We consider this to be a sensitive field, much like
 Social Security Numbers (SSNs) are sensitive in the United States.
 
-Your job in this step is to determine a privacy-protecting scheme to populate the `MinimalVoter` class. Do this in
-`Voter.get_minimal_voter`. Feel free to use other parts of the starter code to bolster your implementation.
+Your job in this step is to determine a privacy-protecting scheme to populate the `MinimalVoter` class. You can see
+we've provided you the `Voter.get_minimal_voter` function, that calls `obfuscated_national_id` and `encrypt_name`
+functions. Feel free to use other parts of the starter code to bolster your implementation.
 
+When you implement `encrypt_name`, you might also want to implement `decrypt_name`, as this will be useful later when
+you have to find the names of fraudsters. Remember that because these are names, and there are some names that are
+fairly common, we want this encryption to be a non-deterministic encryption.
 
 #### Step 4: Build out our Ballot Class
 
@@ -305,6 +309,7 @@ This project was made using technology from the following sources:
 1. Frontend: [Blueprint](https://blueprintjs.com/docs/), [Typescript](https://www.typescriptlang.org/),
    [React](https://reactjs.org/) and [NPM](https://www.npmjs.com/)
 2. Backend: [Flask](https://flask.palletsprojects.com/en/1.1.x/), [Python 3](https://www.python.org/),
-   [Jsons](https://github.com/ramonhagenaars/jsons), [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/) and
-   [Pytest](https://docs.pytest.org/en/stable/)
+   [Jsons](https://github.com/ramonhagenaars/jsons), [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/),
+   [Pytest](https://docs.pytest.org/en/stable/), [brcrypt](https://pypi.org/project/bcrypt/) and
+   [pycryptodome](https://pycryptodome.readthedocs.io/en/latest/src/introduction.html)
    
