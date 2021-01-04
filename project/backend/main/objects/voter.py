@@ -1,11 +1,19 @@
-from backend.main.store.secret_registry import get_secret, overwrite_secret, gen_salt
+from backend.main.store.secret_registry import get_secret_str, overwrite_secret_str, gen_salt, get_secret_bytes, \
+    overwrite_secret_bytes, UTF_8
 import bcrypt
+from Crypto.Cipher import AES
+from base64 import b64encode, b64decode
+from Crypto.Random import get_random_bytes
+import jsons
 
 #
 # This file contains classes that correspond to voters
 #
 
 from enum import Enum
+
+VOTER_MINIMIZATION_PEPPER = "VOTER_MINIMIZATION_PEPPER"
+NAME_ENCRYPTION_KEY_AES_SIV = "NAME_ENCRYPTION_KEY_AES_SIV"
 
 
 def obfuscate_national_id(national_id: str) -> str:
@@ -19,16 +27,14 @@ def obfuscate_national_id(national_id: str) -> str:
     # COMPLETED: This is a sample implementation of this method that involves hashing. Using the bcrypt library to
     # guarantee slowness of hashing
     sanitized_national_id = national_id.replace("-", "").replace(" ", "").strip()
-    secret_name = "VOTER_MINIMIZATION_PEPPER"
-    encoding_scheme = "utf-8"
-    pepper = get_secret(secret_name)
+    pepper = get_secret_str(VOTER_MINIMIZATION_PEPPER)
     if not pepper:
-        pepper = str(gen_salt(), encoding_scheme)
-        overwrite_secret(secret_name, pepper)
+        pepper = str(gen_salt(), UTF_8)
+        overwrite_secret_str(VOTER_MINIMIZATION_PEPPER, pepper)
 
     return str(
         bcrypt.hashpw(
-            sanitized_national_id.encode(encoding_scheme), pepper.encode(encoding_scheme)), encoding_scheme)
+            sanitized_national_id.encode(UTF_8), pepper.encode(UTF_8)), UTF_8)
 
 
 def obfuscate_name(name: str) -> str:
@@ -39,7 +45,33 @@ def obfuscate_name(name: str) -> str:
     :param: name A plaintext name that is sensitive and needs to be obfuscated in some manner.
     :return: An obfuscated version of the name.
     """
-    return name
+    expected_bytes = 32  # For AES SIV 256
+
+    name_encryption_key = get_secret_bytes(NAME_ENCRYPTION_KEY_AES_SIV)
+    if not name_encryption_key:
+        name_encryption_key = get_random_bytes(expected_bytes * 2)
+        overwrite_secret_bytes(NAME_ENCRYPTION_KEY_AES_SIV, name_encryption_key)
+
+    nonce = get_random_bytes(expected_bytes)
+    cipher = AES.new(name_encryption_key, AES.MODE_SIV, nonce=nonce)
+
+    cipher.update(b"")
+    ciphertext, tag = cipher.encrypt_and_digest(name.encode(UTF_8))
+
+    json_v = [b64encode(x).decode(UTF_8) for x in (nonce, ciphertext, tag)]
+    return jsons.dumps(dict(zip(['nonce', 'ciphertext', 'tag'], json_v)))
+
+
+def decrypt_name(encrypted_name: str) -> str:
+    """
+    Implementation from pycryptodome
+    """
+    name_encryption_key = get_secret_bytes(NAME_ENCRYPTION_KEY_AES_SIV)
+    b64 = jsons.loads(encrypted_name)
+    json_dict = {k: b64decode(b64[k]) for k in ['nonce', 'ciphertext', 'tag']}
+    cipher = AES.new(name_encryption_key, AES.MODE_SIV, nonce=json_dict['nonce'])
+    cipher.update(b"")
+    return cipher.decrypt_and_verify(json_dict['ciphertext'], json_dict['tag']).decode(UTF_8)
 
 
 class MinimalVoter:

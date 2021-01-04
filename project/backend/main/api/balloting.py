@@ -1,6 +1,6 @@
 from typing import Set, Optional
 
-from backend.main.objects.voter import Voter, BallotStatus, VoterStatus, obfuscate_national_id
+from backend.main.objects.voter import Voter, BallotStatus, VoterStatus, obfuscate_national_id, decrypt_name
 from backend.main.objects.candidate import Candidate
 from backend.main.objects.ballot import Ballot
 from backend.main.store.data_registry import VotingStore
@@ -53,8 +53,8 @@ def count_ballot(ballot: Ballot, voter_national_id: str) -> BallotStatus:
 
     sanitized_ballot = Ballot(ballot.ballot_number, ballot.chosen_candidate_id, redact_free_text(
         ballot.voter_comments, {
-            minimal_voter.obfuscated_first_name: RedactionValue.REDACTED_NAME,
-            minimal_voter.obfuscated_last_name: RedactionValue.REDACTED_NAME
+            decrypt_name(minimal_voter.obfuscated_first_name): RedactionValue.REDACTED_NAME,
+            decrypt_name(minimal_voter.obfuscated_last_name): RedactionValue.REDACTED_NAME
         }))
 
     if not store.ballot_exists(ballot.ballot_number):
@@ -136,5 +136,5 @@ def get_all_fraudulent_voters() -> Set[str]:
 
     Then this method would return {"John Smith", "Linda Navarro"} - with a space separating the first and last names.
     """
-    return {fraudster.obfuscated_first_name + " " + fraudster.obfuscated_last_name
+    return {decrypt_name(fraudster.obfuscated_first_name) + " " + decrypt_name(fraudster.obfuscated_last_name)
             for fraudster in VotingStore.get_instance().get_all_fraudsters()}
