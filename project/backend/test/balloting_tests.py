@@ -59,9 +59,9 @@ class TestBalloting:
         assert balloting.count_ballot(ballot2, voter2.national_id) == BallotStatus.BALLOT_COUNTED
         assert balloting.count_ballot(ballot3, voter3.national_id) == BallotStatus.BALLOT_COUNTED
 
-        assert registry.get_voter_status(voter1) == VoterStatus.BALLOT_COUNTED
-        assert registry.get_voter_status(voter2) == VoterStatus.BALLOT_COUNTED
-        assert registry.get_voter_status(voter3) == VoterStatus.BALLOT_COUNTED
+        assert registry.get_voter_status(voter1.national_id) == VoterStatus.BALLOT_COUNTED
+        assert registry.get_voter_status(voter2.national_id) == VoterStatus.BALLOT_COUNTED
+        assert registry.get_voter_status(voter3.national_id) == VoterStatus.BALLOT_COUNTED
 
         winning_candidate = balloting.compute_election_winner()
         assert winning_candidate.candidate_id == all_candidates[1].candidate_id
@@ -178,9 +178,9 @@ class TestBalloting:
         # Have the voter commit fraud
         assert balloting.count_ballot(ballot1, voter.national_id) == BallotStatus.BALLOT_COUNTED
         assert balloting.count_ballot(ballot2, voter.national_id) == BallotStatus.FRAUD_COMMITTED
-        assert registry.get_voter_status(voter) == VoterStatus.FRAUD_COMMITTED
+        assert registry.get_voter_status(voter.national_id) == VoterStatus.FRAUD_COMMITTED
         assert balloting.count_ballot(ballot3, voter.national_id) == BallotStatus.FRAUD_COMMITTED
-        assert registry.get_voter_status(voter) == VoterStatus.FRAUD_COMMITTED
+        assert registry.get_voter_status(voter.national_id) == VoterStatus.FRAUD_COMMITTED
 
         # Make sure the fraudster's name is recorded
         fraudsters = balloting.get_all_fraudulent_voters()
@@ -209,7 +209,7 @@ class TestBalloting:
         assert balloting.count_ballot(ballot2, voter.national_id) == BallotStatus.FRAUD_COMMITTED
 
         # De-register the voter
-        assert registry.de_register_voter(voter) is False
+        assert registry.de_register_voter(voter.national_id) is False
 
         # Make sure the fraudster's name is still recorded
         fraudsters = balloting.get_all_fraudulent_voters()
@@ -217,7 +217,7 @@ class TestBalloting:
         assert (voter.first_name + " " + voter.last_name) in balloting.get_all_fraudulent_voters()
 
         # Make sure the voter's status is still that fraud was committed
-        assert registry.get_voter_status(voter) == VoterStatus.FRAUD_COMMITTED
+        assert registry.get_voter_status(voter.national_id) == VoterStatus.FRAUD_COMMITTED
 
     def test_invalidate_ballot_before_use(self):
         """
