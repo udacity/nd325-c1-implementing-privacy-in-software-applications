@@ -14,6 +14,7 @@ all_voters = [
     Voter("Shoujit", "Gande", "555555555"),
 ]
 
+
 class TestBalloting:
     def test_ballot_issuing(self):
         """

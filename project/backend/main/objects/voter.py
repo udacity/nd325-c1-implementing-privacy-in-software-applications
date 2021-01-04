@@ -8,7 +8,7 @@ from enum import Enum
 def obfuscate_national_id(national_id: str) -> str:
     """
     Minimizes a national ID. The minimization may be either irreversible or reversible, but one might make life easier
-    that the other, depending on the usecases.
+    that the other, depending on the use-cases.
 
     :param: national_id A real national ID that is sensitive and needs to be obfuscated in some manner.
     :return: An obfuscated version of the national_id.
@@ -20,7 +20,7 @@ def obfuscate_national_id(national_id: str) -> str:
 def obfuscate_name(name: str) -> str:
     """
     Minimizes a name. The minimization may be either irreversible or reversible, but one might make life easier
-    that the other, depending on the usecases.
+    that the other, depending on the use-cases.
 
     :param: name A plaintext name that is sensitive and needs to be obfuscated in some manner.
     :return: An obfuscated version of the name.
