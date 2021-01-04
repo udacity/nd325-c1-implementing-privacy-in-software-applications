@@ -56,7 +56,7 @@ class TestPrivacySanity:
             obfuscated_national_id = voter.get_minimal_voter().obfuscated_national_id
 
             for __ in range(5):
-                ballot_number = balloting.issue_ballot(voter)
+                ballot_number = balloting.issue_ballot(voter.national_id)
 
                 # Check for National Id leaks
                 assert national_id not in ballot_number
@@ -75,7 +75,7 @@ class TestPrivacySanity:
             voter = Voter("Some", "Voter", national_id)
             registry.register_voter(voter)
 
-            ballot_numbers_in_creation_order = [balloting.issue_ballot(voter) for _ in range(10)]
+            ballot_numbers_in_creation_order = [balloting.issue_ballot(voter.national_id) for _ in range(10)]
             ballot_numbers_in_ascending_order = sorted(ballot_numbers_in_creation_order)
             ballot_numbers_in_descending_order = reversed(sorted(ballot_numbers_in_creation_order))
 
