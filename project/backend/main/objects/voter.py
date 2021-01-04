@@ -13,6 +13,7 @@ def obfuscate_national_id(national_id: str) -> str:
     :param: national_id A real national ID that is sensitive and needs to be obfuscated in some manner.
     :return: An obfuscated version of the national_id.
     """
+    sanitized_national_id = national_id.replace("-", "").replace(" ", "").strip()
     # TODO: Implement This
     raise NotImplementedError()
 
@@ -58,7 +59,7 @@ class Voter:
         return MinimalVoter(
             obfuscate_name(self.first_name.strip()),
             obfuscate_name(self.last_name.strip()),
-            obfuscate_national_id(self.national_id.replace("-", "").replace(" ", "").strip()))
+            obfuscate_national_id(self.national_id))
 
 
 class VoterStatus(Enum):
