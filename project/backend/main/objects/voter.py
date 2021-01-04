@@ -18,6 +18,7 @@ def obfuscate_national_id(national_id: str) -> str:
     """
     # COMPLETED: This is a sample implementation of this method that involves hashing. Using the bcrypt library to
     # guarantee slowness of hashing
+    sanitized_national_id = national_id.replace("-", "").replace(" ", "").strip()
     secret_name = "VOTER_MINIMIZATION_PEPPER"
     encoding_scheme = "utf-8"
     pepper = get_secret(secret_name)
@@ -27,7 +28,7 @@ def obfuscate_national_id(national_id: str) -> str:
 
     return str(
         bcrypt.hashpw(
-            national_id.encode(encoding_scheme), pepper.encode(encoding_scheme)), encoding_scheme)
+            sanitized_national_id.encode(encoding_scheme), pepper.encode(encoding_scheme)), encoding_scheme)
 
 
 def obfuscate_name(name: str) -> str:
@@ -70,7 +71,7 @@ class Voter:
         return MinimalVoter(
             obfuscate_name(self.first_name.strip()),
             obfuscate_name(self.last_name.strip()),
-            obfuscate_national_id(self.national_id.replace("-", "").replace(" ", "").strip()))
+            obfuscate_national_id(self.national_id))
 
 
 class VoterStatus(Enum):
