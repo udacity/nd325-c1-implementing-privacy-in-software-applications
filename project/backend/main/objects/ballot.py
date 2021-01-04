@@ -1,9 +1,9 @@
-from backend.main.store.secret_registry import get_secret_str, overwrite_secret_str, gen_salt
+from backend.main.store.secret_registry import get_secret_str, overwrite_secret_str, gen_salt, UTF_8
 import bcrypt
 from time import time
 
-ENCODING_SCHEME = "utf-8"
 TIMESTAMP_SEPARATOR = "<--->"
+
 
 class Ballot:
     """
@@ -53,14 +53,14 @@ def generate_ballot_number_for_timestamp(obfuscated_voter_id: str, timestamp_mil
     secret_name = "BALLOT_NUMBER_GENERATION"
     pepper = get_secret_str(secret_name)
     if not pepper:
-        pepper = str(gen_salt(), ENCODING_SCHEME)
+        pepper = str(gen_salt(), UTF_8)
         overwrite_secret_str(secret_name, pepper)
 
     return str(
         bcrypt.hashpw(
-            (obfuscated_voter_id + timestamp_millis).encode(ENCODING_SCHEME),
-            pepper.encode(ENCODING_SCHEME)),
-        ENCODING_SCHEME) + TIMESTAMP_SEPARATOR + timestamp_millis
+            (obfuscated_voter_id + timestamp_millis).encode(UTF_8),
+            pepper.encode(UTF_8)),
+        UTF_8) + TIMESTAMP_SEPARATOR + timestamp_millis
 
 
 def get_ballot_timestamp(ballot_number: str) -> str:

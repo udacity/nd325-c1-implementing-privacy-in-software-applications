@@ -11,7 +11,6 @@ from base64 import b64encode, b64decode
 
 UTF_8 = "utf-8"
 
-
 def get_secret_str(secret_name: str) -> Optional[str]:
     """
     Gets a secret, if it exists. Otherwise, returns None
@@ -44,4 +43,4 @@ def overwrite_secret_bytes(secret_name: str, secret_value: bytes):
 
 
 def gen_salt() -> bytes:
-    return bcrypt.gensalt()
+    return bcrypt.gensalt(5)

@@ -37,14 +37,16 @@ def obfuscate_national_id(national_id: str) -> str:
             sanitized_national_id.encode(UTF_8), pepper.encode(UTF_8)), UTF_8)
 
 
-def obfuscate_name(name: str) -> str:
+def encrypt_name(name: str) -> str:
     """
-    Minimizes a name. The minimization may be either irreversible or reversible, but one might make life easier
-    that the other, depending on the use-cases.
+    Encrypts a name, non-deterministically.
 
-    :param: name A plaintext name that is sensitive and needs to be obfuscated in some manner.
-    :return: An obfuscated version of the name.
+    :param: name A plaintext name that is sensitive and needs to encrypt.
+    :return: The encrypted cipher text of the name.
     """
+    # COMPLETED: It's important that they're using AES SIV 256, or some other equivalent AES. They should really not be
+    #            using asymmetric key encryption here at all -- they're not sending the key anywhere to be shared so
+    #            this is the exact situation for symmetric-key encryption
     expected_bytes = 32  # For AES SIV 256
 
     name_encryption_key = get_secret_bytes(NAME_ENCRYPTION_KEY_AES_SIV)
@@ -64,8 +66,12 @@ def obfuscate_name(name: str) -> str:
 
 def decrypt_name(encrypted_name: str) -> str:
     """
-    Implementation from pycryptodome
+    Decrypts a name. This is the inverse of the encrypt_name method above.
+
+    :param: encrypted_name The ciphertext of a name that is sensitive
+    :return: The plaintext name
     """
+    # COMPLETED
     name_encryption_key = get_secret_bytes(NAME_ENCRYPTION_KEY_AES_SIV)
     b64 = jsons.loads(encrypted_name)
     json_dict = {k: b64decode(b64[k]) for k in ['nonce', 'ciphertext', 'tag']}
@@ -101,8 +107,8 @@ class Voter:
         Converts this object (self) into its obfuscated version
         """
         return MinimalVoter(
-            obfuscate_name(self.first_name.strip()),
-            obfuscate_name(self.last_name.strip()),
+            encrypt_name(self.first_name.strip()),
+            encrypt_name(self.last_name.strip()),
             obfuscate_national_id(self.national_id))
 
 
