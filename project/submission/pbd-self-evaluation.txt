@@ -3,8 +3,7 @@
         i. National IDs are not stored at all - they're only stored in a cryptographically hashed form
         ii. Ballots are dissociated from the user
     b. What we can do better
-        i. We could use non-deterministic encryption on the names
-        ii. We could non-deterministically encrypt the votes themselves
+        i. We could non-deterministically encrypt the votes themselves
 2. Privacy as the Default
     a. How this application does it
         i. National IDs are not stored at all - user doesn't have to opt-in for this
@@ -32,7 +31,7 @@
     a. How this application does it
         i. Critical data (National ID) is used only in its un-obfuscated form as the input.
     b. What we can do better
-        ii. Encrypting names in the future might not be a bad idea.
+        ii. Similar to above.
 6. Visibility and Transparency
     a. How this application does it
         i. This application communicates to the user that their ballot is secret, and their National ID is only used for
@@ -44,4 +43,4 @@
     a. How this application does it
         i. Similar to the points above - National IDs are protected, as are ballot numbers
     b. What we can do better
-        ii. Similar to above points - encrypting the names of the users is a smart next step
+        ii. Similar to above points
