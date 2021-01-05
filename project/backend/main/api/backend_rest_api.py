@@ -8,15 +8,16 @@
 # $ flask run
 #
 
-from flask import Flask, request
+from flask import request
 import backend.main.api.balloting as balloting
 import backend.main.api.registry as registry
-from backend.main.objects.voter import Voter
+from backend.main.objects.voter import Voter, BallotStatus
 from backend.main.objects.ballot import Ballot
+from flask_api import FlaskAPI, status
 import jsons
 from flask_cors import CORS
 
-app = Flask(__name__)
+app = FlaskAPI(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
 
 
@@ -34,15 +35,9 @@ def count_ballot():
     voter_national_id = req_data['voter_national_id']
 
     ballot = Ballot(ballot_number, chosen_candidate_id, voter_comments)
-    return jsons.dumps(balloting.count_ballot(ballot, voter_national_id))
-
-
-@app.route('/api/verify_ballot', methods=["POST"])
-def verify_ballot():
-    req_data = request.get_json()
-    ballot_number = req_data['ballot_number']
-    voter_national_id = req_data['voter_national_id']
-    return jsons.dumps(balloting.verify_ballot(voter_national_id, ballot_number))
+    result = balloting.count_ballot(ballot, voter_national_id)
+    return {"status": jsons.dumps(result.value)}, \
+        status.HTTP_202_ACCEPTED if result == BallotStatus.BALLOT_COUNTED else status.HTTP_409_CONFLICT
 
 
 @app.route('/api/get_all_candidates')
@@ -62,9 +57,13 @@ def populate_database():
     registry.register_candidate("Leo McCoy")
     registry.register_candidate("Jim Kirk")
 
-    voter1 = Voter("Buzz", "Aldrin", "111111111")
+    voter1 = Voter("Neil", "Armstrong", "111111111")
+    voter2 = Voter("Buzz", "Aldrin", "222222222")
     registry.register_voter(voter1)
-    print("Voter 1 Ballot Number: ", balloting.issue_ballot(voter1))
+    registry.register_voter(voter2)
+    print("Voter 111111111 Ballot Number #1): ", balloting.issue_ballot(voter1.national_id))
+    print("Voter 111111111 Ballot Number #2): ", balloting.issue_ballot(voter1.national_id))
+    print("Voter 222222222 Ballot Number #1): ", balloting.issue_ballot(voter2.national_id))
 
 
 populate_database()

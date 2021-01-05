@@ -61,7 +61,7 @@ export class IBallotForm extends React.PureComponent<{}, IBallotFormState> {
         <InputGroup onChange={this.onBallotNumberUpdate} value={ballotNumber} large={true} leftIcon={IconNames.DOCUMENT} placeholder="Your Ballot Number" />
         <br />
         <H5 className="white-text">Choose a Candidate for Chancellor of the Republic</H5>
-        <RadioGroup selectedValue={this.state.selectedCandidateId} onChange={this.onCandidateSelect} inline={false}>
+        <RadioGroup selectedValue={selectedCandidateId} onChange={this.onCandidateSelect} inline={false}>
           {this.state.candidates.map(candidate =>
             <Radio key={candidate.candidate_id} label={candidate.name} value={String(candidate.candidate_id) as string} />
           )}
@@ -138,9 +138,11 @@ export class IBallotForm extends React.PureComponent<{}, IBallotFormState> {
 
     /* If we got a generic bad response, show a danger toast */
     if (!response.ok) {
-      toaster.show({
-        message: "There was a problem casting this ballot",
-        intent: Intent.DANGER
+      response.json().then((res) => {
+        toaster.show({
+          message: "Error casting ballot: " + res['status'].replaceAll("\"", ""),
+          intent: Intent.DANGER
+        });
       })
     } else {
       toaster.show({
