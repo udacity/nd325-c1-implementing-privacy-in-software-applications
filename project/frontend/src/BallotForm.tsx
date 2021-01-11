@@ -55,6 +55,7 @@ export class IBallotForm extends React.PureComponent<{}, IBallotFormState> {
       <FormGroup>
         <H5 className="white-text">Enter your voter information</H5>
         <Text className="white-text">Your ballot will remain secret. Your National ID is only used to verify your registration and validate your ballot.</Text>
+        <Text className="white-text">Note, that if you vote multiple times, <b>you will be flagged for fraud and cannot deregister.</b> </Text>
         <br />
         <InputGroup onChange={this.onNationalIdUpdate} value={voterNationalId} large={true} leftIcon={IconNames.PERSON} placeholder="Your National ID" />
         <br />

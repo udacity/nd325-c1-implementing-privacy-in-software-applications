@@ -273,7 +273,8 @@ There are some basic things we want to communicate to the user. You'll want to m
 `frontend/src/ballotForm.tsx`.
 
 1. Before the voter casts their ballot, the frontend should communicate that, after verifying their identity, their vote
-   will be counted _anonymously_.
+   will be counted _anonymously_. Note to the voter that if they vote multiple times, they will be marked for fraud, and
+   then cannot de-register.
 2. Before the voter casts their ballot, the frontend should ask them to not put any information identifying themselves
    or others in the "comments" section of the ballot.
    1. While we do check for PII, it's safest if the voter is informed of the risk beforehand
