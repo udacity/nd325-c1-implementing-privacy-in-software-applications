@@ -3,14 +3,15 @@
 
 ### Introduction
 
-After many years of deep civil unrest among disputing factions of human colonists of Mars, finally, a peace deal has
-been struck and the Republic of Mars has been formed. When creating the republic, the colonists have agreed to hold
-elections to choose their leader, the Chancellor of the Republic of Mars (COTREM), every 5 years, by simple popular
+After many years of deep civil unrest among disputing factions of human colonists of Atlantis, finally, a peace deal has
+been struck and the Republic of Atlantis has been formed. When creating the republic, the colonists have agreed to hold
+elections to choose their leader, the Chancellor of the Republic of Atlantis (COTREA), every 5 years, by simple popular
 vote.
 
 The first set of elections is to take place soon, and while peace has been found, it might not last if the election
-process is disputed, or controversial. To alleviate the public concern, the founding delegation of the Republic of Mars
-has nominated you, an expert in privacy engineering, to build out a reliable, and privacy-protective voting system.
+process is disputed, or controversial. To alleviate the public concern, the founding delegation of the Republic of
+Atlantis has nominated you, an expert in privacy engineering, to build out a reliable, and privacy-protective voting
+system.
 
 
 ### Completion Requirements
@@ -181,7 +182,7 @@ comment:
 
 ```
 I'm so proud to be voting for the first time ever! If there are any problems with my vote please reach out to me at
-(345) 553-2335. I'm also available over email at sjenkins@email.co.mars.
+(345) 553-2335. I'm also available over email at sjenkins@email.co.atlantis.
 
 Best,
 

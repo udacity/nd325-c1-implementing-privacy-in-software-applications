@@ -79,7 +79,7 @@ class TestBalloting:
         My name is {0}, and prioritizing public transportation is _very_ important to me. It takes me at least 90
         minutes to get to work each day, largely because the infrastructure here hasn't been built yet. It's critical
         for us to invest in this. If you'd like to contact me please reach out to me at 329 112-4535, or at
-        best_citizen@marsnet.co.mars.
+        best_citizen@atlantisnet.co.atlantis.
 
         Cheers,
 
