@@ -3,7 +3,7 @@
 
 ### Introduction
 
-After many years of deep civil unrest among disputing factions of human colonists of Atlantis, finally, a peace deal has
+After many years of deep civil unrest among disputing factions of colonists of Atlantis, finally, a peace deal has
 been struck and the Republic of Atlantis has been formed. When creating the republic, the colonists have agreed to hold
 elections to choose their leader, the Chancellor of the Republic of Atlantis (COTREA), every 5 years, by simple popular
 vote.
