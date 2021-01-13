@@ -49,6 +49,7 @@ export class IBallotForm extends React.PureComponent<{}, IBallotFormState> {
     /* TODO: 
      *  1. Somewhere in the object returned below, we should be including language about voter secrecy, and a voter's right to deregister after voting to protect their data
      *  2. Additionally, we should be informing the voter that they shouldn't include any personally identifiable information in the "comment" section, as it risks compromising their voter secrecy
+     *  3. Inform the voter that if they vote twice or more, they will not be able to de-register and will be flagged for fraud
      */ 
     return (
     <>
@@ -141,7 +142,7 @@ export class IBallotForm extends React.PureComponent<{}, IBallotFormState> {
     if (!response.ok) {
       response.json().then((res) => {
         toaster.show({
-          message: "Error casting ballot: " + res['status'].replaceAll("\"", ""),
+          message: "Error casting ballot: " + res['status'],
           intent: Intent.DANGER
         });
       })

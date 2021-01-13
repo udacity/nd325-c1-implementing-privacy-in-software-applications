@@ -18,7 +18,7 @@ import jsons
 from flask_cors import CORS
 
 app = FlaskAPI(__name__)
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
+CORS(app, resources={r"/api/*": {"origins": ["http://localhost:*", "http://127.0.0.1:*"]}})
 
 
 @app.route('/')
