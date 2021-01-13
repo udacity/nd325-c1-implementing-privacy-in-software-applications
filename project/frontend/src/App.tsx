@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="app">
       <div className="app-header">
-          <H1 className="white-text"> The Republic of Mars </H1>
+          <H1 className="white-text"> The Republic of Atlantis </H1>
           <H4 className="white-text"> DEPARTMENT OF ELECTORAL AFFAIRS </H4>
       </div>
       <div className="form">
