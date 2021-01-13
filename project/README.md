@@ -40,7 +40,8 @@ important for this project, our main focus here is privacy engineering.
 On your virtual machine, please install the following packages
 
 1. Python3 Packages - `flask`, `jsons`, `flask-CORS`, `Flask-API` and `pytest`.
-   Also recommended are `bcrypt` and `pycryptodome`.
+   Also recommended are `bcrypt` and `pycryptodome`. All these can be found in `backend/requirements.txt`. You can
+   install these by running `$ pip install -r requirements.txt` from the `backend/` directory.
 2. Node Package Manager (NPM) packages - `typescript`, `react`, `react-dom`, `@blueprintjs/core`, `@blueprintjs/icons`
 
 
