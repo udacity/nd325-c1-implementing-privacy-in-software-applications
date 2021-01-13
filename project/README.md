@@ -3,7 +3,7 @@
 
 ### Introduction
 
-After many years of deep civil unrest among disputing factions of human colonists of Mars, finally, a peace deal has
+After many years of deep civil unrest among disputing factions of colonists of Mars, finally, a peace deal has
 been struck and the Republic of Mars has been formed. When creating the republic, the colonists have agreed to hold
 elections to choose their leader, the Chancellor of the Republic of Mars (COTREM), every 5 years, by simple popular
 vote.
