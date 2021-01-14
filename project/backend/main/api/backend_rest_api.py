@@ -53,9 +53,14 @@ def populate_database():
     """
 
     # Adding Candidates for the election. These should be reflected in the frontend.
-    registry.register_candidate("Monty Scott")
-    registry.register_candidate("Leo McCoy")
-    registry.register_candidate("Jim Kirk")
+    registry.register_candidate("Joseph Klimek")
+    registry.register_candidate("Rose Hervey")
+    registry.register_candidate("Yeong Qi")
+    registry.register_candidate("Karthik Banerjee")
+    registry.register_candidate("Courtney Yu")
+    registry.register_candidate("Hugo Jennings")
+    registry.register_candidate("Maia Kift")
+    registry.register_candidate("Arnav Arora")
 
     # TODO: Feel free to add voters to the voter registry, and issue ballots
 
