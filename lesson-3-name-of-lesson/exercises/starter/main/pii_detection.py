@@ -20,7 +20,7 @@ def create_id_numbers_set() -> Set[str]:
     id_numbers = {'0' * (5 - len(x)) + x for x in id_numbers}
     for unwanted_number in ['11204', '11305', '11406', '11507']:
         id_numbers.remove(unwanted_number)
-    return id_numbers.intersection(special_id_numbers)
+    return id_numbers.union(special_id_numbers)
 
 
 def redact_phone_numbers(free_text: str) -> str:
