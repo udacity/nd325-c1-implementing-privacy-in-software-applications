@@ -8,7 +8,7 @@ class TestRegexRedaction:
         Checks that phone number redaction works
         """
         original_text = """My Id number is 12306.""".strip()
-        expected_redacted_comment = """My Id number is [REDACTED PHONE NUMBER].""".strip()
+        expected_redacted_comment = """My Id number is [REDACTED ID NUMBER].""".strip()
         assert redact_phone_numbers(original_text) == expected_redacted_comment
 
     def test_id_number_redaction_special_id_number(self):
@@ -16,7 +16,7 @@ class TestRegexRedaction:
         Checks that phone number redaction works
         """
         original_text = """My Id number is 125645331.""".strip()
-        expected_redacted_comment = """My Id number is [REDACTED PHONE NUMBER].""".strip()
+        expected_redacted_comment = """My Id number is [REDACTED ID NUMBER].""".strip()
         assert redact_phone_numbers(original_text) == expected_redacted_comment
 
     def test_id_number_redaction_removed_id_number(self):
