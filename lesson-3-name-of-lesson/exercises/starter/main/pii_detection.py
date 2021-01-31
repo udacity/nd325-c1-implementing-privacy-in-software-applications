@@ -1,8 +1,10 @@
 from itertools import combinations_with_replacement
 from typing import Set
+import re
 
 REDACTED_PHONE_NUMBER = "[REDACTED PHONE NUMBER]"
 REDACTED_ID_NUMBER = "[REDACTED ID NUMBER]"
+PHONE_NUMBER_REGEX = re.compile(r'(?<!\d)(\b|\()?\d{3}\)?(-|\s)?\d{3}(-|\s)?\d{4}\b(?!\d)')
 
 
 def create_id_numbers_set() -> Set[str]:
@@ -31,8 +33,7 @@ def redact_phone_numbers(free_text: str) -> str:
     >>> print(redacted_text)
     "Please contact me at [REDACTED PHONE NUMBER]"
     """
-    # TODO: Implement this!
-    raise NotImplementedError()
+    return re.sub(PHONE_NUMBER_REGEX, REDACTED_PHONE_NUMBER, free_text)
 
 
 def redact_id_numbers(free_text: str) -> str:
@@ -44,5 +45,8 @@ def redact_id_numbers(free_text: str) -> str:
     "My ID Number if [REDACTED ID NUMBER]"
     """
     all_possible_id_numbers = create_id_numbers_set()
-    # TODO: Implement this!
-    raise NotImplementedError()
+    redacted_text = free_text
+    for id_number in all_possible_id_numbers:
+        redacted_text = re.sub(re.compile(r"(?<!\d){0}(?!\d)".format(id_number)), REDACTED_ID_NUMBER, redacted_text)
+
+    return redacted_text
