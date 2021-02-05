@@ -79,13 +79,11 @@ class HiringStore:
         cursor = self.connection.cursor()
         cursor.execute("""SELECT * FROM candidates WHERE candidate_id=?""", (candidate_id,))
         candidate_row = cursor.fetchone()
-        candidate = Candidate(candidate_id, candidate_row[1], candidate_row[2]) if candidate_row else None
         self.connection.commit()
-
-        soft_deleted = candidate_row[3] == 1
-        if soft_deleted:
+        if not candidate_row or candidate_row[3] == 1:
             return None
-        return candidate
+
+        return Candidate(candidate_id, candidate_row[1], candidate_row[2]) if candidate_row else None
 
     def soft_delete_candidate(self, candidate_id: int):
         """
