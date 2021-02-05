@@ -89,23 +89,32 @@ class HiringStore:
         """
         Soft Deletes a candidate
         """
-        # TODO: Implement this!
-        raise NotImplementedError()
+        cursor = self.connection.cursor()
+        cursor.execute("""UPDATE candidates SET soft_deleted=1 WHERE candidate_id=?""", (candidate_id,))
+        candidate_row = cursor.fetchone()
+        self.connection.commit()
 
     def candidate_data_subject_access_request(self, candidate_id: int) -> Optional[Candidate]:
         """
         Gets the data subject. If the candidate has been soft deleted, will still return the candidate. See
         the get_candidate method for inspiration.
         """
-        # TODO: Implement this!
-        raise NotImplementedError()
+        cursor = self.connection.cursor()
+        cursor.execute("""SELECT * FROM candidates WHERE candidate_id=?""", (candidate_id,))
+        candidate_row = cursor.fetchone()
+        self.connection.commit()
+
+        if not candidate_row:
+            return None
+
+        return Candidate(candidate_id, candidate_row[1], candidate_row[2])
 
     def hard_delete_candidate(self, candidate_id: int):
         """
         Completely deletes the candidate from the application-layer.
         """
-        # TODO: Implement this!
-        raise NotImplementedError()
+        self.connection.execute("""DELETE FROM candidates WHERE candidate_id=?""", (candidate_id,))
+        self.connection.commit()
 
     def get_all_candidates(self) -> List[Candidate]:
         """
