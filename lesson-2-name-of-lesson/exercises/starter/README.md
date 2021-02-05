@@ -1,4 +1,4 @@
-# Lesson 2: Exercise 2 - Deletion & DSAR
+# Lesson 2: Exercise 2 - Deletion
 
 In this exercise, we've provided you with some starter code in the `main` directory.
 The goal here is to implement deletion for a store that contains candidates for hiring.
@@ -16,7 +16,7 @@ pass. The only test that should not pass is `test_data_subject_access_request`.
 
 To run tests, run `pytest` from the `src/` directory.
 
-# Lesson 2: Exercise 2 - Deletion & DSAR
+# Lesson 2: Exercise 3 - Data Subject Access Request
 
 In this exercise, we've provided you with some starter code in the `main` directory.
 The goal here is to implement a Data Subject Access Request method that respects soft deletion.
