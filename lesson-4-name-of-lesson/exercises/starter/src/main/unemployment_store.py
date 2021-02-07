@@ -71,7 +71,9 @@ class UnemploymentStore:
         Adds a unemployed citizen into the unemployed table
         """
         self.connection.execute(
-            """INSERT INTO unemployed (obfuscated_national_id, obfuscated_email_address, incarcerated) VALUES (?)""",
+            """
+            INSERT INTO unemployed (obfuscated_national_id, obfuscated_email_address, incarcerated) VALUES (?, ?, ?)
+            """,
             (obfuscated_national_id, obfuscated_email_address, encrypt_incarceration_status(incarcerated)))
         self.connection.commit()
 

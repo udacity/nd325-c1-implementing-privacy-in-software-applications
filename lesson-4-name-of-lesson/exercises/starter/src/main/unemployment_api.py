@@ -4,14 +4,14 @@ from src.main.privacy import obfuscated_national_id, encrypt_email_address, decr
 from src.main.unemployment_store import UnemploymentStore
 
 
-def mark_citizen_as_unemployed(sensitive_national_id: str, plaintext_email_address: str):
+def mark_citizen_as_unemployed(sensitive_national_id: str, plaintext_email_address: str, incarcerated: bool):
     """
     Marks the citizen with the corresponding sensitive national id as unemployed
     :param sensitive_national_id: A sensitive national ID
     :param plaintext_email_address: A plaintext email address corresponding to the unemployed citizen
     """
     UnemploymentStore.get_instance().mark_citizen_as_unemployed(
-        obfuscated_national_id(sensitive_national_id), encrypt_email_address(plaintext_email_address))
+        obfuscated_national_id(sensitive_national_id), encrypt_email_address(plaintext_email_address), incarcerated)
 
 
 def citizen_can_receive_unemployment(sensitive_national_id: str) -> bool:
