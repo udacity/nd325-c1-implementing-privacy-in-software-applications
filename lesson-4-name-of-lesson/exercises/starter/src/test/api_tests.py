@@ -3,6 +3,7 @@ import pytest
 from src.main.unemployment_api import mark_citizen_as_unemployed, citizen_can_receive_unemployment, unmark_citizen_as_unemployed, get_all_email_addresses
 from src.main.unemployment_store import UnemploymentStore
 
+
 class TestApi:
     def test_non_incarcerated_citizens_can_receive_benefits_if_unemployed(self):
         assert citizen_can_receive_unemployment("111-11-1111")
