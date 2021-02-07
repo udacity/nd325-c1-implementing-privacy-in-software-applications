@@ -7,7 +7,7 @@ import sqlite3
 from sqlite3 import Connection
 from typing import Set
 
-from src.main.unemployment.privacy import encrypt_incarceration_status, decrypt_incarceration_status
+from src.main.privacy import encrypt_incarceration_status, decrypt_incarceration_status
 
 
 class UnemploymentStore:

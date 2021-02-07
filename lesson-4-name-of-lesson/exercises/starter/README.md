@@ -14,7 +14,7 @@ Being a privacy engineer, your know that to accomplish this, there is no reason 
 of all unemployed people's national identifiers. In fact, there's no reason to even store copies of the SSN -- you can
 simply hash them and compare the hashes.
 
-Implement hashing with a pepper for SSNs in this exercise. In the `src/main/unemployment/privacy.py` file,
+Implement hashing with a pepper for SSNs in this exercise. In the `src/main/privacy.py` file,
 there's a `obfuscated_national_id` method. Implement this. Feel free to generate and register your secrets (if
 necessary) in `secret_registry.py`.
 
@@ -26,9 +26,9 @@ reach out to beneficiaries with important communications, and perhaps job opport
 
 Because of this, we need the ability to get _all_ the email addresses from the system.
 
-In the `src/main/unemployment/unemployment_api.py` file, there's a `get_all_email_addresses` method that is already
+In the `src/main/unemployment_api.py` file, there's a `get_all_email_addresses` method that is already
 implemented. This method relies on the `encrypt_email_address` and `decrypt_email_address` that are in the
-`src/main/unemployment/privacy.py` file. Implement these. Feel free to generate and register your secrets (if necessary)
+`src/main/privacy.py` file. Implement these. Feel free to generate and register your secrets (if necessary)
 in `secret_registry.py`.
 
 
@@ -42,5 +42,5 @@ However, whether or not a person is incarcerated has only two possible values: t
 non-deterministic encryption strategy. 
 
 This requires implementing on the `encrypt_incarceration_status` and `decrypt_incarceration_status` that are in the
-`src/main/unemployment/privacy.py` file. Feel free to generate and register your secrets (if necessary) in
+`src/main/privacy.py` file. Feel free to generate and register your secrets (if necessary) in
 `secret_registry.py`.

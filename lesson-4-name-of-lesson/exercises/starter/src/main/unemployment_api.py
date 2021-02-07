@@ -1,7 +1,7 @@
 from typing import Set
 
-from src.main.unemployment.privacy import obfuscated_national_id, encrypt_email_address, decrypt_email_address
-from src.main.unemployment.unemployment_store import UnemploymentStore
+from src.main.privacy import obfuscated_national_id, encrypt_email_address, decrypt_email_address
+from src.main.unemployment_store import UnemploymentStore
 
 
 def mark_citizen_as_unemployed(sensitive_national_id: str, plaintext_email_address: str):
