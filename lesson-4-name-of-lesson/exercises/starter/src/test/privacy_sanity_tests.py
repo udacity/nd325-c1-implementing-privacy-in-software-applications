@@ -45,8 +45,8 @@ class TestPrivacySanity:
         plaintext_incarceration_status = True
         encrypted_incarceration_status = encrypt_incarceration_status(plaintext_incarceration_status)
 
-        assert plaintext_incarceration_status not in encrypted_incarceration_status
-        assert encrypted_incarceration_status not in plaintext_incarceration_status
+        assert str(plaintext_incarceration_status) not in encrypted_incarceration_status
+        assert encrypted_incarceration_status not in str(plaintext_incarceration_status)
 
     def test_encrypt_incarceration_status_nondeterminism(self):
 
