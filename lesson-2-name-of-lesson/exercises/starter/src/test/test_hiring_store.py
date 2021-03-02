@@ -1,8 +1,13 @@
+from typing import Optional
+
 import pytest
 
 from src.main.api import put_candidate, get_candidate, get_all_candidates, soft_delete_candidate, hard_delete_candidate, \
     candidate_data_subject_access_request
 from src.main.hiring_store import HiringStore
+import jsons
+
+from exercises.starter.src.main.hiring_candidate import Candidate
 
 
 class TestHiringStore:
@@ -72,16 +77,16 @@ class TestHiringStore:
     def test_data_subject_access_request(self):
 
         candidate1_name, candidate1_email = "Bob Jones", "bobjones@email.com"
-        candidate2_name, candidate2_email = "Linda Vasquez", "lvasquez@email.com"
-
         candidate1_id = put_candidate(candidate1_name, candidate1_email)
-        candidate2_id = put_candidate(candidate2_name, candidate2_email)
 
         # First, soft delete
         soft_delete_candidate(candidate1_id)
 
+        # Make sure the output is a json string
+        candidate1 = jsons.load(candidate_data_subject_access_request(candidate1_id), Optional[Candidate])
+
         # However, when a DSAR is triggered, we should be able to still get the candidate
-        assert candidate_data_subject_access_request(candidate1_id).name == candidate1_name
+        assert candidate1.name == candidate1_name
 
         # Then, hard delete
         hard_delete_candidate(candidate1_id)
