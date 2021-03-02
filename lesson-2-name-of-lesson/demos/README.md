@@ -5,8 +5,8 @@
 
 
 ## Script
-In this demo, I'll be showing you how to soft delete data and hard delete data, as well as how to perform data subject
-access requests in a very simple system.
+In this demo, I'll be showing you how to soft delete data and hard delete data, as well as how to perform a data subject
+access request in a very simple system.
 
 We're going to be using Python for this, but if you're familiar with SQL, you'll
 notice some SQL commands in the code.
@@ -18,7 +18,7 @@ Here, we have just simple a one-file program. It's just a user store for any arb
 Up top here we have a simple User class, that has the name of the user, their email address and their user ID
 
 #### Point to `UserStore.create_tables` method
-And here we have a simple user store. You'll see that this is where we create our table. If we wanted to create
+And here we have our simple user store. You'll see that this is where we create our `users` table. If we wanted to create
 more tables, we could add them and their schemas here.
 
 #### Scroll down to the implemented methods
@@ -126,13 +126,3 @@ None
 >>> user_store.data_subject_access_request(1).full_name
 None
 ```
-
-
-
-
-
-
-
-
-
-
