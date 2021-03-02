@@ -9,10 +9,10 @@ from typing import Optional
 
 
 class User:
-    def __init__(self, full_name: str, email: str, user_id: int):
+    def __init__(self, user_id: int, full_name: str, email: str):
+        self.user_id = user_id
         self.full_name = full_name
         self.email = email
-        self.user_id = user_id
 
 
 class UserStore:
@@ -65,7 +65,7 @@ class UserStore:
         cursor = self.connection.cursor()
         cursor.execute(
             """
-            INSERT INTO users (name, email, soft_deleted) VALUES (?, ?, 0)
+            INSERT INTO users (name, email) VALUES (?, ?)
             """, (user_name, user_email))
         self.connection.commit()
         return cursor.lastrowid
@@ -81,10 +81,8 @@ class UserStore:
             """, (user_id,))
         user_row = cursor.fetchone()
         self.connection.commit()
-        if not user_row or user_row[3] == 1:
-            return None
 
-        return User(user_row[1], user_row[2], user_id) if user_row else None
+        return User(user_id, user_row[1], user_row[2]) if user_row else None
 
     def soft_delete_user(self, user_id: int):
         """

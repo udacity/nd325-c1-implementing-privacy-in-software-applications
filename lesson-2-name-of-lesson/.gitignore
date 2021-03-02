@@ -3,3 +3,4 @@
 **/.pytest_cache
 **/*.pyc
 .idea
+.DS_Store
