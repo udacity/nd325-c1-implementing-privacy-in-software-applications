@@ -8,6 +8,7 @@ from sqlite3 import Connection
 from typing import List, Optional
 
 from src.main.hiring_candidate import Candidate
+import jsons
 
 
 class HiringStore:
@@ -89,12 +90,10 @@ class HiringStore:
         """
         Soft Deletes a candidate
         """
-        cursor = self.connection.cursor()
-        cursor.execute("""UPDATE candidates SET soft_deleted=1 WHERE candidate_id=?""", (candidate_id,))
-        candidate_row = cursor.fetchone()
+        self.connection.execute("""UPDATE candidates SET soft_deleted=1 WHERE candidate_id=?""", (candidate_id,))
         self.connection.commit()
 
-    def candidate_data_subject_access_request(self, candidate_id: int) -> Optional[Candidate]:
+    def candidate_data_subject_access_request(self, candidate_id: int) -> Optional[str]:
         """
         Gets the data subject. If the candidate has been soft deleted, will still return the candidate. See
         the get_candidate method for inspiration.
@@ -107,7 +106,7 @@ class HiringStore:
         if not candidate_row:
             return None
 
-        return Candidate(candidate_id, candidate_row[1], candidate_row[2])
+        return jsons.dumps(Candidate(candidate_id, candidate_row[1], candidate_row[2]))
 
     def hard_delete_candidate(self, candidate_id: int):
         """
