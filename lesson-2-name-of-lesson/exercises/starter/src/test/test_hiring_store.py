@@ -7,7 +7,7 @@ from src.main.api import put_candidate, get_candidate, get_all_candidates, soft_
 from src.main.hiring_store import HiringStore
 import jsons
 
-from exercises.starter.src.main.hiring_candidate import Candidate
+from src.main.hiring_candidate import Candidate
 
 
 class TestHiringStore:
@@ -83,10 +83,11 @@ class TestHiringStore:
         soft_delete_candidate(candidate1_id)
 
         # Make sure the output is a json string
-        candidate1 = jsons.load(candidate_data_subject_access_request(candidate1_id), Optional[Candidate])
+        candidate1_obj = jsons.loads(candidate_data_subject_access_request(candidate1_id), Optional[Candidate])
 
         # However, when a DSAR is triggered, we should be able to still get the candidate
-        assert candidate1.name == candidate1_name
+        assert candidate1_obj.name == candidate1_name
+        assert candidate1_obj.email == candidate1_email
 
         # Then, hard delete
         hard_delete_candidate(candidate1_id)
