@@ -102,7 +102,7 @@ def user_data_subject_access_request(self, user_id: int) -> Optional[User]:
     if not user_row:
         return None
 
-    return Candidate(user_id, user_row[1], user_row[2])
+    return jsons.dumps(Candidate(user_id, user_row[1], user_row[2]))
 ```
 
 So this is just like the `get_user` method above, except now, instead we don't pay heed to the `soft_deleted` column, as
