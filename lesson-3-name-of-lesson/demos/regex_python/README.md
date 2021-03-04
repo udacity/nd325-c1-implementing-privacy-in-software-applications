@@ -70,8 +70,6 @@ And, if we passed in `no_email`, then:
 
 The string wouldn't change at all.
 
-x
-
 
 ### 7
 
