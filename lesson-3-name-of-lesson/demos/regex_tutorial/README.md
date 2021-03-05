@@ -1,17 +1,18 @@
 ### Introduction
 
-So in this demo, I'm going to be giving you the basics of composing regexes. After this, we're
-actually going to do an example together, where we use what we learned to find regular expressions
-in text.
+So in this demo, I'm going to be giving you the basics of composing regexes. After this, we're actually going to do an example together, where we use what we learned to compose a regex to find the PII in text that Joe Higgins sent us.
 
+### Regular Expression (!!!!!)
+
+Now remember, a regular expression is a series of characters that help us recognize patterns in strings. If that seems abstract to you, don't worry, in the next few minutes you're going to see many examples and how they work.
 
 ### Setting the stage
 
-Here we're actually on a website called regex101.com, where we can build and test our regexes. The first thing I'm going to do is:
+Here we're actually on a website called regex101.com, where we can build and test our regexes. The first thing I'm going to do is...
 
 
 ##### Select Python as your programming language
-Select Python as my programming language, because this is the language our exercises and project are in. If you're using a different language for work, what I'm about to show you should still transfer over just fine, except that, that language might have specific instructions for how to handle strings in general, and you might have to adjust for that.
+... select Python as my programming language, because this is the language our exercises and project are in. If you're using a different language for work, what I'm about to show you should still transfer over just fine, except that, that language might have specific instructions for how to handle strings in general, and you might have to adjust for that.
 
 ##### Point to regex section
 Now, this bar up here is where we can actually specify our test regex...
@@ -20,7 +21,8 @@ Now, this bar up here is where we can actually specify our test regex...
 #### point to test section
 ... and this is where we can type in some inputs that we can compare it against
 
-
+/// SPLIT
+# 
 ### "Fun" example
 Let's start with a simpler example. Say we wanted to match the word `fun` with a regex, but we also wanted to account for additional `n`s at the end of the word; for example `funnnn`.
 For this, we use the `+` symbol after the `n`. Let's see this **type in `fun+`**.
@@ -42,6 +44,7 @@ Now, what if we wanted to match `fun`, `funn` and `funnn`, but nothing longer th
 ### Word boundary
 Now in this example, you can see that this regex actually matches the beginning of the words that we don't want it to match. To get around this, we use something called a word boundary. Here's how that looks **do word boundary**. All this indicates is that there must be a word break, like a piece of punctuation, or whitespace. **Do `fun` `funn` `funnn` AND `funny`**
 
+/// SPLIT HERE
 
 ### Question mark
 The `?` is another useful marker, which indicates "optional", or "one or none". For example, the regex `fun?\b`, with a word boundary t the end of it, would match `fu` and `fun`, but wouldn't match `funn` or anything else for that matter.
@@ -59,6 +62,8 @@ Now, we could of course put word boundaries on either end, so that we can get th
 ### Non-digit
 `\D` matches a single non-digit. So for example, `\D{3}` would match any 3 consecutive non-digits.
 
+// SPLIT
+
 ### OR -- CLEAR SCREEN
 *Put `fun`, `fan` and `fin`*
 The `|` mean OR. So **put regex as `f(u|a)n`** would match `fun` and `fan`. You can string them together **put regex as `f(u|a|i)n`**, and it'll match `fin` as well.
@@ -66,6 +71,8 @@ The `|` mean OR. So **put regex as `f(u|a)n`** would match `fun` and `fan`. You 
 ### Space -- CLEAR SCREEN
 *Put `   ` and `asd`*
 Similarly, `\s` indicates whitespace (space or a tab), while `\S` matches anything that's *not* a whitespace.
+
+// SPLIT
 
 ### Dot
 `.` matches any character (not just dots), and this includes spaces.
@@ -77,6 +84,7 @@ Similarly, `\s` indicates whitespace (space or a tab), while `\S` matches anythi
 ### Not
 The `[^]` marker is a negative. This is best explained with an example - say we have the regex `f[^aoi]n`. This will match `fun`, `f-n`, `f3n`, `fbn`, `f.n`. But it will *not* match `fan`, `fin` or `fon`, but will match any other single character between `f` and `n` (like `fun`, `f3n` or `f-n`).
 
+/// SPLIT
 
 ### Lookaheads and lookbehinds
 Finally, we have look-aheads and look-behinds, which are more advanced features of a regexes, but are quite useful.
@@ -98,6 +106,8 @@ You might ask, why don't we just do `[^\d]123` as our regex? Well you can see th
 ##### Positive Lookahead
 
 Now, we could've also done this with a positive lookahead. So if we go back to what we had before, we are insisting that there is no digit before `123`. What if we wanted to the opposite -- look behind for the digit instead? We want to Here's how that'd look **put `(?<=\d)123`**.
+
+// SPLIT
 
 ##### Lookbehinds -- CLEAR SCREEN
 

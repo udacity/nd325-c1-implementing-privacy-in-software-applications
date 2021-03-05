@@ -1,4 +1,4 @@
-Let's see overlap detection in action here, again in python.
+Let's see overlap detection in action here, again in python. You'll be implementing this in an exercise in the Udacity workspace, but I'll be giving you a quick demo here, in my terminal.
 
     import re
 

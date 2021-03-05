@@ -4,7 +4,7 @@
     $ ipython3
 
 
-Now that we've learned the elements of what make up a regex, let's try writing one for gender information.
+Now that we've learned the elements of what make up a regex, let's try writing one for email information. You'll actually be doing something similar to this in an exercise in the Udacity workspace, but here I'm going to show this to you quickly in my terminal.
 
 ### 1
 
